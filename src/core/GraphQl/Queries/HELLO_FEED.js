@@ -3,6 +3,7 @@ const HELLO_FEED = gql`
   query feedMe {
     feed {
       id
+      title
       text
     }
   }
