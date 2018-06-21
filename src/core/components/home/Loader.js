@@ -8,7 +8,7 @@ import HELLO_FEED from "../../GraphQl/Queries/HELLO_FEED";
 
 const Loader = props => {
   //TODO if (prop.helloFeed.loading {return <OverlaySpinner/>})
-  const helloFeed = props.helloFeed.feed
+  const helloFeed = props.helloFeed
   console.log('helloFeed', helloFeed)
 
   return (

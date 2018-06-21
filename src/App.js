@@ -5,7 +5,7 @@ import ApolloClient from "apollo-boost";
 import Routes from "./platform/routes";
 
 const client = new ApolloClient({
-  uri: "http://localhost:4000"
+  uri: "https://itm-node-basic-kchjtaklfo.now.sh"
 });
 const App = () => (
   <ApolloProvider client={client}>
