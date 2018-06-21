@@ -48,9 +48,12 @@ class Signup extends React.Component {
       return;
     }
 
+
     await AsyncStorage.setItem('@ecommerce/token', response.data.signup.token);
+    console.log('token: ', response.data.signup.token)
     // this.setState(defaultState);
-    this.props.history.push('/products');
+    //this.props.history.push('/products');
+
   };
 
   goToLoginPage = () => {
