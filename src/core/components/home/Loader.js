@@ -8,12 +8,12 @@ import HELLO_FEED from "../../GraphQl/Queries/HELLO_FEED";
 
 const Loader = props => {
   //TODO if (prop.helloFeed.loading {return <OverlaySpinner/>})
-  const helloFeed = props.helloFeed
-  console.log('helloFeed', helloFeed)
+  const theFeed = props.helloFeed.feed
+  console.log('helloFeed', theFeed)
 
   return (
     <Home
-      helloFeed={helloFeed}
+      theFeed={theFeed}
       puffPuffPass="puffPuffPass"
     />
   )

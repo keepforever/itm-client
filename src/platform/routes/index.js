@@ -5,6 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 //locals Drawer Navigation
 import Home from "../../core/components/home";
 import Settings from "../../core/components/settings"
+import SignUp from "../../core/components/signup"
 //locals Temporary
 
 
@@ -14,9 +15,22 @@ export default createBottomTabNavigator({
     navigationOptions: {
       tabBarLabel: 'Dash',
       tabBarIcon: ({tintColor}) => (
-        <Icon 
-          name="ios-home" 
-          color={tintColor} 
+        <Icon
+          name="ios-home"
+          color={tintColor}
+          size={24}
+        />
+      )
+    }
+  },
+  SignUp: {
+    screen: SignUp,
+    navigationOptions: {
+      tabBarLabel: 'SignUp',
+      tabBarIcon: ({tintColor}) => (
+        <Icon
+          name="ios-add"
+          color={tintColor}
           size={24}
         />
       )
@@ -27,18 +41,18 @@ export default createBottomTabNavigator({
     navigationOptions: {
       tabBarLabel: 'Settings',
       tabBarIcon: ({tintColor}) => (
-        <Icon 
-          name="ios-settings" 
+        <Icon
+          name="ios-settings"
           color={tintColor}
           size={24}
         />
       )
     }
   }
-}, 
+},
 {//router config
   initialRouteName: 'Home',
-  order: ['Settings', 'Home'],
+  order: ['SignUp','Settings', 'Home'],
   //nav options that apply to complete tab navigator
   navigationOptions: {
     tabBarVisible: true
