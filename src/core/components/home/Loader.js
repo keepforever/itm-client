@@ -1,12 +1,27 @@
 import React from 'react';
-// SOON: import { graphql, compose } from "react-apollo";
+import { graphql, compose } from "react-apollo";
+
 import Home from "../../../platform/ux/Home";
 
+//locals core
+import HELLO_FEED from "../../GraphQl/Queries/HELLO_FEED";
+
 const Loader = props => {
+  //TODO if (prop.helloFeed.loading {return <OverlaySpinner/>})
+  const helloFeed = props.helloFeed.feed
+  console.log('helloFeed', helloFeed)
 
   return (
-    <Home puffPuffPass="puffPuffPass" />
+    <Home
+      helloFeed={helloFeed}
+      puffPuffPass="puffPuffPass"
+    />
   )
 }
 
-export default Loader
+export default compose(
+  graphql(HELLO_FEED, {
+    options: {fetchPolicy: 'cache-and-network'},
+    name: 'helloFeed'
+  }),
+)(Loader)
