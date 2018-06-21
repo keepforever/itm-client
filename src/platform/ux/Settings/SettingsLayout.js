@@ -1,15 +1,11 @@
 import React, { Component } from "react";
 import {
   View,
-  ScrollView,
-  KeyboardAvoidingView,
   StyleSheet,
-  TouchableHighlight
 } from "react-native";
-
 import { Text } from "react-native-elements";
 
-class DashboardLayout extends Component {
+class SettingsLayout extends Component {
 
   state = {
     someThing: 'some state'
@@ -20,7 +16,7 @@ class DashboardLayout extends Component {
     return (
       <View style={styles.container}>
         <Text h1>
-          H1 Text!!
+          SettingsLayout
         </Text>
       </View>
     )
@@ -28,7 +24,7 @@ class DashboardLayout extends Component {
 }
 
 
-export default DashboardLayout;
+export default SettingsLayout;
 
 const styles = StyleSheet.create({
   container: {

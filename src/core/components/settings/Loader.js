@@ -1,11 +1,11 @@
 import React from 'react';
 // SOON: import { graphql, compose } from "react-apollo";
-import Dashboard from "../../../platform/ux/Dashboard";
+import Settings from "../../../platform/ux/Settings";
 
 const Loader = props => {
 
   return (
-    <Dashboard puffPuffPass="puffPuffPass" />
+    <Settings someSetting="some setting" />
   )
 }
 

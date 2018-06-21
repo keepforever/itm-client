@@ -1,99 +1,36 @@
 import React from "react";
-import { Image, TouchableHighlight } from "react-native";
-import {
-  StackNavigator,
-  TabNavigator,
-  DrawerNavigator
-} from "react-navigation";
-import { Icon } from "react-native-elements";
-//locals navigation
-import Header from ".././ux/Header";
-import Drawer from ".././ux/Drawer";
+import { createBottomTabNavigator } from "react-navigation";
+//import { Icon } from "react-native-elements";
+import Icon from 'react-native-vector-icons/Ionicons'
 //locals Drawer Navigation
-import Dashboard from "../../core/components/dashboard";
+import Home from "../../core/components/home";
+import Settings from "../../core/components/settings"
 //locals Temporary
 
 
-const headerRight = (
-  <Image
-    resizeMode="cover"
-    style={{
-      width: 36,
-      height: 36,
-      resizeMode: "contain",
-      alignSelf: "center"
-    }}
-    source={{
-      uri: "http://via.placeholder.com/50x50"
-    }}
-  />
-);
-
-const config = {
+export default createBottomTabNavigator({
   Home: {
-    screen: Dashboard
+    screen: Home,
+    navigationOptions: {
+      tabBarLabel: 'Dash',
+      tabBarIcon: ({tintColor}) => (
+        <Icon name="ios-home" size={24} />
+      )
+    }
   },
-  Dashboard: { screen: Dashboard },
-};
-
-const RootStack = StackNavigator(config, {
-  initialRouteName: "Home",
-  navigationOptions: ({ navigation }) => ({
-    headerTitleStyle: { alignSelf: "center" },
-    headerTitle: <Header />,
-
-    headerStyle: {
-      height: 50,
-      backgroundColor: "white"
-    },
-    headerTintColor: "white",
-    headerLeft: (
-      <TouchableHighlight onPress={() => navigation.navigate("DrawerOpen")}>
-        <Image
-          resizeMode="cover"
-          style={{
-            width: 40,
-            height: 40,
-            resizeMode: "contain",
-            alignSelf: "center"
-          }}
-          source={{
-            uri: "http://via.placeholder.com/50x50"
-          }}
-        />
-      </TouchableHighlight>
-    ),
-    headerRight: (
-      <TouchableHighlight onPress={() => navigation.navigate("DrawerOpen")}>
-        <Image
-          resizeMode="cover"
-          style={{
-            width: 40,
-            height: 40,
-            resizeMode: "contain",
-            alignSelf: "center"
-          }}
-          source={{
-            uri: "http://via.placeholder.com/50x50"
-          }}
-        />
-      </TouchableHighlight>
-    )
-  })
-});
-
-const rootscenesdrawer = {
-  Root: {
-    screen: RootStack
+  Settings: {
+    screen: Settings,
+    navigationOptions: {
+      tabBarLabel: 'Settings',
+      tabBarIcon: ({tintColor}) => (
+        <Icon name="ios-settings" size={24} />
+      )
+    }
   }
-};
-
-export const RootStackDrawer = DrawerNavigator(rootscenesdrawer, {
-  contentComponent: ({ navigation }) => (
-    <Drawer navigation={navigation} routes={rootscenesdrawer} />
-  )
-});
-
-const Router = RootStackDrawer;
-
-export default Router;
+}, 
+{
+  initialRouteName: 'Dashboard', 
+  navigationOptions: {
+    tabBarVisible: true
+  }
+})
