@@ -27,6 +27,15 @@ class Signup extends React.Component {
     }));
   };
 
+  getData = async () => {
+    console.log('Get Data called!')
+    try {
+      let theData = await AsyncStorage.getItem('@itm/token')
+      alert(theData)
+    } catch(error) {
+      console.log(error)
+    }
+  }
   submit = async () => {
     if (this.state.isSubmitting) {
       return;
@@ -48,16 +57,17 @@ class Signup extends React.Component {
       return;
     }
 
-
-    await AsyncStorage.setItem('@ecommerce/token', response.data.signup.token);
+    await AsyncStorage.setItem('@itm/token', response.data.signup.token);
     console.log('token: ', response.data.signup.token)
     // this.setState(defaultState);
     //this.props.history.push('/products');
-
   };
 
   goToLoginPage = () => {
-    this.props.history.push('/login');
+    //this is for a different React Native Navigation Library
+    //this.props.history.push('/login');
+    alert('no functionality yet')
+    //this.props.navigation.navigate(userToken ? 'App' : 'Auth');
   };
 
   render() {
@@ -85,6 +95,7 @@ class Signup extends React.Component {
           <Button title="Create account" onPress={this.submit} />
           <Text style={{ textAlign: 'center' }}>or</Text>
           <Button title="Login" onPress={this.goToLoginPage} />
+          <Button title="Get Data" onPress={this.getData} />
         </View>
       </View>
     );

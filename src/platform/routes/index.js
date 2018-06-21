@@ -58,13 +58,15 @@ const AuthStack = createStackNavigator({
   SignUp: SignUp
 })
 
-export defalut createSwitchNavigator({
-  App: AppStack,
-  Auth: AuthStack,
+export default createSwitchNavigator(
+  {
+    App: AppStack,
+    Auth: AuthStack,
+  },
   {
     initialRouteName: 'Auth'
   }
-})
+);
 
 //
 // export default createBottomTabNavigator({
