@@ -14,7 +14,11 @@ export default createBottomTabNavigator({
     navigationOptions: {
       tabBarLabel: 'Dash',
       tabBarIcon: ({tintColor}) => (
-        <Icon name="ios-home" size={24} />
+        <Icon 
+          name="ios-home" 
+          color={tintColor} 
+          size={24}
+        />
       )
     }
   },
@@ -23,14 +27,25 @@ export default createBottomTabNavigator({
     navigationOptions: {
       tabBarLabel: 'Settings',
       tabBarIcon: ({tintColor}) => (
-        <Icon name="ios-settings" size={24} />
+        <Icon 
+          name="ios-settings" 
+          color={tintColor}
+          size={24}
+        />
       )
     }
   }
 }, 
-{
-  initialRouteName: 'Dashboard', 
+{//router config
+  initialRouteName: 'Home',
+  order: ['Settings', 'Home'],
+  //nav options that apply to complete tab navigator
   navigationOptions: {
     tabBarVisible: true
+  },
+  tabBarOptions:{
+    //activeTintColor supplies "tintColor" var above
+    activeTintColor:'red',
+    inactiveTintColor: 'black'
   }
 })

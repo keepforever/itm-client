@@ -1,6 +1,6 @@
 import React from 'react';
 // SOON: import { graphql, compose } from "react-apollo";
-import Dashboard from "../../../platform/ux/Home";
+import Home from "../../../platform/ux/Home";
 
 const Loader = props => {
 
