@@ -68,7 +68,7 @@ class Signup extends Component {
     console.log(this.props)
     //this.props.navigation.navigate('LogIn')
     //alert('no functionality yet')
-    //this.props.navigation.navigate(userToken ? 'App' : 'Auth');
+    this.props.navigation.navigate(userToken ? 'App' : 'Auth');
   };
 
   render() {

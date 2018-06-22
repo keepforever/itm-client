@@ -55,23 +55,45 @@ const AppStack = createBottomTabNavigator({
   }
 })
 
-const AuthStack = createStackNavigator({
+const AuthStack = createBottomTabNavigator({
   SignUp: {
     screen: SignUp,
-    navigationOptions: ( { navigation } ) => ({
-      title: 'SignUp',
-      headerBackTitle: null
-    })
+    navigationOptions: {
+      tabBarLabel: 'SignUp',
+      tabBarIcon: ({tintColor}) => (
+        <Icon
+          name="ios-settings"
+          color={tintColor}
+          size={24}
+        />
+      )
+    }
   },
   LogIn: {
     screen: LogIn,
-    navigationOptions: ( { navigation } ) => ({
-      title: 'LogIn',
-      headerBackTitle: null
-    })
+    navigationOptions: {
+      tabBarLabel: 'LogIn',
+      tabBarIcon: ({tintColor}) => (
+        <Icon
+          name="ios-settings"
+          color={tintColor}
+          size={24}
+        />
+      )
+    }
   }
-},{
+},{//router config
   initialRouteName: 'LogIn',
+  order: ['LogIn','SignUp'],
+  //nav options that apply to complete tab navigator
+  navigationOptions: {
+    tabBarVisible: true
+  },
+  tabBarOptions:{
+    //activeTintColor supplies "tintColor" var above
+    activeTintColor:'red',
+    inactiveTintColor: 'black'
+  }
 });
 
 export default createSwitchNavigator(
@@ -83,6 +105,27 @@ export default createSwitchNavigator(
     initialRouteName: 'Auth'
   }
 );
+
+
+// const AuthStack = createStackNavigator({
+//   SignUp: {
+//     screen: SignUp,
+//     navigationOptions: ( { navigation } ) => ({
+//       title: 'SignUp',
+//       headerBackTitle: null
+//     })
+//   },
+//   LogIn: {
+//     screen: LogIn,
+//     navigationOptions: ( { navigation } ) => ({
+//       title: 'LogIn',
+//       headerBackTitle: null
+//     })
+//   }
+// },{
+//   initialRouteName: 'LogIn',
+// });
+
 
 //
 // export default createBottomTabNavigator({
