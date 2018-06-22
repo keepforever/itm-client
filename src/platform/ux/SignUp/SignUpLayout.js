@@ -30,7 +30,7 @@ class Signup extends Component {
   getData = async () => {
     console.log('Get Data called!')
     try {
-      let theData = await AsyncStorage.getItem('@itm/token')
+      let theData = await AsyncStorage.getItem('userToken')
       alert(theData)
     } catch(error) {
       console.log(error)
@@ -56,8 +56,8 @@ class Signup extends Component {
       return;
     }
 
-    await AsyncStorage.setItem('@itm/token', response.data.signup.token);
-    console.log('token: ', response.data.signup.token)
+    await AsyncStorage.setItem('userToken', response.data.signup.token);
+    console.log('userToken: ', response.data.signup.token)
     // this.setState(defaultState);
     //this.props.history.push('/products');
   };
