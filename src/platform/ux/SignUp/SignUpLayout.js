@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {Component} from 'react';
 import { AsyncStorage, Text, Button, View } from 'react-native';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
@@ -15,7 +15,7 @@ const defaultState = {
   isSubmitting: false,
 };
 
-class Signup extends React.Component {
+class Signup extends Component {
   state = defaultState;
 
   onChangeText = (key, value) => {
@@ -40,7 +40,6 @@ class Signup extends React.Component {
     if (this.state.isSubmitting) {
       return;
     }
-
     this.setState({ isSubmitting: true });
     let response;
     try {
@@ -66,7 +65,9 @@ class Signup extends React.Component {
   goToLoginPage = () => {
     //this is for a different React Native Navigation Library
     //this.props.history.push('/login');
-    alert('no functionality yet')
+    console.log(this.props)
+    //this.props.navigation.navigate('LogIn')
+    //alert('no functionality yet')
     //this.props.navigation.navigate(userToken ? 'App' : 'Auth');
   };
 
@@ -94,7 +95,7 @@ class Signup extends React.Component {
           />
           <Button title="Create account" onPress={this.submit} />
           <Text style={{ textAlign: 'center' }}>or</Text>
-          <Button title="Login" onPress={this.goToLoginPage} />
+          <Button title="Login" onPress={() => this.goToLoginPage()} />
           <Button title="Get Data" onPress={this.getData} />
         </View>
       </View>

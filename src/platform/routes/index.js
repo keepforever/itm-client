@@ -10,6 +10,7 @@ import Icon from 'react-native-vector-icons/Ionicons'
 import Home from "../../core/components/home";
 import Settings from "../../core/components/settings"
 import SignUp from "../../core/components/signup"
+import LogIn from "../../core/components/login"
 //locals Temporary
 
 const AppStack = createBottomTabNavigator({
@@ -55,8 +56,23 @@ const AppStack = createBottomTabNavigator({
 })
 
 const AuthStack = createStackNavigator({
-  SignUp: SignUp
-})
+  SignUp: {
+    screen: SignUp,
+    navigationOptions: ( { navigation } ) => ({
+      title: 'SignUp',
+      headerBackTitle: null
+    })
+  },
+  LogIn: {
+    screen: LogIn,
+    navigationOptions: ( { navigation } ) => ({
+      title: 'LogIn',
+      headerBackTitle: null
+    })
+  }
+},{
+  initialRouteName: 'LogIn',
+});
 
 export default createSwitchNavigator(
   {
