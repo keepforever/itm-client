@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import { graphql } from 'react-apollo';
+import gql from 'graphql-tag';
 import {
   StyleSheet,
   Text,
@@ -21,6 +23,20 @@ class AuthLoadingScreen extends Component {
     } catch(error) {
       console.log(error)
     }
+    let response;
+    try {
+      response = await this.props.mutate({
+        variables: {
+          token: userToken,
+        },
+      });
+    } catch (err) {
+      console.log("34 CATCH")
+      this.props.navigation.navigate('Auth');
+      return;
+    }
+    const { refreshToken } = response.data;
+    await AsyncStorage.setItem('userToken', refreshToken);
     // This will switch to the App screen or Auth screen and this loading
     // screen will be unmounted and thrown away.
     this.props.navigation.navigate(userToken ? 'Main' : 'Auth');
@@ -37,7 +53,13 @@ class AuthLoadingScreen extends Component {
   }
 }
 
-export default AuthLoadingScreen
+const refreshTokenMutation = gql`
+  mutation($token: String!) {
+    refreshToken(token: $token)
+  }
+`;
+
+export default graphql(refreshTokenMutation)(AuthLoadingScreen)
 
 const styles = StyleSheet.create({
   container: {
