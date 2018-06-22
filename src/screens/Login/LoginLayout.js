@@ -43,12 +43,11 @@ class Login extends React.Component {
     // before adjusting server
     //const { token, error } = response.data.login;
     const { payload, error } = response.data.login;
-    alert('Welcome Back ', payload.user.name)
     if (payload) {
       console.log('Login Token', payload.token)
       await AsyncStorage.setItem('userToken', payload.token);
       this.props.navigation.navigate('Main');
-
+      alert('Welcome Back ' + payload.user.name)
     } else {
       this.setState({
         errors: {
