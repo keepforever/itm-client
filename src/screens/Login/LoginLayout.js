@@ -40,11 +40,12 @@ class LogIn extends React.Component {
       variables: this.state.values,
     });
 
-    const { token, error } = response.data.login;
-
-    if (token) {
-      await AsyncStorage.setItem('userToken', token);
-      console.log('Login Token', token)
+    // before adjusting server
+    //const { token, error } = response.data.login;
+    const { payload, error } = response.data.login
+    if (payload) {
+      console.log('Login Token', payload.token)
+      await AsyncStorage.setItem('userToken', payload.token);
       this.props.navigation.navigate('Main');
 
     } else {
@@ -101,7 +102,13 @@ class LogIn extends React.Component {
 const loginMutation = gql`
   mutation($email: String!, $password: String!) {
     login(email: $email, password: $password) {
-      token
+      payload {
+        token
+      }
+      error {
+        field
+        msg
+      }
       user {
         name
       }
