@@ -14,7 +14,7 @@ const defaultState = {
   isSubmitting: false,
 };
 
-class LogIn extends React.Component {
+class Login extends React.Component {
   static navigationOptions = {
     title: "Login Layout",
   };
@@ -39,10 +39,11 @@ class LogIn extends React.Component {
     const response = await this.props.mutate({
       variables: this.state.values,
     });
-
+    //console.log("SUBMIT LOGIN")
     // before adjusting server
     //const { token, error } = response.data.login;
-    const { payload, error } = response.data.login
+    const { payload, error } = response.data.login;
+    alert('Welcome Back ', payload.user.name)
     if (payload) {
       console.log('Login Token', payload.token)
       await AsyncStorage.setItem('userToken', payload.token);
@@ -62,13 +63,9 @@ class LogIn extends React.Component {
     //alert('this button does not work')
     this.props.navigation.navigate('SignUp')
   };
-  _signInAsync = async () => {
-    await AsyncStorage.setItem('userToken', 'abc');
-    this.props.navigation.navigate('App');
-  };
 
   render() {
-    console.log("LOGIN_LAYOUT", this.props)
+    //console.log("LOGIN_LAYOUT", this.props)
     const { errors, values: { email, password } } = this.state;
 
     return (
@@ -104,16 +101,16 @@ const loginMutation = gql`
     login(email: $email, password: $password) {
       payload {
         token
+        user {
+          name
+        }
       }
       error {
         field
         msg
       }
-      user {
-        name
-      }
     }
   }
 `;
 
-export default graphql(loginMutation)(LogIn);
+export default graphql(loginMutation)(Login);
