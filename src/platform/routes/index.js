@@ -1,184 +1,62 @@
-import React from "react";
-import {
-  createBottomTabNavigator,
-  createStackNavigator,
-  createSwitchNavigator
- } from "react-navigation";
-//import { Icon } from "react-native-elements";
-import Icon from 'react-native-vector-icons/Ionicons'
-//locals Drawer Navigation
-import Home from "../../core/components/home";
-import Settings from "../../core/components/settings"
-import SignUp from "../../core/components/signup"
-import LogIn from "../../core/components/login"
-//locals Temporary
+import React from 'react';
+import { Platform, StatusBar, StyleSheet, View } from 'react-native';
+import { AppLoading, Asset, Font, Icon } from 'expo';
+import AppNavigator from '../../nav/AppNavigator';
 
-const AppStack = createBottomTabNavigator({
-  Home: {
-    screen: Home,
-    navigationOptions: {
-      tabBarLabel: 'Dash',
-      tabBarIcon: ({tintColor}) => (
-        <Icon
-          name="ios-home"
-          color={tintColor}
-          size={24}
-        />
-      )
-    }
-  },
-  Settings: {
-    screen: Settings,
-    navigationOptions: {
-      tabBarLabel: 'Settings',
-      tabBarIcon: ({tintColor}) => (
-        <Icon
-          name="ios-settings"
-          color={tintColor}
-          size={24}
-        />
-      )
-    }
-  }
-},
-{//router config
-  initialRouteName: 'Home',
-  order: ['Home','Settings'],
-  //nav options that apply to complete tab navigator
-  navigationOptions: {
-    tabBarVisible: true
-  },
-  tabBarOptions:{
-    //activeTintColor supplies "tintColor" var above
-    activeTintColor:'red',
-    inactiveTintColor: 'black'
-  }
-})
+export default class Routes extends React.Component {
+  state = {
+    isLoadingComplete: false,
+  };
 
-const AuthStack = createBottomTabNavigator({
-  SignUp: {
-    screen: SignUp,
-    navigationOptions: {
-      tabBarLabel: 'SignUp',
-      tabBarIcon: ({tintColor}) => (
-        <Icon
-          name="ios-settings"
-          color={tintColor}
-          size={24}
+  render() {
+    if (!this.state.isLoadingComplete && !this.props.skipLoadingScreen) {
+      return (
+        <AppLoading
+          startAsync={this._loadResourcesAsync}
+          onError={this._handleLoadingError}
+          onFinish={this._handleFinishLoading}
         />
-      )
-    }
-  },
-  LogIn: {
-    screen: LogIn,
-    navigationOptions: {
-      tabBarLabel: 'LogIn',
-      tabBarIcon: ({tintColor}) => (
-        <Icon
-          name="ios-settings"
-          color={tintColor}
-          size={24}
-        />
-      )
+      );
+    } else {
+      return (
+        <View style={styles.container}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+          <AppNavigator />
+        </View>
+      );
     }
   }
-},{//router config
-  initialRouteName: 'LogIn',
-  order: ['LogIn','SignUp'],
-  //nav options that apply to complete tab navigator
-  navigationOptions: {
-    tabBarVisible: true
+
+  _loadResourcesAsync = async () => {
+    return Promise.all([
+      Asset.loadAsync([
+        require('../itm.jpg'),
+        require('../itm.jpg'),
+      ]),
+      Font.loadAsync({
+        // This is the font that we are using for our tab bar
+        ...Icon.Ionicons.font,
+        // We include SpaceMono because we use it in HomeScreen.js. Feel free
+        // to remove this if you are not using it in your app
+        'space-mono': require('../../../assets/fonts/SpaceMono-Regular.ttf'),
+      }),
+    ]);
+  };
+
+  _handleLoadingError = error => {
+    // In this case, you might want to report the error to your error
+    // reporting service, for example Sentry
+    console.warn(error);
+  };
+
+  _handleFinishLoading = () => {
+    this.setState({ isLoadingComplete: true });
+  };
+}
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: '#fff',
   },
-  tabBarOptions:{
-    //activeTintColor supplies "tintColor" var above
-    activeTintColor:'red',
-    inactiveTintColor: 'black'
-  }
 });
-
-export default createSwitchNavigator(
-  {
-    App: AppStack,
-    Auth: AuthStack,
-  },
-  {
-    initialRouteName: 'Auth'
-  }
-);
-
-
-// const AuthStack = createStackNavigator({
-//   SignUp: {
-//     screen: SignUp,
-//     navigationOptions: ( { navigation } ) => ({
-//       title: 'SignUp',
-//       headerBackTitle: null
-//     })
-//   },
-//   LogIn: {
-//     screen: LogIn,
-//     navigationOptions: ( { navigation } ) => ({
-//       title: 'LogIn',
-//       headerBackTitle: null
-//     })
-//   }
-// },{
-//   initialRouteName: 'LogIn',
-// });
-
-
-//
-// export default createBottomTabNavigator({
-//   Home: {
-//     screen: Home,
-//     navigationOptions: {
-//       tabBarLabel: 'Dash',
-//       tabBarIcon: ({tintColor}) => (
-//         <Icon
-//           name="ios-home"
-//           color={tintColor}
-//           size={24}
-//         />
-//       )
-//     }
-//   },
-//   SignUp: {
-//     screen: SignUp,
-//     navigationOptions: {
-//       tabBarLabel: 'SignUp',
-//       tabBarIcon: ({tintColor}) => (
-//         <Icon
-//           name="ios-add"
-//           color={tintColor}
-//           size={24}
-//         />
-//       )
-//     }
-//   },
-//   Settings: {
-//     screen: Settings,
-//     navigationOptions: {
-//       tabBarLabel: 'Settings',
-//       tabBarIcon: ({tintColor}) => (
-//         <Icon
-//           name="ios-settings"
-//           color={tintColor}
-//           size={24}
-//         />
-//       )
-//     }
-//   }
-// },
-// {//router config
-//   initialRouteName: 'Home',
-//   order: ['SignUp','Settings', 'Home'],
-//   //nav options that apply to complete tab navigator
-//   navigationOptions: {
-//     tabBarVisible: true
-//   },
-//   tabBarOptions:{
-//     //activeTintColor supplies "tintColor" var above
-//     activeTintColor:'red',
-//     inactiveTintColor: 'black'
-//   }
-// })
