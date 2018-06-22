@@ -15,10 +15,10 @@ const defaultState = {
 };
 
 class LogIn extends React.Component {
-
   static navigationOptions = {
     title: "Login Layout",
   };
+
   state = defaultState;
 
   onChangeText = (key, value) => {

@@ -10,6 +10,9 @@ import {
 import { Text } from "react-native-elements";
 
 class LinksLayout extends Component {
+  static navigationOptions = {
+    title: "LinksLayout",
+  };
 
   state = {
     someThing: 'some state'

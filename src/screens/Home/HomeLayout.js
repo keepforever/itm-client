@@ -11,6 +11,9 @@ import {
 import { Text } from "react-native-elements";
 
 class HomeLayout extends Component {
+  static navigationOptions = {
+    title: "HomeLayout",
+  };
   state = {
     someThing: "some state"
   };
@@ -35,6 +38,9 @@ export default HomeLayout;
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    alignItems: 'center',
+    justifyContent: 'center',
     flexDirection: "column",
     backgroundColor: "white",
     padding: 10

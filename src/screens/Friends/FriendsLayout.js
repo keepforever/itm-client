@@ -11,6 +11,9 @@ import {
 import { Text } from "react-native-elements";
 
 class FriendsLayout extends Component {
+  static navigationOptions = {
+    title: "FriendsLayout",
+  };
   state = {
     someThing: "some state"
   };
@@ -20,14 +23,14 @@ class FriendsLayout extends Component {
       <View style={styles.container}>
         <View style={styles.container}>
           <Button
-            title="Show me more of the app"
+            title="Back to Home"
             onPress={this._showMoreApp} />
         </View>
       </View>
     );
   }
   _showMoreApp = () => {
-   this.props.navigation.navigate('Login');
+   this.props.navigation.navigate('Home');
  };
 }
 
