@@ -43,7 +43,7 @@ class LogIn extends React.Component {
       // this.setState(defaultState);
       //this.props.history.push('/products');
       console.log('Login Token', token)
-      this.props.navigation.navigate('App')
+      //this.props.navigation.navigate('App')
     } else {
       this.setState({
         errors: {
