@@ -6,11 +6,11 @@ import TabBarIcon from '../components/TabBarIcon';
 import Home from '../screens/Home';
 import Links from '../screens/Links';
 import SettingsScreen from '../screens/Settings';
-import Login from '../screens/Login'
+import Friends from '../screens/Friends'
 
 const HomeStack = createStackNavigator({
   Home: Home,
-  Login: Login
+  Friends: Friends
 });
 
 HomeStack.navigationOptions = {

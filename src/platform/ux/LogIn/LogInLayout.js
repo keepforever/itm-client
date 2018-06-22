@@ -83,7 +83,7 @@ class LogIn extends React.Component {
             secureTextEntry
           />
           <Button title="Login" onPress={this.submit} />
-          <Text style={{ textAlign: 'center' }}>or</Text>
+          <Text style={{ textAlign: 'center' }}>orrr</Text>
           <Button title="Create account" onPress={this.goToSignup} />
         </View>
       </View>

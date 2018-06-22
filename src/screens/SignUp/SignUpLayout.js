@@ -16,6 +16,9 @@ const defaultState = {
 };
 
 class Signup extends Component {
+  static navigationOptions = {
+    title: "SignUp Layout",
+  };
   state = defaultState;
 
   onChangeText = (key, value) => {
@@ -30,7 +33,7 @@ class Signup extends Component {
   getData = async () => {
     console.log('Get Data called!')
     try {
-      let theData = await AsyncStorage.getItem('@itm/token')
+      let theData = await AsyncStorage.getItem('userToken')
       alert(theData)
     } catch(error) {
       console.log(error)
@@ -56,7 +59,7 @@ class Signup extends Component {
       return;
     }
 
-    await AsyncStorage.setItem('@itm/token', response.data.signup.token);
+    await AsyncStorage.setItem('userToken', response.data.signup.token);
     console.log('token: ', response.data.signup.token)
     // this.setState(defaultState);
     //this.props.history.push('/products');
@@ -68,8 +71,18 @@ class Signup extends Component {
     console.log(this.props)
     //this.props.navigation.navigate('LogIn')
     //alert('no functionality yet')
-    this.props.navigation.navigate(userToken ? 'App' : 'Auth');
+    this.props.navigation.navigate('Login');
   };
+
+  clearStorage = async () => {
+    console.log( await AsyncStorage.getAllKeys())
+    await AsyncStorage.clear()
+    console.log( await AsyncStorage.getAllKeys())
+  }
+
+  listStorage = async () => {
+    console.log( await AsyncStorage.getAllKeys())
+  }
 
   render() {
     const { errors, values: { name, email, password } } = this.state;
@@ -95,8 +108,10 @@ class Signup extends Component {
           />
           <Button title="Create account" onPress={this.submit} />
           <Text style={{ textAlign: 'center' }}>or</Text>
-          <Button title="Login" onPress={() => this.goToLoginPage()} />
+          <Button title="Login" onPress={this.goToLoginPage} />
           <Button title="Get Data" onPress={this.getData} />
+          <Button title="CLEAR STORAGE" onPress={this.clearStorage} />
+          <Button title="LIST STORAGE" onPress={this.listStorage} />
         </View>
       </View>
     );

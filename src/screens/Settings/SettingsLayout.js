@@ -29,6 +29,7 @@ export default SettingsScreen;
 const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
+    flex: 1,
     backgroundColor: "white",
     padding: 10
   }

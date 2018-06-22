@@ -10,7 +10,7 @@ import {
 
 import { Text } from "react-native-elements";
 
-class HomeLayout extends Component {
+class FriendsLayout extends Component {
   state = {
     someThing: "some state"
   };
@@ -27,15 +27,16 @@ class HomeLayout extends Component {
     );
   }
   _showMoreApp = () => {
-   this.props.navigation.navigate('Friends');
+   this.props.navigation.navigate('Login');
  };
 }
 
-export default HomeLayout;
+export default FriendsLayout;
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
+    flex: 1,
     backgroundColor: "white",
     padding: 10
   }

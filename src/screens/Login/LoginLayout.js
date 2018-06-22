@@ -15,6 +15,10 @@ const defaultState = {
 };
 
 class LogIn extends React.Component {
+
+  static navigationOptions = {
+    title: "Login Layout",
+  };
   state = defaultState;
 
   onChangeText = (key, value) => {
@@ -39,11 +43,10 @@ class LogIn extends React.Component {
     const { token, error } = response.data.login;
 
     if (token) {
-      await AsyncStorage.setItem('@itm/token', token);
-      // this.setState(defaultState);
-      //this.props.history.push('/products');
+      await AsyncStorage.setItem('userToken', token);
       console.log('Login Token', token)
-      //this.props.navigation.navigate('App')
+      this.props.navigation.navigate('Main');
+
     } else {
       this.setState({
         errors: {
@@ -55,8 +58,12 @@ class LogIn extends React.Component {
   };
 
   goToSignup = () => {
-    alert('this button does not work')
-    //this.props.navigation.navigate('SignUp')
+    //alert('this button does not work')
+    this.props.navigation.navigate('SignUp')
+  };
+  _signInAsync = async () => {
+    await AsyncStorage.setItem('userToken', 'abc');
+    this.props.navigation.navigate('App');
   };
 
   render() {
