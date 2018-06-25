@@ -7,10 +7,12 @@ import Home from '../screens/Home';
 import Links from '../screens/Links';
 import SettingsScreen from '../screens/Settings';
 import Friends from '../screens/Friends'
+import Offer from '../screens/Offer'
 
 const HomeStack = createStackNavigator({
   Home: Home,
-  Friends: Friends
+  Friends: Friends,
+  Offer: Offer
 });
 
 HomeStack.navigationOptions = {

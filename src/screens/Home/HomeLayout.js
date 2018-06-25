@@ -23,7 +23,7 @@ class HomeLayout extends Component {
       <View style={styles.container}>
         <View style={styles.container}>
           <Button
-            title="Show me more of the app"
+            title="Nav to Friends"
             onPress={this._showMoreApp} />
         </View>
       </View>

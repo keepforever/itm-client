@@ -23,18 +23,18 @@ class FriendsLayout extends Component {
       <View style={styles.container}>
         <View style={styles.container}>
           <Button
-            title="Back to Home"
+            title="Nav to Offer"
             onPress={this._showMoreApp} />
         </View>
       </View>
     );
   }
   _showMoreApp = () => {
-   this.props.navigation.navigate('Home');
+   this.props.navigation.navigate('Offer');
  };
 }
 
-export default FriendsLayout;
+export default FriendsLayout
 
 const styles = StyleSheet.create({
   container: {
