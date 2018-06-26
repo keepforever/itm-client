@@ -61,6 +61,7 @@ class Signup extends Component {
 
     await AsyncStorage.setItem('userToken', response.data.signup.token);
     console.log('token: ', response.data.signup.token)
+    this.props.navigation.navigate('AuthLoading');
 
   };
 

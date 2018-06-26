@@ -35,10 +35,18 @@ class Login extends React.Component {
       return;
     }
     this.setState({ isSubmitting: true });
+
+    const { email, password } = this.state.values
+    if(email.length < 1 || password.length < 1) {
+      alert("Please enter creds and try again")
+      this.setState({ isSubmitting: false })
+      return
+    }
+
     const response = await this.props.mutate({
       variables: this.state.values,
     });
-  
+
     const { payload, error } = response.data.login;
     if (payload) {
       console.log('Login Token', payload.token)
@@ -56,12 +64,10 @@ class Login extends React.Component {
   };
 
   goToSignup = () => {
-    //alert('this button does not work')
     this.props.navigation.navigate('SignUp')
   };
 
   render() {
-    //console.log("LOGIN_LAYOUT", this.props)
     const { errors, values: { email, password } } = this.state;
 
     return (

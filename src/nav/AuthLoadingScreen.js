@@ -31,7 +31,7 @@ class AuthLoadingScreen extends Component {
         },
       });
     } catch (err) {
-      console.log("34 CATCH")
+      console.log("AuthLoadingScreen Catch Block Reached with Error: ", "\n", err)
       this.props.navigation.navigate('Auth');
       return;
     }
