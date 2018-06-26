@@ -89,6 +89,8 @@ const createOfferMutation = gql`
   mutation($title: String!, $text: String!) {
     createOffer(title: $title, text: $text){
       id
+      title
+      text
     }
   }
 `
