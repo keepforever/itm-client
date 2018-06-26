@@ -47,10 +47,16 @@ class CreateOfferLayout extends Component {
       });
     } catch(error) {
       console.log(error)
+      return
     }
     console.log('CRE_OFF response', response)
+    this.setState({
+      isSubmitting: false,
+      values: {
+        ...defaultState.values
+      }
+     });
 
-    this.setState({ isSubmitting: false });
   };
 
   onChangeText = (key, value) => {
