@@ -20,18 +20,22 @@ class OfferLayout extends Component {
   state = {
     someThing: "some state"
   };
+  navToCreateOffer = () => {
+   this.props.navigation.navigate('CreateOffer');
+  };
 
   render() {
+    //make sure query resolves before trying to display fetched data
     if(this.props.data.loading) {
-      return <View>Loading!</View>
+      return (<View>Loading!</View>)
     }
-
     if(this.props.data.error) {
       console.log(this.props.data.error)
       return (<View>An Error Occured!</View>)
     }
-
+    ///////////////////////^ House Keeping ^/////////////////////////////
     const { offer } = this.props.data
+    console.log("OFFER LAYOUT offer ", offer)
     return (
       <View style={styles.container}>
         <View style={styles.container}>
@@ -42,6 +46,10 @@ class OfferLayout extends Component {
               <Text>Offer Title: {offer.title}</Text>
               <Text>Offer Text: {offer.text} </Text>
             </View>
+            <Button
+              title="Nav to CreateOffer"
+              onPress={this.navToCreateOffer}
+            />
         </View>
       </View>
     );
@@ -63,7 +71,7 @@ const offerQuery = gql`
 export default graphql(offerQuery,{
   options: {
     variables: {
-      id: "cjitt45hpx98x0a21lizkz0fh"
+      id: "cjiw228ub2vuz0a21xvzphr2z"
     }
   }
 })(OfferLayout)

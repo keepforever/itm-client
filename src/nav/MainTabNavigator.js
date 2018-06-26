@@ -1,6 +1,9 @@
 import React from 'react';
 import { Platform } from 'react-native';
-import { createStackNavigator, createBottomTabNavigator } from 'react-navigation';
+import {
+  createStackNavigator,
+  createBottomTabNavigator
+} from 'react-navigation';
 import TabBarIcon from '../components/TabBarIcon';
 
 import Home from '../screens/Home';
@@ -8,11 +11,13 @@ import Links from '../screens/Links';
 import SettingsScreen from '../screens/Settings';
 import Friends from '../screens/Friends'
 import Offer from '../screens/Offer'
+import CreateOffer from '../screens/CreateOffer'
 
 const HomeStack = createStackNavigator({
   Home: Home,
   Friends: Friends,
-  Offer: Offer
+  Offer: Offer,
+  CreateOffer: CreateOffer
 });
 
 HomeStack.navigationOptions = {

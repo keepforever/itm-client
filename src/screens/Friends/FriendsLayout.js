@@ -17,21 +17,19 @@ class FriendsLayout extends Component {
   state = {
     someThing: "some state"
   };
+  navToOffer = () => {
+   this.props.navigation.navigate('Offer');
+  };
 
   render() {
     return (
       <View style={styles.container}>
-        <View style={styles.container}>
-          <Button
-            title="Nav to Offer"
-            onPress={this._showMoreApp} />
-        </View>
+        <Button
+          title="Nav to Offer"
+          onPress={this.navToOffer} />
       </View>
     );
   }
-  _showMoreApp = () => {
-   this.props.navigation.navigate('Offer');
- };
 }
 
 export default FriendsLayout

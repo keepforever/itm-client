@@ -3,7 +3,7 @@ import { AsyncStorage, Text, Button, View } from 'react-native';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import TextField from './TextField';
+import TextField from '../../components/TextField';
 
 const defaultState = {
   values: {
