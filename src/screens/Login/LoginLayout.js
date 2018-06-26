@@ -34,14 +34,11 @@ class Login extends React.Component {
     if (this.state.isSubmitting) {
       return;
     }
-
     this.setState({ isSubmitting: true });
     const response = await this.props.mutate({
       variables: this.state.values,
     });
-    //console.log("SUBMIT LOGIN")
-    // before adjusting server
-    //const { token, error } = response.data.login;
+  
     const { payload, error } = response.data.login;
     if (payload) {
       console.log('Login Token', payload.token)

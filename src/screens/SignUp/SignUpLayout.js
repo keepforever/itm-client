@@ -61,16 +61,10 @@ class Signup extends Component {
 
     await AsyncStorage.setItem('userToken', response.data.signup.token);
     console.log('token: ', response.data.signup.token)
-    // this.setState(defaultState);
-    //this.props.history.push('/products');
+
   };
 
   goToLoginPage = () => {
-    //this is for a different React Native Navigation Library
-    //this.props.history.push('/login');
-    //console.log(this.props)
-    //this.props.navigation.navigate('LogIn')
-    //alert('no functionality yet')
     this.props.navigation.navigate('Login');
   };
 
