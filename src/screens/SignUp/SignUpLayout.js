@@ -43,6 +43,22 @@ class Signup extends Component {
     if (this.state.isSubmitting) {
       return;
     }
+
+    const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
+
+    isEmailValid = await pattern.test(this.state.values.email)
+
+    if(!isEmailValid) {
+      alert("Please Enter a Valid Email")
+      this.setState({
+        isSubmitting: false,
+        values: {
+          ...defaultState.values
+        }
+      });
+      return
+    }
+
     this.setState({ isSubmitting: true });
     let response;
     try {
