@@ -1,87 +1,61 @@
-import React, { Component } from "react";
-import {
-  View,
-  ScrollView,
-  KeyboardAvoidingView,
-  StyleSheet,
-  Button,
-  TouchableHighlight
-} from "react-native";
-
+import React from 'react';
+import { Text, View, Button, FlatList } from 'react-native';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 
-import { Text } from "react-native-elements";
-
-class OfferLayout extends Component {
+class OffersLayout extends React.Component {
   static navigationOptions = {
     title: "OfferLayout",
   };
-  state = {
-    someThing: "some state"
-  };
+
   navToCreateOffer = () => {
    this.props.navigation.navigate('CreateOffer');
   };
 
   render() {
-    //make sure query resolves before trying to display fetched data
-    if(this.props.data.loading) {
-      return (<View>Loading!</View>)
+    const { data: { offers }, loading, history } = this.props
+    //console.log('OFFERLAYOUT props: ', this.props)
+
+    if (loading || !offers) {
+      return null;
     }
-    if(this.props.data.error) {
-      console.log(this.props.data.error)
-      return (<View>An Error Occured!</View>)
-    }
-    ///////////////////////^ House Keeping ^/////////////////////////////
-    const { offer } = this.props.data
-    console.log("OFFER LAYOUT offer ", offer)
+
+    const offersWithKey = offers.map(offer => ({
+      ...offer,
+      key: offer.id,
+    }));
+
+    console.log(offersWithKey[0]);
+
     return (
-      <View style={styles.container}>
-        <View style={styles.container}>
-          <Button
-            title="Back to Home"
-            onPress={this._showMoreApp} />
+      <View>
+        <Button
+          title="Nav to CreateOffer"
+          onPress={this.navToCreateOffer}
+        />
+        <Text style={{ marginTop: 50 }}>this is the offers page</Text>
+        <FlatList
+          data={offersWithKey}
+          renderItem={({ item }) => (
             <View>
-              <Text>Offer Title: {offer.title}</Text>
-              <Text>Offer Text: {offer.text} </Text>
+              <Text>{item.title}</Text>
+              <Text>{item.text}</Text>
             </View>
-            <Button
-              title="Nav to CreateOffer"
-              onPress={this.navToCreateOffer}
-            />
-        </View>
+          )}
+        />
       </View>
     );
   }
-  _showMoreApp = () => {
-   this.props.navigation.navigate('Home');
- };
-}
+};
 
-const offerQuery = gql`
-  query($id: ID!) {
-    offer(id: $id) {
+const offersQuery = gql`
+  {
+    offers {
+      id
       text
       title
     }
   }
 `;
 
-export default graphql(offerQuery,{
-  options: {
-    variables: {
-      id: "cjiw228ub2vuz0a21xvzphr2z"
-    }
-  }
-})(OfferLayout)
-
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "column",
-    flex: 1,
-    backgroundColor: "white",
-    padding: 10
-  }
-});
+export default graphql(offersQuery)(OffersLayout);
