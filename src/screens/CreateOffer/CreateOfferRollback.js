@@ -13,9 +13,7 @@ import TextField from '../../components/TextField';
 // GraphQL Imports
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
-//Q's & M's
 import { OFFERS_QUERY } from '../../graphql/queries/OFFERS_QUERY';
-import { CREATE_OFFER } from '../../graphql/mutations/CREATE_OFFER';
 
 const defaultState = {
   values: {
@@ -51,11 +49,11 @@ class CreateOfferLayout extends Component {
         update: (store, { data: { createOffer } }) => {
           //console.log("IN-UPDATE: ", createOffer)
           // Read the data from our cache for this query.
-          const data = store.readQuery({ query: OFFERS_QUERY });
+          const data = store.readQuery({ query: offersQuery });
           // Add our comment from the mutation to the end.
           data.offers.push(createOffer);
           // Write our data back to the cache.
-          store.writeQuery({ query: OFFERS_QUERY, data });
+          store.writeQuery({ query: offersQuery, data });
         },
       });
     } catch(error) {
@@ -126,31 +124,31 @@ class CreateOfferLayout extends Component {
   }
 }
 
-// const createOfferMutation = gql`
-//   mutation($title: String!, $text: String!) {
-//     createOffer(title: $title, text: $text){
-//       id
-//       title
-//       text
-//     }
-//   }
-// `
-// const offersQuery = gql`
-//   {
-//     offers {
-//       id
-//       text
-//       title
-//     }
-//   }
-// `;
+const createOfferMutation = gql`
+  mutation($title: String!, $text: String!) {
+    createOffer(title: $title, text: $text){
+      id
+      title
+      text
+    }
+  }
+`
+const offersQuery = gql`
+  {
+    offers {
+      id
+      text
+      title
+    }
+  }
+`;
 
 export default compose(
-  graphql(CREATE_OFFER, {
+  graphql(createOfferMutation, {
     options: { fetchPolicy: "cache-and-network" },
     name: "createOffer"
   }),
-  graphql(OFFERS_QUERY, {
+  graphql(offersQuery, {
     options: { fetchPolicy: "cache-and-network" },
     name: "listOffers"
   }),
