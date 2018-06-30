@@ -4,6 +4,7 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import { OFFERS_QUERY } from '../../graphql/queries/OFFERS_QUERY';
 import OfferRow from '../../components/OfferRow'
+import { connect } from 'react-redux'
 
 class OffersLayout extends React.Component {
   static navigationOptions = {
@@ -15,8 +16,9 @@ class OffersLayout extends React.Component {
   };
 
   render() {
-    const { data: { offers }, loading, history } = this.props
+    const { data: { offers }, loading, history, userId } = this.props
     //console.log('OFFERLAYOUT props: ', this.props)
+    console.log("OfferLayout, this.props.userId: ", userId )
 
     if (loading || !offers) {
       return null;
@@ -35,8 +37,10 @@ class OffersLayout extends React.Component {
           keyExtractor={item => item.id}
           data={offers}
           renderItem={({ item }) => (
-            <OfferRow item={item} />
-
+            <OfferRow
+              offerAuthorId={item.author.id} 
+              userId={userId}
+              item={item} />
           )}
         />
       </View>
@@ -44,9 +48,13 @@ class OffersLayout extends React.Component {
   }
 };
 
-export default graphql(OFFERS_QUERY)(OffersLayout);
+const mapStateToProps = state => {
+    return {
+        userId: state.user.userId
+    };
+}
 
-
+export default connect(mapStateToProps)(graphql(OFFERS_QUERY)(OffersLayout));
 
 // const offersQuery = gql`
 //   {

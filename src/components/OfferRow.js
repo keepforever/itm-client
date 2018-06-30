@@ -2,6 +2,15 @@ import React from 'react';
 import {Image, Text, View, StyleSheet } from 'react-native';
 
 const OfferRow = ( props ) => {
+  const {item: {title, text, id}, userId, offerAuthorId } = props
+  //compare userId and item.id
+  // console.log("userId: ", userId)
+  // console.log("id:     ", id)
+  let isOfferCreator = false;
+  if(userId === offerAuthorId) {
+    isOfferCreator = true
+  }
+  // console.log("isOfferCreator, ", isOfferCreator)
 
   return (
     <View style={styles.row}>
@@ -12,6 +21,7 @@ const OfferRow = ( props ) => {
       <View style={styles.right}>
         <Text style={styles.text}>{props.item.text}</Text>
         <Text style={styles.title}>{props.item.title}</Text>
+        {isOfferCreator ? <Text style={styles.isCreator}>IS CREATOR</Text> : null}
       </View>
   </View>
   );
@@ -21,8 +31,8 @@ export default OfferRow;
 
 const styles = StyleSheet.create({
   images: {
-    height: 60,
-    width: 60,
+    height: 100,
+    width: 100,
   },
   row: {
     display: 'flex',
@@ -42,4 +52,7 @@ const styles = StyleSheet.create({
   text: {
     fontSize: 7,
   },
+  isCreator: {
+    color: 'red'
+  }
 });

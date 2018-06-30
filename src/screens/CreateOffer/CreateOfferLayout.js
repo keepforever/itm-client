@@ -9,6 +9,7 @@ import {
   Button,
   TouchableHighlight
 } from "react-native";
+import OfferRow from '../../components/OfferRow';
 import TextField from '../../components/TextField';
 // GraphQL Imports
 import { graphql, compose } from 'react-apollo';
@@ -102,11 +103,13 @@ class CreateOfferLayout extends Component {
         <Text>Create Offer Layout Welcomes You!</Text>
         <Button title="Nav Home" onPress={this.navToHome} />
         <TextField
+          kolor="black"
           value={title}
           name="title"
           onChangeText={this.onChangeText}
         />
         <TextField
+          kolor="black"
           value={text}
           name="text"
           onChangeText={this.onChangeText}

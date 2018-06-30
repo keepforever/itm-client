@@ -8,6 +8,9 @@ import {
   AsyncStorage,
   ActivityIndicator,
   View } from 'react-native';
+import { addUser } from '../store/actions/user';
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 
 class AuthLoadingScreen extends Component {
   constructor() {
@@ -33,6 +36,8 @@ class AuthLoadingScreen extends Component {
     }
     const { refreshToken: {token: newToken, userId} } = response.data;
     await AsyncStorage.setItem('userToken', newToken);
+    console.log("AuthLoadingScreen, userId: ", userId)
+    this.props.addUserAction(userId)
     // This will switch to the App screen or Auth screen and this loading
     // screen will be unmounted and thrown away.
     this.props.navigation.navigate(userToken ? 'Main' : 'Auth');
@@ -58,7 +63,11 @@ const refreshTokenMutation = gql`
   }
 `;
 
-export default graphql(refreshTokenMutation)(AuthLoadingScreen)
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({addUserAction: addUser}, dispatch)
+}
+
+export default connect(null, mapDispatchToProps)(graphql(refreshTokenMutation)(AuthLoadingScreen))
 
 const styles = StyleSheet.create({
   container: {

@@ -6,6 +6,9 @@ export const OFFERS_QUERY = gql`
       id
       text
       title
+      author{
+        id
+      }
     }
   }
 `;

@@ -2,12 +2,19 @@ import React from 'react';
 import { TextInput, StyleSheet } from 'react-native';
 
 const styles = StyleSheet.create({
-  field: {
+  fieldWhite: {
     borderBottomWidth: 1,
     fontSize: 20,
     marginBottom: 15,
     height: 35,
     color: 'white'
+  },
+  fieldBlack: {
+    borderBottomWidth: 1,
+    fontSize: 20,
+    marginBottom: 15,
+    height: 35,
+    color: 'black'
   },
 });
 
@@ -18,14 +25,18 @@ export default class TextField extends React.PureComponent {
   };
 
   render() {
-    const { value, secureTextEntry, name } = this.props;
+    const { value, secureTextEntry, name, kolor } = this.props;
+    let isBlackText
+    if(kolor === 'black') {
+      isBlackText = true
+    }
 
     return (
       <TextInput
-        placeholderTextColor="white"
+        placeholderTextColor="grey"
         onChangeText={this.onChangeText}
         value={value}
-        style={styles.field}
+        style={isBlackText ? styles.fieldBlack : styles.fieldWhite}
         placeholder={name}
         autoCapitalize="none"
         secureTextEntry={!!secureTextEntry}
