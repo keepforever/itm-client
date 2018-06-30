@@ -1,9 +1,18 @@
 import React, {Component} from 'react';
-import { AsyncStorage, Text, Button, View } from 'react-native';
+import {
+  ImageBackground, StyleSheet,
+  AsyncStorage, Text,
+  View, KeyboardAvoidingView,
+} from 'react-native';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import {Button} from 'react-native-elements'
 
-import TextField from './TextField';
+import TextField from '../../components/TextField';
+import wallpaper from  '../../../assets/images/Wallpaper_StormSeeker.jpg';
+
+
+
 
 const defaultState = {
   values: {
@@ -98,33 +107,68 @@ class Signup extends Component {
   render() {
     const { errors, values: { name, email, password } } = this.state;
 
+    if(!wallpaper){
+      return null
+    }
+
     return (
-      <View
-        style={{
-          flex: 1,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
-      >
-        <View style={{ width: 200 }}>
-          <TextField value={name} name="name" onChangeText={this.onChangeText} />
-          {errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
-          <TextField value={email} name="email" onChangeText={this.onChangeText} />
-          <TextField
-            value={password}
-            name="password"
-            onChangeText={this.onChangeText}
-            secureTextEntry
-          />
-          <Button title="Create account" onPress={this.submit} />
-          <Text style={{ textAlign: 'center' }}>or</Text>
-          <Button title="Login" onPress={this.goToLoginPage} />
-          <Button title="Get Data" onPress={this.getData} />
-          <Button title="CLEAR STORAGE" onPress={this.clearStorage} />
-          <Button title="LIST STORAGE" onPress={this.listStorage} />
-        </View>
-      </View>
+      <ImageBackground
+        source={wallpaper}
+        style={{width: '100%', height: '100%'}}>
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior="padding"
+          enabled
+        >
+            <View style={{ width: 200 }}>
+            <Text style={{color: 'white'}}> for testing, create accounts like:  </Text>
+            <Text style={{color: 'white'}}>email: amy@amy.com</Text>
+            <Text style={{color: 'white'}}>password: amy </Text>
+            <Text style={{color: 'white'}} >(replace "amy" with anything you like)</Text>
+            <TextField value={name} name="name" onChangeText={this.onChangeText} />
+            {errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
+            <TextField value={email} name="email" onChangeText={this.onChangeText} />
+            <TextField
+              value={password}
+              name="password"
+              onChangeText={this.onChangeText}
+              secureTextEntry
+            />
+            <Button
+              color="red"
+              buttonStyle={{
+                  backgroundColor: "black",
+                  height: 50,
+                  borderColor: "red",
+                  borderWidth: 1,
+                  borderRadius: 10
+                }}
+              raised={true}
+              title="Create account"
+              onPress={this.submit}
+            />
+            <Text style={{ textAlign: 'center', color: 'white', fontSize: 30 }}>
+              or
+            </Text>
+            <Button
+              color="red"
+              buttonStyle={{
+                  backgroundColor: "black",
+                  height: 50,
+                  borderColor: "red",
+                  borderWidth: 1,
+                  borderRadius: 10
+                }}
+              raised={true}
+              title="Login Instead"
+              onPress={this.goToLoginPage}
+            />
+            {/* <Button title="Get Data" onPress={this.getData} />
+            <Button title="CLEAR STORAGE" onPress={this.clearStorage} />
+            <Button title="LIST STORAGE" onPress={this.listStorage} /> */}
+          </View>
+        </KeyboardAvoidingView>
+      </ImageBackground>
     );
   }
 }
@@ -138,3 +182,20 @@ const signUpMutation = gql`
 `;
 
 export default graphql(signUpMutation)(Signup);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  button: {
+    backgroundColor: "black",
+    width: '100%',
+    height: 50,
+    borderColor: "red",
+    borderWidth: 1,
+    borderRadius: 10
+  },
+})

@@ -1,7 +1,13 @@
 import React from 'react';
-import { AsyncStorage, Text, Button, View } from 'react-native';
+import {
+  KeyboardAvoidingView, StyleSheet,
+  AsyncStorage, Text, View,
+  ImageBackground,
+} from 'react-native';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
+import wallpaper from  '../../../assets/images/Wallpaper_StormSeeker.jpg';
+import {Button} from 'react-native-elements'
 
 import TextField from '../../components/TextField';
 
@@ -71,29 +77,50 @@ class Login extends React.Component {
     const { errors, values: { email, password } } = this.state;
 
     return (
-      <View
-        style={{
-          flex: 1,
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}
+      <ImageBackground
+        source={wallpaper}
+        style={{width: '100%', height: '100%'}}
       >
-        <View style={{ width: 200 }}>
-          {errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
-          <TextField value={email} name="email" onChangeText={this.onChangeText} />
-          {errors.password && <Text style={{ color: 'red' }}>{errors.password}</Text>}
-          <TextField
-            value={password}
-            name="password"
-            onChangeText={this.onChangeText}
-            secureTextEntry
-          />
-          <Button title="Login" onPress={this.submit} />
-          <Text style={{ textAlign: 'center' }}>or</Text>
-          <Button title="Create account" onPress={this.goToSignup} />
-        </View>
-      </View>
+        <KeyboardAvoidingView
+          style={styles.container}
+        >
+          <View style={{ width: 200 }}>
+            {errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
+            <TextField value={email} name="email" onChangeText={this.onChangeText} />
+            {errors.password && <Text style={{ color: 'red' }}>{errors.password}</Text>}
+            <TextField
+              value={password}
+              name="password"
+              onChangeText={this.onChangeText}
+              secureTextEntry
+            />
+            <Button
+              buttonStyle={{
+                  backgroundColor: "black",
+                  height: 50,
+                  borderColor: "red",
+                  borderWidth: 1,
+                  borderRadius: 10
+                }}
+              raised={true}
+              color="red"
+              title="Login"
+              onPress={this.submit}
+            />
+            <Text style={{ textAlign: 'center' }}>or</Text>
+            <Button
+              buttonStyle={{
+                  backgroundColor: "black",
+                  height: 50,
+                  borderColor: "red",
+                  borderWidth: 1,
+                  borderRadius: 10
+                }}
+              raised={true}
+              color="red" title="Create account" onPress={this.goToSignup} />
+          </View>
+        </KeyboardAvoidingView>
+      </ImageBackground>
     );
   }
 }
@@ -116,3 +143,12 @@ const loginMutation = gql`
 `;
 
 export default graphql(loginMutation)(Login);
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center',
+  }
+})

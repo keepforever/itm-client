@@ -17,7 +17,7 @@ class SettingsScreen extends Component {
   }
 
   _logOutAsync = async () => {
-    alert("You are being signed out, Bitch!")
+    alert("You have been signed out. Longin again to resume.")
     console.log( await AsyncStorage.getAllKeys())
     await AsyncStorage.clear()
     console.log( await AsyncStorage.getAllKeys())
@@ -31,7 +31,7 @@ class SettingsScreen extends Component {
         <Text h3>
           SettingsLayout
           <Button
-            title="Loga' Dis' Muhfaka"
+            title="Press Here to Logout"
             onPress={this._logOutAsync}
           />
         </Text>

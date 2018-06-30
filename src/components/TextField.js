@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginBottom: 15,
     height: 35,
+    color: 'white'
   },
 });
 
@@ -21,6 +22,7 @@ export default class TextField extends React.PureComponent {
 
     return (
       <TextInput
+        placeholderTextColor="white"
         onChangeText={this.onChangeText}
         value={value}
         style={styles.field}
