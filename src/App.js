@@ -6,10 +6,15 @@ import { createUploadLink } from 'apollo-upload-client';
 //To pass Auth token in Header
 import { AsyncStorage } from "react-native";
 import { setContext } from 'apollo-link-context';
-import { TOKEN_KEY } from './appConstants'
+import { TOKEN_KEY } from './appConstants';
+//For Redux
+import { Provider } from 'react-redux';
+import { createStore } from 'redux';
+import rootReducer from './store/reducers';
 //locals
 import Routes from "./platform/routes";
 
+//For Apollo
 const authLink = setContext(async (_, { headers }) => {
   const token = await AsyncStorage.getItem(TOKEN_KEY);
   return {
@@ -22,17 +27,23 @@ const authLink = setContext(async (_, { headers }) => {
 
 const client = new ApolloClient({
   link: authLink.concat(createUploadLink({
-    uri: 'https://itm-adv-server-hylulxnnwo.now.sh' })
+    uri: 'https://itm-adv-server-rtizaympna.now.sh' })
   ),
   cache: new InMemoryCache(),
 });
 
-console.log("Client: ", client.link.request)
+console.log("src/App.js, Client: ", client.link.request)
 
+//For Redux
+const store = createStore(rootReducer);
+
+// Main Export
 const App = () => (
-  <ApolloProvider client={client}>
-    <Routes />
-  </ApolloProvider>
+  <Provider store={store}>
+    <ApolloProvider client={client}>
+      <Routes />
+    </ApolloProvider>
+  </Provider>
 );
 
 export default App;

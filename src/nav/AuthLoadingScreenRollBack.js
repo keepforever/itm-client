@@ -25,14 +25,18 @@ class AuthLoadingScreen extends Component {
     }
     let response;
     try {
-      response = await this.props.mutate();
+      response = await this.props.mutate({
+        variables: {
+          token: userToken,
+        },
+      });
     } catch (err) {
       console.log("AuthLoadingScreen Catch Block Reached with Error: ", "\n", err)
       this.props.navigation.navigate('Auth');
       return;
     }
-    const { refreshToken: {token: newToken, userId} } = response.data;
-    await AsyncStorage.setItem('userToken', newToken);
+    const { refreshToken } = response.data;
+    await AsyncStorage.setItem('userToken', refreshToken);
     // This will switch to the App screen or Auth screen and this loading
     // screen will be unmounted and thrown away.
     this.props.navigation.navigate(userToken ? 'Main' : 'Auth');
@@ -50,11 +54,8 @@ class AuthLoadingScreen extends Component {
 }
 
 const refreshTokenMutation = gql`
-  mutation {
-    refreshToken {
-      token
-      userId
-    }
+  mutation($token: String!) {
+    refreshToken(token: $token)
   }
 `;
 
@@ -68,10 +69,3 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
 });
-
-//
-// const refreshTokenMutation = gql`
-//   mutation($token: String!) {
-//     refreshToken(token: $token)
-//   }
-// `;
