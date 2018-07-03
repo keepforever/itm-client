@@ -13,13 +13,15 @@ import Friends from '../screens/Friends'
 import Offer from '../screens/Offer'
 import CreateOffer from '../screens/CreateOffer'
 import SpecificOffer from '../screens/SpecificOffer'
+import EditOffer from '../screens/EditOffer'
 
 const HomeStack = createStackNavigator({
   Home: Home,
   Friends: Friends,
   Offer: Offer,
   CreateOffer: CreateOffer,
-  SpecificOffer: SpecificOffer
+  SpecificOffer: SpecificOffer,
+  EditOffer: EditOffer
 });
 
 HomeStack.navigationOptions = {

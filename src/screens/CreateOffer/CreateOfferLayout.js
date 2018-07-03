@@ -100,7 +100,6 @@ class CreateOfferLayout extends Component {
 
     return (
       <View style={styles.container}>
-        <Text>Create Offer Layout Welcomes You!</Text>
         <Button title="Nav Home" onPress={this.navToHome} />
         <TextField
           kolor="black"

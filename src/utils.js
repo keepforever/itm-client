@@ -1,3 +1,16 @@
+//helper function to display console logs with more clairity
+export const clearLog = (title, varToLog) => {
+  console.log(`
+
+    ############# ${title} #############
+
+  `, varToLog, `
+
+    ###################################################
+
+  `)
+}
+
 // helper functions to distribute state immutably and clean up reducers.
 export const updateObject = (oldObject, updatedProperties) => {
         return {

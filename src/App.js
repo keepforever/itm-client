@@ -13,7 +13,8 @@ import { createStore } from 'redux';
 import rootReducer from './store/reducers';
 //locals
 import Routes from "./platform/routes";
-
+//utils
+import {clearLog} from './utils';
 //For Apollo
 const authLink = setContext(async (_, { headers }) => {
   const token = await AsyncStorage.getItem(TOKEN_KEY);
@@ -32,7 +33,7 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
-console.log("src/App.js, Client: ", client.link.request)
+clearLog("src/App.js, Client: ", client.link.request)
 
 //For Redux
 const store = createStore(rootReducer);

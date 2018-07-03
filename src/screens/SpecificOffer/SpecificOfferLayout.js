@@ -13,8 +13,8 @@ class SpecificOfferLayout extends React.Component {
     title: "SpecOffLayout",
   };
 
-  navToOffer = () => {
-   this.props.navigation.navigate('Offer');
+  navToEditOffer = () => {
+   this.props.navigation.navigate('EditOffer');
   };
 
   // deleteOffer = (id) => {
@@ -41,9 +41,8 @@ class SpecificOfferLayout extends React.Component {
     return (
       <View style={styles.container} >
         <Button
-          title="Nav to Offers"
-          onPress={this.navToOffer}
-        />
+          title="Press Edit This Offer"
+          onPress={() => this.navToEditOffer()}/>
         <Text style={styles.texTag}>Specific-Offer:</Text>
         <Text style={styles.texTag}>ID: {id}</Text>
         <Text style={styles.texTag}>TI: {title}</Text>

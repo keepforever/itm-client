@@ -11,6 +11,7 @@ import {
 import { addUser } from '../store/actions/user';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { clearLog } from '../utils'
 
 class AuthLoadingScreen extends Component {
   constructor() {
@@ -36,7 +37,7 @@ class AuthLoadingScreen extends Component {
     }
     const { refreshToken: {token: newToken, userId} } = response.data;
     await AsyncStorage.setItem('userToken', newToken);
-    console.log("AuthLoadingScreen, userId: ", userId)
+    clearLog("AuthLoadingScreen, userId: ", userId)
     this.props.addUserAction(userId)
     // This will switch to the App screen or Auth screen and this loading
     // screen will be unmounted and thrown away.
@@ -68,6 +69,9 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(null, mapDispatchToProps)(graphql(refreshTokenMutation)(AuthLoadingScreen))
+
+// All the marbles
+//export default connect(null, mapDispatchToProps)(compose(graphql(refreshTokenMutation))((AuthLoadingScreen)))
 
 const styles = StyleSheet.create({
   container: {

@@ -51,8 +51,10 @@ class OffersLayout extends React.Component {
       return null;
     }
     //console.log('OFFER_LAYOUT, offers[0]:', offers[0]);
-    console.log('OFFER_LAYOUT, specificOffer from state-to-props: ', specificOffer)
-
+    console.log(`
+      ######### OFFER_LAYOUT ###########
+      
+       specificOffer from state-to-props: `, specificOffer)
     return (
       <View style={styles.container} >
         <Button
