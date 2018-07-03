@@ -129,6 +129,29 @@ class CreateOfferLayout extends Component {
   }
 }
 
+export default compose(
+  graphql(CREATE_OFFER, {
+    options: { fetchPolicy: "cache-and-network" },
+    name: "createOffer"
+  }),
+  graphql(OFFERS_QUERY, {
+    options: { fetchPolicy: "cache-and-network" },
+    name: "listOffers"
+  }),
+)(CreateOfferLayout);
+
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "column",
+    flex: 1,
+    backgroundColor: "white",
+    padding: 10,
+    marginBottom: 5
+  }
+});
+
+
 // const createOfferMutation = gql`
 //   mutation($title: String!, $text: String!) {
 //     createOffer(title: $title, text: $text){
@@ -147,24 +170,3 @@ class CreateOfferLayout extends Component {
 //     }
 //   }
 // `;
-
-export default compose(
-  graphql(CREATE_OFFER, {
-    options: { fetchPolicy: "cache-and-network" },
-    name: "createOffer"
-  }),
-  graphql(OFFERS_QUERY, {
-    options: { fetchPolicy: "cache-and-network" },
-    name: "listOffers"
-  }),
-)(CreateOfferLayout);
-
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "column",
-    flex: 1,
-    backgroundColor: "white",
-    padding: 10
-  }
-});

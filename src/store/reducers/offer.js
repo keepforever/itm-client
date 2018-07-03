@@ -3,7 +3,15 @@ import { updateObject } from '../../utils';
 
 const initialState = {
     offers: [],
+    specificOffer:{}
 };
+
+const setSpecificOffer = (state, action) => {
+  console.log("setSpecificOffer from offer.js-reducer")
+  return updateObject(state, {
+    specificOffer: action.specificOffer
+  })
+}
 
 // const purchaseInit = (state, action) => {
 //     return updateObject(state, {purchased: false})
@@ -21,7 +29,8 @@ const initialState = {
 // note: we always have a "type" property on any actions passed to reducer
 const reducer = (state = initialState, action) => {
     switch (action.type) {
-        default: return state;
+      case actionTypes.SET_SPECIFIC_OFFER : return setSpecificOffer(state, action)
+      default: return state;
     }
 }
 

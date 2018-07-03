@@ -1,4 +1,5 @@
 export const ADD_USER = 'ADD_USER';
+export const SET_SPECIFIC_OFFER = 'SET_SPECIFIC_OFFER'
 
 
  

@@ -12,12 +12,14 @@ import SettingsScreen from '../screens/Settings';
 import Friends from '../screens/Friends'
 import Offer from '../screens/Offer'
 import CreateOffer from '../screens/CreateOffer'
+import SpecificOffer from '../screens/SpecificOffer'
 
 const HomeStack = createStackNavigator({
   Home: Home,
   Friends: Friends,
   Offer: Offer,
-  CreateOffer: CreateOffer
+  CreateOffer: CreateOffer,
+  SpecificOffer: SpecificOffer
 });
 
 HomeStack.navigationOptions = {
