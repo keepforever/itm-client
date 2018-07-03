@@ -15,8 +15,12 @@ class OffersLayout extends React.Component {
    this.props.navigation.navigate('CreateOffer');
   };
 
-  deleteOffer = (offId) => {
-    console.log("deleteOffer arg, ", offId)
+  deleteOffer = (id) => {
+    console.log("deleteOffer arg, ", id)
+  }
+
+  editOffer = (id) => {
+    console.log("editOffer arg", id)
   }
 
   render() {
@@ -45,7 +49,8 @@ class OffersLayout extends React.Component {
               offerAuthorId={item.author.id}
               userId={userId}
               item={item}
-              deleteThisOffer={this.deleteOffer}
+              edit={this.editOffer}
+              delete={this.deleteOffer}
             />
           )}
         />

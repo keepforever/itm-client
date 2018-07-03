@@ -18,14 +18,12 @@ const OfferRow = ( props ) => {
   if (isOfferCreator) {
     editDeleteButtons = (
       <View style={{flexDirection: 'row'}}>
-        <Button
-          title="Delete"
-          onPress={ id => props.deleteThisOffer(id)}
-        />
-        <Button
-          title="Edit"
-          onPress={console.log("OFFER_ROW, item.id", id)}
-        />
+        <Text>
+          Work please
+        </Text>
+        <Button title="Balls" onPress={() => console.log(id)} />
+        <Button title="Edit" onPress={() => props.edit(id)} />
+        <Button title="Del" onPress={() => props.delete(id)} />
       </View>
     )
   }
@@ -40,6 +38,7 @@ const OfferRow = ( props ) => {
         <Text style={styles.text}>{props.item.text}</Text>
         <Text style={styles.title}>{props.item.title}</Text>
         {isOfferCreator ? <Text style={styles.isCreator}>IS CREATOR</Text> : null}
+        {editDeleteButtons}
       </View>
   </View>
   );
