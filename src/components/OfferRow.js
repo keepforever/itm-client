@@ -1,5 +1,8 @@
 import React from 'react';
-import {Image, Text, View, StyleSheet } from 'react-native';
+import {
+  Image, Text, View, StyleSheet,
+  Button,
+ } from 'react-native';
 
 const OfferRow = ( props ) => {
   const {item: {title, text, id}, userId, offerAuthorId } = props
@@ -11,6 +14,21 @@ const OfferRow = ( props ) => {
     isOfferCreator = true
   }
   // console.log("isOfferCreator, ", isOfferCreator)
+  let editDeleteButtons = null;
+  if (isOfferCreator) {
+    editDeleteButtons = (
+      <View style={{flexDirection: 'row'}}>
+        <Button
+          title="Delete"
+          onPress={ id => props.deleteThisOffer(id)}
+        />
+        <Button
+          title="Edit"
+          onPress={console.log("OFFER_ROW, item.id", id)}
+        />
+      </View>
+    )
+  }
 
   return (
     <View style={styles.row}>
