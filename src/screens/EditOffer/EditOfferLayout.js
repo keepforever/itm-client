@@ -59,13 +59,16 @@ class EditOfferLayout extends Component {
           text,
           title,
         },
-        update: (store, { data: { updateOffer } }) => {
-          // note, 'updateOffer' is named as such due to that being the
-          // name of the mutation the database knows and responds with.
-          const data = store.readQuery({ query: OFFERS_QUERY });
-          data.offers = data.offers.map(o => (o.id === updateOffer.id ? updateOffer : o));
-          store.writeQuery({ query: OFFERS_QUERY, data });
-        },
+        // Note, adding filter vars to OFFERS_QUERY breaks update by causing
+        // data.offers to come back  undefined.
+        // update: (store, { data: { updateOffer } }) => {
+        //   // note, 'updateOffer' is named as such due to that being the
+        //   // name of the mutation the database knows and responds with.
+        //   const data = store.readQuery({ query: OFFERS_QUERY });
+        //   clearLog(' DATA ', data)
+        //   data.offers = data.offers.map(o => (o.id === updateOffer.id ? updateOffer : o));
+        //   store.writeQuery({ query: OFFERS_QUERY, data });
+        // },
       });
     } catch (err) {
       console.log('there was an error');

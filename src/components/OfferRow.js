@@ -4,9 +4,12 @@ import {
   Button, TouchableHighlight,
  } from 'react-native';
 
+ import { clearLog } from '../utils'
+
 const OfferRow = ( props ) => {
   const {item: {title, text, id}, userId, offerAuthorId, showButtons, viewThisOffer } = props
-
+  // clearLog('OFFER_ROW id', id)
+  // clearLog('OFFER_ROW userId', userId)
   let editDeleteButtons = null;
   if (showButtons) {
     editDeleteButtons = (
