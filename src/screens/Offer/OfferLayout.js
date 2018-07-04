@@ -1,5 +1,8 @@
 import React from 'react';
-import { Image, Text, View, Button, FlatList, StyleSheet } from 'react-native';
+import {
+  Image, Text, View, Button,
+  FlatList, StyleSheet, ActivityIndicator
+} from 'react-native';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
 import { OFFERS_QUERY } from '../../graphql/queries/OFFERS_QUERY';
@@ -11,6 +14,51 @@ import { bindActionCreators } from 'redux';
 import { selectSpecificOffer } from '../../store/actions/offer';
 import { clearLog } from '../../utils';
 import TextField from '../../components/TextField';
+
+const styles = StyleSheet.create({
+  container: {
+    flexDirection: "column",
+    flex: 1,
+    backgroundColor: "white",
+    padding: 10,
+    marginBottom: 0.25
+  },
+  sortRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  sortButton: {
+    flex: 1,
+  },
+  searchBar: {
+    margin: 10,
+  },
+});
+
+
+const offersQuery = gql`
+  query($after: String, $orderBy: OfferOrderByInput, $where: OfferWhereInput) {
+    offersConnection(after: $after, first: 5, orderBy: $orderBy, where: $where) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          id
+          title
+          text
+          author {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`;
 
 const defaultState = {
   values: {
@@ -37,15 +85,17 @@ class OffersLayout extends React.Component {
   };
 
   deleteOffer = (id) => {
+    const { variables } = this.props.listOffers
+    clearLog("variables 111", variables)
     clearLog("deleteOffer arg, ", id)
     this.props.deleteOffer({
       variables: {
         id
       },
       update: (store) => {
-        const data = store.readQuery({ query: OFFERS_QUERY });
-        data.offers = data.offers.filter(o => o.id !== id);
-        store.writeQuery({ query: OFFERS_QUERY, data });
+        const data = store.readQuery( { query: offersQuery, variables } );
+        data.offersConnection.edges = data.offersConnection.edges.filter(o => o.node.id !== id);
+        store.writeQuery({ query: offersQuery, data, variables });
       }
     })
   }
@@ -77,14 +127,16 @@ class OffersLayout extends React.Component {
     // by text or title
 
     const {
-      listOffers: { offers, refetch, variables },
+      listOffers: { offersConnection, refetch, variables, fetchMore },
       loading, history, userId, specificOffer
     } = this.props
     const { values: { search } } = this.state;
 
-    if (loading || !offers) {
+    if (loading || !offersConnection) {
       return null;
     }
+    //clearLog("offersConnection", offersConnection)
+    clearLog("offersConnection.pageInfo", offersConnection.pageInfo)
 
     clearLog('specificOffer from state-to-props: ', specificOffer)
     return (
@@ -111,8 +163,8 @@ class OffersLayout extends React.Component {
         />
         <Text style={{ marginTop: 10, fontSize: 20 }}>Offers:</Text>
         <FlatList
-          keyExtractor={item => item.id}
-          data={offers.map(x => ({ ...x, showButtons: userId === x.author.id }))}
+          keyExtractor={item => (item.id + (Math.random() * 100000).toString())}
+          data={offersConnection.edges.map(x => ({ ...x.node, showButtons: userId === x.node.author.id }))}
           renderItem={({ item }) => (
             <OfferRow
               offerAuthorId={item.author.id}
@@ -124,6 +176,36 @@ class OffersLayout extends React.Component {
               viewThisOffer={this.navToSpecificOffer}
             />
           )}
+          onEndReached={() => {
+            console.log(offersConnection.pageInfo);
+            if (!loading && offersConnection.pageInfo.hasNextPage) {
+              fetchMore({
+                variables: {
+                  after: offersConnection.pageInfo.endCursor,
+                },
+                updateQuery: (previousResult, { fetchMoreResult }) => {
+                  clearLog('previousResult', previousResult)
+                  clearLog('fetchMoreResult', fetchMoreResult)
+                  if (!fetchMoreResult) {
+                    return previousResult;
+                  }
+                  return {
+                    offersConnection: {
+                      __typename: 'OfferConnection',
+                      pageInfo: fetchMoreResult.offersConnection.pageInfo,
+                      edges: [
+                        ...previousResult.offersConnection.edges,
+                        ...fetchMoreResult.offersConnection.edges,
+                      ],
+                    },
+                  };
+                },
+              });
+            }
+          }}
+          onEndReachedThreshold={0}
+          ListFooterComponent={() => (
+            offersConnection.pageInfo.hasNextPage ? <ActivityIndicator size="large" color="#00ff00"/> : null)}
         />
       </View>
     );
@@ -142,75 +224,16 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(compose(
-  graphql(OFFERS_QUERY, {
-    options: { fetchPolicy: "cache-and-network" },
+  graphql(offersQuery, {
+    options: {
+      fetchPolicy: "cache-and-network",
+      variables: {
+        orderBy: 'createdAt_ASC'
+      }
+    },
     name: "listOffers"
   }),
   graphql(DELETE_OFFER, {
     name: 'deleteOffer'
   }),
 )(OffersLayout));
-
-const styles = StyleSheet.create({
-  container: {
-    flexDirection: "column",
-    flex: 1,
-    backgroundColor: "white",
-    padding: 10,
-    marginBottom: 0.25
-  },
-  sortRow: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-around',
-  },
-  sortButton: {
-    flex: 1,
-  },
-  searchBar: {
-    margin: 10,
-  },
-});
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// const offersQuery = gql`
-//   {
-//     offers {
-//       id
-//       text
-//       title
-//     }
-//   }
-// `;
-
-
-// don't need to do this after using keyExtraction property on FlatList
-// const offersWithKey = offers.map(offer => ({
-//   ...offer,
-//   key: offer.id,
-// }));
-
-
-{/* <View style={styles.row}>
-  <Image
-    style={styles.images}
-    source={{ uri: `http://via.placeholder.com/250x250` }}
-  />
-  <View style={styles.right}>
-    <Text style={styles.text}>{item.text}</Text>
-    <Text style={styles.title}>{item.title}</Text>
-  </View>
-</View> */}

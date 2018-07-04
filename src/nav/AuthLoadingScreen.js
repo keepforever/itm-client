@@ -37,7 +37,7 @@ class AuthLoadingScreen extends Component {
     }
     const { refreshToken: {token: newToken, userId} } = response.data;
     await AsyncStorage.setItem('userToken', newToken);
-    clearLog("AuthLoadingScreen, userId: ", userId)
+    //clearLog("AuthLoadingScreen, userId: ", userId)
     this.props.addUserAction(userId)
     // This will switch to the App screen or Auth screen and this loading
     // screen will be unmounted and thrown away.
@@ -48,7 +48,7 @@ class AuthLoadingScreen extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <ActivityIndicator />
+        <ActivityIndicator size="large" color="#00ff00"/>
         <StatusBar barStyle="default" />
       </View>
     );
