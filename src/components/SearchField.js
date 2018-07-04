@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
 });
 
-export default class TextField extends React.PureComponent {
+export default class SearchField extends React.PureComponent {
   onChangeText = (text) => {
     const { onChangeText, name } = this.props;
     onChangeText(name, text);
@@ -40,7 +40,6 @@ export default class TextField extends React.PureComponent {
         placeholder={name}
         autoCapitalize="none"
         secureTextEntry={!!secureTextEntry}
-        clearButtonMode="unless-editing"
       />
     );
   }

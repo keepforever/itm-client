@@ -9,11 +9,22 @@ import OfferRow from '../../components/OfferRow'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import { selectSpecificOffer } from '../../store/actions/offer';
+import { clearLog } from '../../utils';
+import TextField from '../../components/TextField';
+
+const defaultState = {
+  values: {
+    search: ''
+  }
+
+}
 
 class OffersLayout extends React.Component {
   static navigationOptions = {
     title: "OfferLayout",
   };
+
+  state = defaultState
 
   navToCreateOffer = () => {
    this.props.navigation.navigate('CreateOffer');
@@ -26,7 +37,7 @@ class OffersLayout extends React.Component {
   };
 
   deleteOffer = (id) => {
-    console.log("deleteOffer arg, ", id)
+    clearLog("deleteOffer arg, ", id)
     this.props.deleteOffer({
       variables: {
         id
@@ -38,25 +49,62 @@ class OffersLayout extends React.Component {
       }
     })
   }
+
   editOffer = (id) => {
-    console.log("editOffer arg", id)
+    clearLog("editOffer arg", id)
   }
 
+  onChangeText = (key, value) => {
+    this.setState(state => ({
+      values: {
+        ...state.values,
+        [key]: value,
+      },
+    }));
+    // refetch the query as we type
+    this.props.listOffers.refetch({
+      where: {
+        title_contains: value
+      }
+    })
+  };
+
   render() {
-    const { listOffers: { offers }, loading, history, userId, specificOffer } = this.props
-    //console.log('OFFERLAYOUT props: ', this.props)
-    //console.log("OfferLayout, this.props.userId: ", userId )
+    // for sorting, graphql give you 'refetch' on the data object (here it's
+    // listOffers because of compose, the different Q's and M's are named. )
+    // 'variables', also on listOffers, allows us to keep track of the params
+    // we are sending to a given query. Here we will use to toggle between sorting
+    // by text or title
+
+    const {
+      listOffers: { offers, refetch, variables },
+      loading, history, userId, specificOffer
+    } = this.props
+    const { values: { search } } = this.state;
 
     if (loading || !offers) {
       return null;
     }
-    //console.log('OFFER_LAYOUT, offers[0]:', offers[0]);
-    console.log(`
-      ######### OFFER_LAYOUT ###########
-      
-       specificOffer from state-to-props: `, specificOffer)
+
+    clearLog('specificOffer from state-to-props: ', specificOffer)
     return (
       <View style={styles.container} >
+        <View>
+          <TextField
+            kolor="black"
+            value={search}
+            name="search..."
+            onChangeText={this.onChangeText}
+          />
+        </View>
+        <View style={styles.sortRow}>
+          <Button style={styles.sortButton} title="Text" onPress={() => refetch({
+            orderBy: variables.orderBy === 'text_ASC' ? 'text_DESC' : 'text_ASC',
+          })} />
+          <Button style={styles.sortButton} title="Title" onPress={() => refetch({
+            orderBy: variables.orderBy === 'title_ASC' ? 'title_DESC' : 'title_ASC',
+          })} />
+        </View>
         <Button
           title="Nav to CreateOffer"
           onPress={this.navToCreateOffer}
@@ -110,7 +158,19 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
     padding: 10,
     marginBottom: 0.25
-  }
+  },
+  sortRow: {
+    display: 'flex',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+  },
+  sortButton: {
+    flex: 1,
+  },
+  searchBar: {
+    margin: 10,
+  },
 });
 
 

@@ -1,8 +1,8 @@
 import gql from 'graphql-tag';
 
 export const OFFERS_QUERY = gql`
-  {
-    offers {
+  query($orderBy: OfferOrderByInput, $where: OfferWhereInput){
+    offers (orderBy: $orderBy, where: $where) {
       id
       text
       title
