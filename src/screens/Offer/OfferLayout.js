@@ -37,7 +37,6 @@ const styles = StyleSheet.create({
   },
 });
 
-
 const offersQuery = gql`
   query($after: String, $orderBy: OfferOrderByInput, $where: OfferWhereInput) {
     offersConnection(after: $after, first: 5, orderBy: $orderBy, where: $where) {
@@ -59,6 +58,8 @@ const offersQuery = gql`
     }
   }
 `;
+
+
 
 const defaultState = {
   values: {
