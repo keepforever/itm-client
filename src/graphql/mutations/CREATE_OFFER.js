@@ -8,6 +8,7 @@ export const CREATE_OFFER = gql`
       title
       author {
         id
+        name
       }
     }
   }

@@ -39,7 +39,7 @@ const styles = StyleSheet.create({
 
 const offersQuery = gql`
   query($after: String, $orderBy: OfferOrderByInput, $where: OfferWhereInput) {
-    offersConnection(after: $after, first: 5, orderBy: $orderBy, where: $where) {
+    offersConnection(after: $after, first: 3, orderBy: $orderBy, where: $where) {
       pageInfo {
         hasNextPage
         endCursor
@@ -55,6 +55,14 @@ const offersQuery = gql`
           }
         }
       }
+    }
+  }
+`;
+
+const deleteOfferMutation = gql`
+  mutation($id: ID!) {
+    deleteOffer(where: { id: $id }) {
+      id
     }
   }
 `;
@@ -87,8 +95,8 @@ class OffersLayout extends React.Component {
 
   deleteOffer = (id) => {
     const { variables } = this.props.listOffers
-    clearLog("variables 111", variables)
-    clearLog("deleteOffer arg, ", id)
+    //clearLog("variables 111", variables)
+    //clearLog("deleteOffer arg, ", id)
     this.props.deleteOffer({
       variables: {
         id
@@ -116,7 +124,8 @@ class OffersLayout extends React.Component {
     this.props.listOffers.refetch({
       where: {
         title_contains: value
-      }
+      },
+      after: null
     })
   };
 
@@ -128,18 +137,27 @@ class OffersLayout extends React.Component {
     // by text or title
 
     const {
-      listOffers: { offersConnection, refetch, variables, fetchMore },
-      loading, history, userId, specificOffer
+      listOffers: {
+        offersConnection = {pageInfo: {}, edges: []},
+        refetch,
+        variables,
+        fetchMore,
+        loading,
+      },
+      userId, specificOffer
     } = this.props
+
     const { values: { search } } = this.state;
 
-    if (loading || !offersConnection) {
-      return null;
-    }
+    // if (loading || !offersConnection) {
+    //   return null;
+    // }
     //clearLog("offersConnection", offersConnection)
-    clearLog("offersConnection.pageInfo", offersConnection.pageInfo)
+    //clearLog("offersConnection.pageInfo", offersConnection.pageInfo)
+    //clearLog('specificOffer from state-to-props: ', specificOffer)
 
-    clearLog('specificOffer from state-to-props: ', specificOffer)
+    let offersMap = {}; // to help address keys error in lue of adding random number
+
     return (
       <View style={styles.container} >
         <View>
@@ -151,11 +169,15 @@ class OffersLayout extends React.Component {
           />
         </View>
         <View style={styles.sortRow}>
-          <Button style={styles.sortButton} title="Text" onPress={() => refetch({
-            orderBy: variables.orderBy === 'text_ASC' ? 'text_DESC' : 'text_ASC',
-          })} />
-          <Button style={styles.sortButton} title="Title" onPress={() => refetch({
-            orderBy: variables.orderBy === 'title_ASC' ? 'title_DESC' : 'title_ASC',
+          <Button style={styles.sortButton} title="Text" onPress={() =>
+            !loading && refetch({
+              orderBy: variables.orderBy === 'text_ASC' ? 'text_DESC' : 'text_ASC',
+              after: null
+            })} />
+          <Button style={styles.sortButton} title="Title" onPress={() =>
+            !loading && refetch({
+              orderBy: variables.orderBy === 'title_ASC' ? 'title_DESC' : 'title_ASC',
+              after: null
           })} />
         </View>
         <Button
@@ -164,8 +186,19 @@ class OffersLayout extends React.Component {
         />
         <Text style={{ marginTop: 10, fontSize: 20 }}>Offers:</Text>
         <FlatList
-          keyExtractor={item => (item.id + (Math.random() * 100000).toString())}
-          data={offersConnection.edges.map(x => ({ ...x.node, showButtons: userId === x.node.author.id }))}
+          keyExtractor={item => item.id }
+          data={offersConnection.edges
+            .map(x => ({
+              ...x.node,
+              showButtons: userId === x.node.author.id,
+            }))
+          .filter((x) => {
+            if(offersMap[x.id]) {
+              return false
+            }
+            offersMap[x.id] = 1
+            return true
+          })}
           renderItem={({ item }) => (
             <OfferRow
               offerAuthorId={item.author.id}
@@ -178,17 +211,23 @@ class OffersLayout extends React.Component {
             />
           )}
           onEndReached={() => {
-            console.log(offersConnection.pageInfo);
             if (!loading && offersConnection.pageInfo.hasNextPage) {
               fetchMore({
                 variables: {
                   after: offersConnection.pageInfo.endCursor,
                 },
                 updateQuery: (previousResult, { fetchMoreResult }) => {
-                  clearLog('previousResult', previousResult)
-                  clearLog('fetchMoreResult', fetchMoreResult)
+                  //clearLog('previousResult', previousResult)
+                  //clearLog('fetchMoreResult', fetchMoreResult)
                   if (!fetchMoreResult) {
                     return previousResult;
+                  }
+                  if (
+                    !previousResult ||
+                    !previousResult.offersConnection ||
+                    !previousResult.offersConnection.edges
+                  ) {
+                    return fetchMoreResult
                   }
                   return {
                     offersConnection: {
@@ -234,7 +273,11 @@ export default connect(mapStateToProps, mapDispatchToProps)(compose(
     },
     name: "listOffers"
   }),
-  graphql(DELETE_OFFER, {
+  graphql(deleteOfferMutation, {
     name: 'deleteOffer'
   }),
 )(OffersLayout));
+
+// formerly in FlatList, this fix is no longer necessary after adding
+// a filter to the data property to check if the id has alre
+//keyExtractor={item => (item.id + (Math.random() * 100000).toString())}

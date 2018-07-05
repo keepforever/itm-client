@@ -18,6 +18,42 @@ import { connect } from 'react-redux';
 //helper
 import { clearLog } from '../../utils';
 
+const offersQuery = gql`
+  query($after: String, $orderBy: OfferOrderByInput, $where: OfferWhereInput) {
+    offersConnection(after: $after, first: 3, orderBy: $orderBy, where: $where) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          id
+          title
+          text
+          author {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`;
+
+const editOfferMutation = gql`
+  mutation($id: ID!, $title: String, $text: String) {
+    updateOffer(id: $id, text: $text, title: $title) {
+      __typename
+      id
+      text
+      title
+      author {
+        id
+        name
+      }
+    }
+  }
+`;
 
 const defaultState = {
   values: {
@@ -49,8 +85,8 @@ class EditOfferLayout extends Component {
 
   submit = async (values) => {
     const { text, title, id } = values;
-    clearLog(" this.props.editOffer ", this.props.editOffer)
-
+    const { variables } = this.props.listOffers
+    clearLog("EDIT_OFFER_LAYOUT, variables", variables)
     let response;
     try {
       response = await this.props.editOffer({
@@ -61,14 +97,23 @@ class EditOfferLayout extends Component {
         },
         // Note, adding filter vars to OFFERS_QUERY breaks update by causing
         // data.offers to come back  undefined.
+        // note, 'updateOffer' is named as such due to that being the
+        // name of the mutation the database knows and responds with.
         // update: (store, { data: { updateOffer } }) => {
-        //   // note, 'updateOffer' is named as such due to that being the
-        //   // name of the mutation the database knows and responds with.
         //   const data = store.readQuery({ query: OFFERS_QUERY });
         //   clearLog(' DATA ', data)
         //   data.offers = data.offers.map(o => (o.id === updateOffer.id ? updateOffer : o));
         //   store.writeQuery({ query: OFFERS_QUERY, data });
         // },
+        update: (store, { data: { updateOffer } }) => {
+          const data = store.readQuery({ query: offersQuery, variables });
+
+          data.offersConnection.edges = data.offersConnection.edges.map(o =>
+            (o.node.id === updateOffer.id
+              ? { __typename: 'Node', cursor: updateOffer.id, node: updateOffer }
+              : o));
+          store.writeQuery({ query: offersQuery, data, variables });
+        }
       });
     } catch (err) {
       console.log('there was an error');
@@ -91,11 +136,14 @@ class EditOfferLayout extends Component {
   };
 
   render() {
-    const { errors, values: { title, text }, values } = this.state;
+    const { errors, values: { title, text, id }, values } = this.state;
     //console.log('CREATE_OFFER_LAYOUT', this.props)
-    const { listOffers: { offers }, loading, history } = this.props
+    // clearLog("text", text)
+    // clearLog("title", title)
+    // clearLog("id", id)
+    const { listOffers: { offersConnection }, variables, loading, history } = this.props
 
-    if (loading || !offers) {
+    if (loading || !offersConnection) {
       return null;
     }
 
@@ -127,7 +175,7 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps) (compose(
-  graphql(EDIT_OFFER, {
+  graphql(editOfferMutation, {
     options: { fetchPolicy: "cache-and-network" },
     name: "editOffer"
   }),
@@ -135,8 +183,13 @@ export default connect(mapStateToProps) (compose(
     options: { fetchPolicy: "cache-and-network" },
     name: "deleteOffer"
   }),
-  graphql(OFFERS_QUERY, {
-    options: { fetchPolicy: "cache-and-network" },
+  graphql(offersQuery, {
+    options: {
+      fetchPolicy: "cache-and-network",
+      variables: {
+        orderBy: 'createdAt_ASC'
+      },
+    },
     name: "listOffers"
   }),
 )(EditOfferLayout));

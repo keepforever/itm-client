@@ -17,6 +17,29 @@ import gql from 'graphql-tag';
 //Q's & M's
 import { OFFERS_QUERY } from '../../graphql/queries/OFFERS_QUERY';
 import { CREATE_OFFER } from '../../graphql/mutations/CREATE_OFFER';
+import { clearLog } from '../../utils';
+
+const offersQuery = gql`
+  query($after: String, $orderBy: OfferOrderByInput, $where: OfferWhereInput) {
+    offersConnection(after: $after, orderBy: $orderBy, where: $where) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          id
+          title
+          text
+          author {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`;
 
 const defaultState = {
   values: {
@@ -40,7 +63,11 @@ class CreateOfferLayout extends Component {
     if (this.state.isSubmitting) {
       return;
     }
+
     const {title, text} = this.state.values
+
+    const { variables } = this.props.listOffers
+
     this.setState({ isSubmitting: true });
     let response;
     try {
@@ -49,14 +76,14 @@ class CreateOfferLayout extends Component {
           title,
           text
         },
-        update: (store, { data: { createOffer } }) => {
-          //console.log("IN-UPDATE: ", createOffer)
-          // Read the data from our cache for this query.
-          const data = store.readQuery({ query: OFFERS_QUERY });
-          // Add our comment from the mutation to the end.
-          data.offers.push(createOffer);
-          // Write our data back to the cache.
-          store.writeQuery({ query: OFFERS_QUERY, data });
+        update: (store, {data: { createOffer }}) => {
+          const data = store.readQuery( { query: offersQuery, variables } );
+          data.offersConnection.edges = [
+            { __typename: 'Node', cursor: createOffer.id, node: createOffer },
+            ...data.offersConnection.edges,
+          ];
+          // data.offersConnection.edges.filter(o => o.node.id !== id);
+          store.writeQuery({ query: offersQuery, data, variables });
         },
       });
     } catch(error) {
@@ -85,19 +112,23 @@ class CreateOfferLayout extends Component {
   render() {
     const { errors, values: { title, text } } = this.state;
     //console.log('CREATE_OFFER_LAYOUT', this.props)
-    const { listOffers: { offers }, loading, history } = this.props
+    const {
+      listOffers: {
+        offersConnection = {pageInfo: {}, edges: []},
+        variables,
+        loading,
+      },
+      history
+    } = this.props
 
-    if (loading || !offers) {
+    clearLog('loading', loading)
+
+    if (loading || !offersConnection) {
       return null;
     }
 
-    const offersWithKey = offers.map(offer => ({
-      ...offer,
-      key: offer.id,
-    }));
-
     //console.log('CreateOfferLayout: ', offersWithKey[0]);
-
+    let offersMap = {}; // to help address keys error in lue of adding random number
     return (
       <View style={styles.container}>
         <Button title="Nav Home" onPress={this.navToHome} />
@@ -115,7 +146,18 @@ class CreateOfferLayout extends Component {
         />
         <Button title="Add Offer" onPress={this.submit} />
         <FlatList
-          data={offersWithKey}
+          keyExtractor={item => item.id }
+          data={offersConnection.edges
+            .map(x => ({
+              ...x.node,
+            }))
+          .filter((x) => {
+            if(offersMap[x.id]) {
+              return false
+            }
+            offersMap[x.id] = 1
+            return true
+          })}
           renderItem={({ item }) => (
             <View>
               <Text>{item.title}</Text>
@@ -133,8 +175,13 @@ export default compose(
     options: { fetchPolicy: "cache-and-network" },
     name: "createOffer"
   }),
-  graphql(OFFERS_QUERY, {
-    options: { fetchPolicy: "cache-and-network" },
+  graphql(offersQuery, {
+    options: {
+      fetchPolicy: "cache-and-network",
+      variables: {
+        orderBy: 'createdAt_ASC'
+      }
+    },
     name: "listOffers"
   }),
 )(CreateOfferLayout);
