@@ -1,13 +1,15 @@
 import gql from "graphql-tag";
 
 export const EDIT_OFFER = gql`
-  mutation($text: String, $title: String, $id: ID!) {
-    updateOffer(text: $text, title: $title, id: $id) {
+  mutation($id: ID!, $title: String, $text: String) {
+    updateOffer(id: $id, text: $text, title: $title) {
+      __typename
       id
       text
       title
       author {
         id
+        name
       }
     }
   }

@@ -18,43 +18,6 @@ import { connect } from 'react-redux';
 //helper
 import { clearLog } from '../../utils';
 
-const offersQuery = gql`
-  query($after: String, $orderBy: OfferOrderByInput, $where: OfferWhereInput) {
-    offersConnection(after: $after, first: 3, orderBy: $orderBy, where: $where) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      edges {
-        node {
-          id
-          title
-          text
-          author {
-            id
-            name
-          }
-        }
-      }
-    }
-  }
-`;
-
-const editOfferMutation = gql`
-  mutation($id: ID!, $title: String, $text: String) {
-    updateOffer(id: $id, text: $text, title: $title) {
-      __typename
-      id
-      text
-      title
-      author {
-        id
-        name
-      }
-    }
-  }
-`;
-
 const defaultState = {
   values: {
     title: '',
@@ -106,13 +69,13 @@ class EditOfferLayout extends Component {
         //   store.writeQuery({ query: OFFERS_QUERY, data });
         // },
         update: (store, { data: { updateOffer } }) => {
-          const data = store.readQuery({ query: offersQuery, variables });
+          const data = store.readQuery({ query: OFFERS_QUERY, variables });
 
           data.offersConnection.edges = data.offersConnection.edges.map(o =>
             (o.node.id === updateOffer.id
               ? { __typename: 'Node', cursor: updateOffer.id, node: updateOffer }
               : o));
-          store.writeQuery({ query: offersQuery, data, variables });
+          store.writeQuery({ query: OFFERS_QUERY, data, variables });
         }
       });
     } catch (err) {
@@ -175,7 +138,7 @@ const mapStateToProps = state => {
 }
 
 export default connect(mapStateToProps) (compose(
-  graphql(editOfferMutation, {
+  graphql(EDIT_OFFER, {
     options: { fetchPolicy: "cache-and-network" },
     name: "editOffer"
   }),
@@ -183,7 +146,7 @@ export default connect(mapStateToProps) (compose(
     options: { fetchPolicy: "cache-and-network" },
     name: "deleteOffer"
   }),
-  graphql(offersQuery, {
+  graphql(OFFERS_QUERY, {
     options: {
       fetchPolicy: "cache-and-network",
       variables: {
@@ -206,3 +169,42 @@ const styles = StyleSheet.create({
     marginBottom: 5
   }
 });
+
+
+
+// const offersQuery = gql`
+//   query($after: String, $orderBy: OfferOrderByInput, $where: OfferWhereInput) {
+//     offersConnection(after: $after, first: 3, orderBy: $orderBy, where: $where) {
+//       pageInfo {
+//         hasNextPage
+//         endCursor
+//       }
+//       edges {
+//         node {
+//           id
+//           title
+//           text
+//           author {
+//             id
+//             name
+//           }
+//         }
+//       }
+//     }
+//   }
+// `;
+
+// const editOfferMutation = gql`
+//   mutation($id: ID!, $title: String, $text: String) {
+//     updateOffer(id: $id, text: $text, title: $title) {
+//       __typename
+//       id
+//       text
+//       title
+//       author {
+//         id
+//         name
+//       }
+//     }
+//   }
+// `;

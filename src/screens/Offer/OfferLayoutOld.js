@@ -37,6 +37,37 @@ const styles = StyleSheet.create({
   },
 });
 
+const offersQuery = gql`
+  query($after: String, $orderBy: OfferOrderByInput, $where: OfferWhereInput) {
+    offersConnection(after: $after, first: 3, orderBy: $orderBy, where: $where) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          id
+          title
+          text
+          author {
+            id
+            name
+          }
+        }
+      }
+    }
+  }
+`;
+
+const deleteOfferMutation = gql`
+  mutation($id: ID!) {
+    deleteOffer(where: { id: $id }) {
+      id
+    }
+  }
+`;
+
+
 
 const defaultState = {
   values: {
@@ -71,9 +102,9 @@ class OffersLayout extends React.Component {
         id
       },
       update: (store) => {
-        const data = store.readQuery( { query: OFFERS_QUERY, variables } );
+        const data = store.readQuery( { query: offersQuery, variables } );
         data.offersConnection.edges = data.offersConnection.edges.filter(o => o.node.id !== id);
-        store.writeQuery({ query: OFFERS_QUERY, data, variables });
+        store.writeQuery({ query: offersQuery, data, variables });
       }
     })
   }
@@ -233,7 +264,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(compose(
-  graphql(OFFERS_QUERY, {
+  graphql(offersQuery, {
     options: {
       fetchPolicy: "cache-and-network",
       variables: {
@@ -242,7 +273,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(compose(
     },
     name: "listOffers"
   }),
-  graphql(DELETE_OFFER, {
+  graphql(deleteOfferMutation, {
     name: 'deleteOffer'
   }),
 )(OffersLayout));
@@ -250,35 +281,3 @@ export default connect(mapStateToProps, mapDispatchToProps)(compose(
 // formerly in FlatList, this fix is no longer necessary after adding
 // a filter to the data property to check if the id has alre
 //keyExtractor={item => (item.id + (Math.random() * 100000).toString())}
-
-
-
-// const offersQuery = gql`
-//   query($after: String, $orderBy: OfferOrderByInput, $where: OfferWhereInput) {
-//     offersConnection(after: $after, first: 3, orderBy: $orderBy, where: $where) {
-//       pageInfo {
-//         hasNextPage
-//         endCursor
-//       }
-//       edges {
-//         node {
-//           id
-//           title
-//           text
-//           author {
-//             id
-//             name
-//           }
-//         }
-//       }
-//     }
-//   }
-// `;
-
-// const deleteOfferMutation = gql`
-//   mutation($id: ID!) {
-//     deleteOffer(where: { id: $id }) {
-//       id
-//     }
-//   }
-// `;
