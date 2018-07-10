@@ -26,9 +26,11 @@ const authLink = setContext(async (_, { headers }) => {
   };
 });
 
+// old, maybe: https://itm-adv-server-qoxyesvttw.now.sh
+
 const client = new ApolloClient({
   link: authLink.concat(createUploadLink({
-    uri: 'https://itm-adv-server-qoxyesvttw.now.sh' })
+    uri: 'https://itm-adv-server-uozqpfllvd.now.sh' })
   ),
   cache: new InMemoryCache(),
 });

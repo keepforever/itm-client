@@ -15,6 +15,8 @@ import CreateOffer from '../screens/CreateOffer'
 import SpecificOffer from '../screens/SpecificOffer'
 import EditOffer from '../screens/EditOffer'
 
+import SearchSellers from '../screens/SearchSellers'
+
 const HomeStack = createStackNavigator({
   Home: Home,
   Friends: Friends,
@@ -38,16 +40,16 @@ HomeStack.navigationOptions = {
   ),
 };
 
-const LinksStack = createStackNavigator({
-  Links: Links,
+const SearchSellersStack = createStackNavigator({
+  SearchSellers: SearchSellers,
 });
 
-LinksStack.navigationOptions = {
-  tabBarLabel: 'Links',
+SearchSellersStack.navigationOptions = {
+  tabBarLabel: 'SearchSellers',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === 'ios' ? `ios-link${focused ? '' : '-outline'}` : 'md-link'}
+      name={Platform.OS === 'ios' ? `ios-search${focused ? '' : '-outline'}` : 'md-search'}
     />
   ),
 };
@@ -68,6 +70,6 @@ SettingsStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
-  LinksStack,
+  SearchSellersStack,
   SettingsStack,
 });
