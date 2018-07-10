@@ -1,8 +1,9 @@
 export const ADD_USER = 'ADD_USER';
 export const SET_SPECIFIC_OFFER = 'SET_SPECIFIC_OFFER'
+export const SET_SPECIFIC_SELLER = 'SET_SPECIFIC_SELLER'
 
 
- 
+
 // export const ADD_INGREDIENT = 'ADD_INGREDIENT';
 // export const REMOVE_INGREDIENT = 'REMOVE_INGREDIENT';
 // // action type for fetching ingredients asynchronously

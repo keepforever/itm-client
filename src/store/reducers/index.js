@@ -1,10 +1,12 @@
 import { combineReducers }  from 'redux';
 import user from './user';
 import offer from './offer'
+import zseller from './zseller'
 
 export default combineReducers({
   user,
-  offer
+  offer,
+  zseller,
 })
 
 // because we are NOT naming our export, we rename this export
