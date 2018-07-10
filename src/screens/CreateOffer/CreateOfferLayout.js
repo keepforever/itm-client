@@ -15,7 +15,7 @@ import TextField from '../../components/TextField';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 //Q's & M's
-import { OFFERS_QUERY } from '../../graphql/queries/OFFERS_QUERY';
+import { OFFERS_QUERY_NO_PAGEINATE } from '../../graphql/queries/OFFERS_QUERY_NO_PAGEINATE';
 import { CREATE_OFFER } from '../../graphql/mutations/CREATE_OFFER';
 import { clearLog } from '../../utils';
 
@@ -77,13 +77,13 @@ class CreateOfferLayout extends Component {
           text
         },
         update: (store, {data: { createOffer }}) => {
-          const data = store.readQuery( { query: offersQuery, variables } );
+          const data = store.readQuery( { query: OFFERS_QUERY_NO_PAGEINATE, variables } );
           data.offersConnection.edges = [
             { __typename: 'Node', cursor: createOffer.id, node: createOffer },
             ...data.offersConnection.edges,
           ];
           // data.offersConnection.edges.filter(o => o.node.id !== id);
-          store.writeQuery({ query: offersQuery, data, variables });
+          store.writeQuery({ query: OFFERS_QUERY_NO_PAGEINATE, data, variables });
         },
       });
     } catch(error) {
@@ -175,7 +175,7 @@ export default compose(
     options: { fetchPolicy: "cache-and-network" },
     name: "createOffer"
   }),
-  graphql(offersQuery, {
+  graphql(OFFERS_QUERY_NO_PAGEINATE, {
     options: {
       fetchPolicy: "cache-and-network",
       variables: {
