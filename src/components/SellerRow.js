@@ -11,8 +11,6 @@ const SellerRow = ( props ) => {
     item: {name, about, id, sells},
     viewThisSeller
   } = props
-  // clearLog('SELLER_ROW, name', name)
-  // clearLog('SELLER_ROW, about', about)
 
   return (
     <TouchableHighlight
