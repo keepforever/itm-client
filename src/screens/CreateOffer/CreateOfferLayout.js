@@ -1,13 +1,11 @@
 import React, { Component } from "react";
 import { Text } from "react-native-elements";
 import {
-  FlatList,
   View,
   ScrollView,
   KeyboardAvoidingView,
   StyleSheet,
   Button,
-  TouchableHighlight
 } from "react-native";
 import OfferRow from '../../components/OfferRow';
 import TextField from '../../components/TextField';
@@ -17,34 +15,15 @@ import gql from 'graphql-tag';
 //Q's & M's
 import { OFFERS_QUERY_NO_PAGEINATE } from '../../graphql/queries/OFFERS_QUERY_NO_PAGEINATE';
 import { CREATE_OFFER } from '../../graphql/mutations/CREATE_OFFER';
+import { CREATE_OFFER_OVERHALL } from '../../graphql/mutations/CREATE_OFFER_OVERHALL';
 import { clearLog } from '../../utils';
-
-const offersQuery = gql`
-  query($after: String, $orderBy: OfferOrderByInput, $where: OfferWhereInput) {
-    offersConnection(after: $after, orderBy: $orderBy, where: $where) {
-      pageInfo {
-        hasNextPage
-        endCursor
-      }
-      edges {
-        node {
-          id
-          title
-          text
-          author {
-            id
-            name
-          }
-        }
-      }
-    }
-  }
-`;
 
 const defaultState = {
   values: {
     title: '',
     text: '',
+    expiresAt: '2019-07-04T05:48:36.648Z',
+    id: 'cjjhknwkchrj40b37ajndxl3u'
   },
   errors: {},
   isSubmitting: false,
@@ -64,7 +43,7 @@ class CreateOfferLayout extends Component {
       return;
     }
 
-    const {title, text} = this.state.values
+    const {title, text, expiresAt, id} = this.state.values
 
     const { variables } = this.props.listOffers
 
@@ -74,23 +53,25 @@ class CreateOfferLayout extends Component {
       response = await this.props.createOffer({
         variables: {
           title,
-          text
-        },
-        update: (store, {data: { createOffer }}) => {
-          const data = store.readQuery( { query: OFFERS_QUERY_NO_PAGEINATE, variables } );
-          data.offersConnection.edges = [
-            { __typename: 'Node', cursor: createOffer.id, node: createOffer },
-            ...data.offersConnection.edges,
-          ];
-          // data.offersConnection.edges.filter(o => o.node.id !== id);
-          store.writeQuery({ query: OFFERS_QUERY_NO_PAGEINATE, data, variables });
-        },
+          text,
+          expiresAt,
+          id
+        }, // TODO: update won't work until i add offersConnection to gql-service
+        // update: (store, {data: { createOffer }}) => {
+        //   const data = store.readQuery( { query: OFFERS_QUERY_NO_PAGEINATE, variables } );
+        //   data.offersConnection.edges = [
+        //     { __typename: 'Node', cursor: createOffer.id, node: createOffer },
+        //     ...data.offersConnection.edges,
+        //   ];
+        //   // data.offersConnection.edges.filter(o => o.node.id !== id);
+        //   store.writeQuery({ query: OFFERS_QUERY_NO_PAGEINATE, data, variables });
+        // },
       });
     } catch(error) {
       console.log(error)
       return
     }
-    //console.log('CRE_OFF response', response)
+    clearLog('CRE_OFF response', response)
     this.setState({
       isSubmitting: false,
       values: {
@@ -114,7 +95,7 @@ class CreateOfferLayout extends Component {
     //console.log('CREATE_OFFER_LAYOUT', this.props)
     const {
       listOffers: {
-        offersConnection = {pageInfo: {}, edges: []},
+        // offersConnection = {pageInfo: {}, edges: []},
         variables,
         loading,
       },
@@ -123,7 +104,7 @@ class CreateOfferLayout extends Component {
 
     clearLog('loading', loading)
 
-    if (loading || !offersConnection) {
+    if (loading) {
       return null;
     }
 
@@ -145,33 +126,13 @@ class CreateOfferLayout extends Component {
           onChangeText={this.onChangeText}
         />
         <Button title="Add Offer" onPress={this.submit} />
-        <FlatList
-          keyExtractor={item => item.id }
-          data={offersConnection.edges
-            .map(x => ({
-              ...x.node,
-            }))
-          .filter((x) => {
-            if(offersMap[x.id]) {
-              return false
-            }
-            offersMap[x.id] = 1
-            return true
-          })}
-          renderItem={({ item }) => (
-            <View>
-              <Text>{item.title}</Text>
-              <Text>{item.text}</Text>
-            </View>
-          )}
-        />
       </View>
     );
   }
 }
 
 export default compose(
-  graphql(CREATE_OFFER, {
+  graphql(CREATE_OFFER_OVERHALL, {
     options: { fetchPolicy: "cache-and-network" },
     name: "createOffer"
   }),
