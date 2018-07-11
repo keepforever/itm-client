@@ -47,6 +47,8 @@ class CreateOfferLayout extends Component {
 
     const { variables } = this.props.listOffers
 
+    clearLog('VARIABLES', variables)
+
     this.setState({ isSubmitting: true });
     let response;
     try {
@@ -56,22 +58,24 @@ class CreateOfferLayout extends Component {
           text,
           expiresAt,
           id
-        }, // TODO: update won't work until i add offersConnection to gql-service
-        // update: (store, {data: { createOffer }}) => {
-        //   const data = store.readQuery( { query: OFFERS_QUERY_NO_PAGEINATE, variables } );
-        //   data.offersConnection.edges = [
-        //     { __typename: 'Node', cursor: createOffer.id, node: createOffer },
-        //     ...data.offersConnection.edges,
-        //   ];
-        //   // data.offersConnection.edges.filter(o => o.node.id !== id);
-        //   store.writeQuery({ query: OFFERS_QUERY_NO_PAGEINATE, data, variables });
-        // },
+        },
+        update: (store, {data: { createOffer }}) => {
+          const data = store.readQuery( { query: OFFERS_QUERY_NO_PAGEINATE, variables } );
+
+          data.offersConnection.edges = [
+            { __typename: 'Node', cursor: createOffer.id, node: createOffer },
+            ...data.offersConnection.edges,
+          ];
+          clearLog('VARIABLES 2222', variables)
+          // data.offersConnection.edges.filter(o => o.node.id !== id);
+          store.writeQuery({ query: OFFERS_QUERY_NO_PAGEINATE, data, variables });
+        },
       });
     } catch(error) {
       console.log(error)
       return
     }
-    clearLog('CRE_OFF response', response)
+    clearLog('CREATE_OFFER response', response)
     this.setState({
       isSubmitting: false,
       values: {
@@ -102,7 +106,7 @@ class CreateOfferLayout extends Component {
       history
     } = this.props
 
-    clearLog('loading', loading)
+    //clearLog('loading', loading)
 
     if (loading) {
       return null;

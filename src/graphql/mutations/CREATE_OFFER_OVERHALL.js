@@ -11,6 +11,12 @@ export const CREATE_OFFER_OVERHALL = gql`
       }
     ) {
         id
+        text
+        title
+        author{
+          id
+          name
+        }  
     }
   }
 `;
