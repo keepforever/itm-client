@@ -161,23 +161,3 @@ const styles = StyleSheet.create({
     marginBottom: 5
   }
 });
-
-
-// const createOfferMutation = gql`
-//   mutation($title: String!, $text: String!) {
-//     createOffer(title: $title, text: $text){
-//       id
-//       title
-//       text
-//     }
-//   }
-// `
-// const offersQuery = gql`
-//   {
-//     offers {
-//       id
-//       text
-//       title
-//     }
-//   }
-// `;

@@ -246,39 +246,3 @@ export default connect(mapStateToProps, mapDispatchToProps)(compose(
     name: 'deleteOffer'
   }),
 )(OffersLayout));
-
-// formerly in FlatList, this fix is no longer necessary after adding
-// a filter to the data property to check if the id has alre
-//keyExtractor={item => (item.id + (Math.random() * 100000).toString())}
-
-
-
-// const offersQuery = gql`
-//   query($after: String, $orderBy: OfferOrderByInput, $where: OfferWhereInput) {
-//     offersConnection(after: $after, first: 3, orderBy: $orderBy, where: $where) {
-//       pageInfo {
-//         hasNextPage
-//         endCursor
-//       }
-//       edges {
-//         node {
-//           id
-//           title
-//           text
-//           author {
-//             id
-//             name
-//           }
-//         }
-//       }
-//     }
-//   }
-// `;
-
-// const deleteOfferMutation = gql`
-//   mutation($id: ID!) {
-//     deleteOffer(where: { id: $id }) {
-//       id
-//     }
-//   }
-// `;

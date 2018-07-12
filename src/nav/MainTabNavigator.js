@@ -7,6 +7,7 @@ import {
 import TabBarIcon from '../components/TabBarIcon';
 
 import Home from '../screens/Home';
+import PatronInbox from '../screens/PatronInbox';
 import Links from '../screens/Links';
 import SettingsScreen from '../screens/Settings';
 import Friends from '../screens/Friends'
@@ -18,6 +19,7 @@ import EditOffer from '../screens/EditOffer'
 import SearchSellers from '../screens/SearchSellers'
 
 const HomeStack = createStackNavigator({
+  PatronInbox: PatronInbox,
   Home: Home,
   Friends: Friends,
   Offer: Offer,
