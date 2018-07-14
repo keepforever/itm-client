@@ -9,6 +9,7 @@ import { OFFERS_QUERY } from '../../graphql/queries/OFFERS_QUERY';
 import { Text, Header } from "react-native-elements";
 import { clearLog } from '../../utils';
 import InboxPreviewRow from '../../components/InboxPreviewRow'
+import CustomHeader from '../../components/CustomHeader'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import { selectSpecificOffer } from '../../store/actions/offer';
@@ -16,9 +17,18 @@ import { selectSpecificOffer } from '../../store/actions/offer';
 const flatListHeight = Dimensions.get('window').height/2;
 
 class PatronInboxLayout extends Component {
-  static navigationOptions = {
-    title: "PatronInbox",
+  static navigationOptions = ({ navigation }) => {
+    //clearLog('NAVIGATION', navigation)
+    return {
+      headerTitle: <CustomHeader titleText={navigation.state.routeName} />,
+      headerStyle: {
+        backgroundColor: '#fff',
+      },
+    };
   };
+  // static navigationOptions = {
+  //   headerTitle: <CustomHeader />,
+  // };
 
   state = {
     offers: []
@@ -46,15 +56,11 @@ class PatronInboxLayout extends Component {
     } = this.props
 
     //clearLog('offersConnection, ', offersConnection)
-    clearLog('WindowHeight', flatListHeight)
+    //clearLog('WindowHeight', flatListHeight)
 
     let offersMap = {}; // to help address keys error in lue of adding random number
     return (
       <View style={styles.container}>
-        <Header
-          outerContainerStyles={{width: '100%', height: 50}}
-          centerComponent={{ text: 'Your Offers', style: { color: '#fff' } }}
-        />
         <View style={styles.flatListContainer}>
           <FlatList
             keyExtractor={item => item.id }

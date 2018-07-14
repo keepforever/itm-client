@@ -1,25 +1,29 @@
 //helper function to display console logs with more clairity
 export const clearLog = (title, varToLog) => {
   console.log(`
-
-    ############# ${title} #############
+    #########################################################
+                    ${title}
+    #########################################################
 
   `, varToLog, `
 
-    ###################################################
+    #########################################################
+            ^ ^ ^   ${title}   ^ ^ ^
+    #########################################################
 
   `, `
-
 
   `)
 }
 
 // helper functions to distribute state immutably and clean up reducers.
 export const updateObject = (oldObject, updatedProperties) => {
-        return {
-            ...oldObject,
-            ...updatedProperties
-        };
+  const newObject = {
+    ...oldObject,
+    ...updatedProperties
+  }
+  clearLog('newObject', newObject)
+  return newObject
 };
 
 // helper function to check validity of form input

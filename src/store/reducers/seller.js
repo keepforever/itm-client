@@ -1,14 +1,14 @@
 import * as actionTypes from '../actions/actionTypes';
-import { updateObject } from '../../utils';
+import { updateObject, clearLog } from '../../utils';
 
 const initialState = {
-    seller: {},
+    sellerInfo: null,
 };
 
 const setSeller = ( state, action ) => {
-  console.log("zseller reducer fired")
+  clearLog("seller reducer fired", action.seller)
   return updateObject(state, {
-    seller: action.seller
+    sellerInfo: action.seller
   })
 }
 // note: we always have a "type" property on any actions passed to reducer

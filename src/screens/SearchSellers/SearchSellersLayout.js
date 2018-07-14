@@ -1,45 +1,49 @@
 import React, { Component } from 'react';
 import {
-  Image, Text, View, Button,
+  Image, Text, View,
   FlatList, StyleSheet, ActivityIndicator
 } from 'react-native';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
 import { OFFERS_QUERY } from '../../graphql/queries/OFFERS_QUERY';
-import { DELETE_OFFER } from '../../graphql/mutations/DELETE_OFFER';
-import { EDIT_OFFER } from '../../graphql/mutations/EDIT_OFFER';
-import SellerRow from '../../components/SellerRow'
+// import SellerRow from '../../components/SellerRow'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import { selectSpecificSeller } from '../../store/actions/zseller';
+import { selectSpecificSeller } from '../../store/actions/seller';
 import { clearLog } from '../../utils';
 import TextField from '../../components/TextField';
+import { Card, Button } from 'react-native-elements'
+import cardHeaderImage from './sellerCardHeader.jpg'
+import CustomHeader from '../../components/CustomHeader'
 
 const sellersQuery = gql`
   query {
-    zsellers{
+    sellers{
       id
       name
       about
       sells
-      patrons{
-        name
-      }
     }
   }
 `;
 
 
 class SearchSellersLayout extends Component {
-  static navigationOptions = {
-    title: "SearchSellersLayout",
+  static navigationOptions = ({ navigation }) => {
+    //clearLog('NAVIGATION', navigation)
+    return {
+      headerTitle: <CustomHeader titleText={navigation.state.routeName} />,
+      headerStyle: {
+        backgroundColor: '#fff',
+      },
+    };
   };
 
   navToSpecificSeller = (seller) => {
+    //clearLog("navToSpecificSeller, seller:", seller)
     this.props.selectSellerAction(seller)
-    clearLog("navToSpecificSeller, seller:", seller)
-    // this.props.selectOfferAction(offer)
-    // this.props.navigation.navigate('SpecificOffer');
+    //clearLog('SEARCH_SELLERS_LAYOUT specificSeller:', this.props.specificSeller)
+    this.props.navigation.navigate('SpecificSeller');
   };
 
   state = {
@@ -50,32 +54,43 @@ class SearchSellersLayout extends Component {
 
     const {
       listSellers: {
-        zsellers,
+        sellers,
         variables,
         fetchMore,
         loading,
       },
       userId,
-      zseller
+      specificSeller
     } = this.props
 
-    clearLog('SearchSellersLayout, zseller', zseller)
+    //clearLog('SearchSellersLayout, sellers', sellers)
     //clearLog("SearchSellersLayout, listSellers", this.props.listSellers )
+    //clearLog('SEARCH_SELLERS_LAYOUT props:', this.props)
 
     return (
       <View style={styles.container}>
-        <Text>
-          SearchSellersLayout
-        </Text>
         <FlatList
           keyExtractor={item => item.id }
-          data={zsellers}
+          data={sellers}
           renderItem={({ item }) => (
-            <SellerRow
-              userId={userId}
-              item={item}
-              viewThisSeller={this.navToSpecificSeller}
-            />
+            <Card
+              title={item.name}
+              image={cardHeaderImage}>
+              <Text style={{marginBottom: 10}}>
+                {item.about}
+              </Text>
+              <Button
+                onPress={() => this.navToSpecificSeller(item)}
+                icon={{name: 'fingerprint'}}
+                backgroundColor='#03A9F4'
+                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                title='VIEW NOW' />
+            </Card>
+            // <SellerRow
+            //   userId={userId}
+            //   item={item}
+            //   viewThisSeller={this.navToSpecificSeller}
+            // />
           )}
         />
       </View>
@@ -86,7 +101,7 @@ class SearchSellersLayout extends Component {
 const mapStateToProps = state => {
     return {
         userId: state.user.userId,
-        zseller: state.zseller.seller
+        specificSeller: state.seller.sellerInfo
     };
 }
 

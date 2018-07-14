@@ -1,5 +1,6 @@
 import React from 'react';
 import { Image, Text, View, Button, FlatList, StyleSheet } from 'react-native';
+import CustomHeader from '../../components/CustomHeader'
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
 import { OFFERS_QUERY } from '../../graphql/queries/OFFERS_QUERY';
@@ -9,9 +10,18 @@ import OfferRow from '../../components/OfferRow'
 import { connect } from 'react-redux'
 
 class SpecificOfferLayout extends React.Component {
-  static navigationOptions = {
-    title: "SpecOffLayout",
+  static navigationOptions = ({ navigation }) => {
+    //clearLog('NAVIGATION', navigation)
+    return {
+      headerTitle: <CustomHeader titleText={navigation.state.routeName} />,
+      headerStyle: {
+        backgroundColor: '#fff',
+      },
+    };
   };
+  // static navigationOptions = {
+  //   title: "SpecOffLayout",
+  // };
 
   navToEditOffer = () => {
    this.props.navigation.navigate('EditOffer');
