@@ -10,18 +10,20 @@ import OfferRow from '../../components/OfferRow'
 import { connect } from 'react-redux'
 
 class SpecificOfferLayout extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    //clearLog('NAVIGATION', navigation)
-    return {
-      headerTitle: <CustomHeader titleText={navigation.state.routeName} />,
-      headerStyle: {
-        backgroundColor: '#fff',
-      },
-    };
-  };
-  // static navigationOptions = {
-  //   title: "SpecOffLayout",
+  // static navigationOptions = ({ navigation }) => {
+  //   //clearLog('NAVIGATION', navigation)
+  //   return {
+  //     headerTitle: <CustomHeader titleText={navigation.state.routeName} />,
+  //     headerStyle: {
+  //       backgroundColor: '#fff',
+  //     },
+  //   };
   // };
+  static navigationOptions = ( {navigation } ) => {
+    return {
+      title: navigation.state.routeName,
+    }
+  };
 
   navToEditOffer = () => {
    this.props.navigation.navigate('EditOffer');

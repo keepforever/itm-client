@@ -13,14 +13,11 @@ import { Card, Text, ListItem, Button} from 'react-native-elements'
 import cardHeaderImage from './sellerCardHeader.jpg'
 
 class SpecificSeller extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    //clearLog('NAVIGATION', navigation)
+
+  static navigationOptions = ( {navigation } ) => {
     return {
-      headerTitle: <CustomHeader titleText={navigation.state.routeName} />,
-      headerStyle: {
-        backgroundColor: '#fff',
-      },
-    };
+      title: navigation.state.routeName,
+    }
   };
 
   addSellerToFriends = () => {
@@ -35,26 +32,31 @@ class SpecificSeller extends React.Component {
     clearLog('SPECIFIC_SELLER_LAYOUT, about', about)
     return (
       <ScrollView style={styles.container} >
-        <Card
-          title={name}
-          image={cardHeaderImage}>
-          <Text h4>About:</Text>
-          <Text style={{marginBottom: 10}}>
-            {about}
-          </Text>
-          <Text h4>Sells:</Text>
-          {sells.map((s, i) => {
-            return <ListItem key={i} title={s} />
-          })}
-          <Button
-            onPress={() => this.addSellerToFriends()}
-            icon={{name: 'code'}}
-            backgroundColor='#03A9F4'
-            buttonStyle={{
-              borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0
-            }}
-            title='Add Seller' />
-        </Card>
+        <View style={styles.cardContainer}>
+          <Card
+            title={name}
+            image={cardHeaderImage}>
+            <Text h4>About:</Text>
+            <Text style={{marginBottom: 10}}>
+              {about}
+            </Text>
+            <Text h4>Sells:</Text>
+            {sells.map((s, i) => {
+              return <ListItem key={i} title={s} />
+            })}
+            <Button
+              onPress={() => this.addSellerToFriends()}
+              icon={{name: 'face'}}
+              backgroundColor='#03A9F4'
+              buttonStyle={{
+                borderRadius: 15,
+                marginTop: 10,
+                marginRight: 0,
+                marginBottom: 5
+              }}
+              title='Add Seller' />
+          </Card>
+        </View>
       </ScrollView>
     );
   }
@@ -74,11 +76,12 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     flex: 1,
     backgroundColor: "white",
-    padding: 10,
-    marginBottom: 0.25,
   },
   texTag: {
     fontSize: 20
+  },
+  cardContainer: {
+    marginBottom: 15
   }
 });
 
@@ -95,3 +98,13 @@ const styles = StyleSheet.create({
 //     }
 //   })
 // }
+
+// static navigationOptions = ({ navigation }) => {
+//   //clearLog('NAVIGATION', navigation)
+//   return {
+//     headerTitle: <CustomHeader titleText={navigation.state.routeName} />,
+//     headerStyle: {
+//       backgroundColor: '#fff',
+//     },
+//   };
+// };

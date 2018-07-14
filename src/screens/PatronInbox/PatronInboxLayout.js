@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import {
   View, ScrollView, KeyboardAvoidingView, StyleSheet,
   Button, TouchableHighlight, FlatList, ActivityIndicator,
-  Dimensions
+  Dimensions, SafeAreaView,
 } from "react-native";
 import { graphql, compose } from 'react-apollo';
 import { OFFERS_QUERY } from '../../graphql/queries/OFFERS_QUERY';
@@ -17,19 +17,16 @@ import { selectSpecificOffer } from '../../store/actions/offer';
 const flatListHeight = Dimensions.get('window').height/2;
 
 class PatronInboxLayout extends Component {
-  static navigationOptions = ({ navigation }) => {
-    //clearLog('NAVIGATION', navigation)
-    return {
-      headerTitle: <CustomHeader titleText={navigation.state.routeName} />,
-      headerStyle: {
-        backgroundColor: '#fff',
-      },
-    };
-  };
-  // static navigationOptions = {
-  //   headerTitle: <CustomHeader />,
+  static navigationOptions = {header: null};
+  // static navigationOptions = ({ navigation }) => {
+  //   return {
+  //     headerTitle: <CustomHeader titleText={navigation.state.routeName} />,
+  //     headerStyle: {
+  //       backgroundColor: '#fff',
+  //     },
+  //   };
   // };
-
+  //
   state = {
     offers: []
   };
@@ -60,7 +57,8 @@ class PatronInboxLayout extends Component {
 
     let offersMap = {}; // to help address keys error in lue of adding random number
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
+        <CustomHeader titleText={this.props.navigation.state.routeName} />
         <View style={styles.flatListContainer}>
           <FlatList
             keyExtractor={item => item.id }
@@ -125,7 +123,7 @@ class PatronInboxLayout extends Component {
             title="Nav to Friends"
             onPress={this.showMoreApp} />
         </View>
-      </View>
+      </SafeAreaView>
     );
   }
 }

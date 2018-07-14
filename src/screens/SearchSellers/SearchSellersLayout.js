@@ -6,6 +6,7 @@ import {
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
 import { OFFERS_QUERY } from '../../graphql/queries/OFFERS_QUERY';
+import { SELLERS_QUERY } from '../../graphql/queries/SELLERS_QUERY';
 // import SellerRow from '../../components/SellerRow'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
@@ -16,27 +17,21 @@ import { Card, Button } from 'react-native-elements'
 import cardHeaderImage from './sellerCardHeader.jpg'
 import CustomHeader from '../../components/CustomHeader'
 
-const sellersQuery = gql`
-  query {
-    sellers{
-      id
-      name
-      about
-      sells
-    }
-  }
-`;
-
-
 class SearchSellersLayout extends Component {
-  static navigationOptions = ({ navigation }) => {
-    //clearLog('NAVIGATION', navigation)
+  // static navigationOptions = ({ navigation }) => {
+  //   //clearLog('NAVIGATION', navigation)
+  //   return {
+  //     headerTitle: <CustomHeader titleText={navigation.state.routeName} />,
+  //     headerStyle: {
+  //       backgroundColor: '#fff',
+  //     },
+  //   };
+  // };
+
+  static navigationOptions = ( { navigation } ) => {
     return {
-      headerTitle: <CustomHeader titleText={navigation.state.routeName} />,
-      headerStyle: {
-        backgroundColor: '#fff',
-      },
-    };
+      header: null
+    }
   };
 
   navToSpecificSeller = (seller) => {
@@ -69,6 +64,7 @@ class SearchSellersLayout extends Component {
 
     return (
       <View style={styles.container}>
+        <CustomHeader titleText={this.props.navigation.state.routeName} />
         <FlatList
           keyExtractor={item => item.id }
           data={sellers}
@@ -84,7 +80,7 @@ class SearchSellersLayout extends Component {
                 icon={{name: 'fingerprint'}}
                 backgroundColor='#03A9F4'
                 buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                title='VIEW NOW' />
+                title='DETAILS' />
             </Card>
             // <SellerRow
             //   userId={userId}
@@ -110,7 +106,7 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(compose(
-  graphql(sellersQuery, {
+  graphql(SELLERS_QUERY, {
     options: {
       fetchPolicy: "cache-and-network",
       variables: {
@@ -124,11 +120,10 @@ export default connect(mapStateToProps, mapDispatchToProps)(compose(
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "column",
     flex: 1,
+    flexDirection: "column",
     alignItems: 'center',
     justifyContent: 'center',
     backgroundColor: "white",
-    padding: 10
   }
 })
