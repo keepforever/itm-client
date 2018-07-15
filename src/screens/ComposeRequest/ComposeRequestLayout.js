@@ -60,31 +60,28 @@ class ComposeRequestLayout extends Component {
     if (this.state.isSubmitting) {
       return;
     }
-
-    const {title, text, expiresAt, id} = this.state.values
-
-    const { variables } = this.props.listOffers
-
-    clearLog('VARIABLES', variables)
+    const { values: { title, text, wants, author, recipient } } = this.state;
 
     this.setState({ isSubmitting: true });
     let response;
     try {
       response = await this.props.createRequestMutation({
         variables: {
-          recipient,
           author,
+          recipient,
           title,
-          text
+          text,
+          wants
         },
       });
     } catch(error) {
       console.log(error)
       return
     }
-    clearLog('CREATE_OFFER response', response)
+    clearLog('CREATE_REQUEST response', response)
     this.setState({
       isSubmitting: false,
+      pendingWant:'',
       values: {
         ...defaultState.values
       }
