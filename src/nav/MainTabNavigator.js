@@ -15,6 +15,7 @@ import Offer from '../screens/Offer'
 import CreateOffer from '../screens/CreateOffer'
 import SpecificOffer from '../screens/SpecificOffer'
 import SpecificSeller from '../screens/SpecificSeller'
+import BefriendSpecificSellerConfig from '../screens/BefriendSpecificSellerConfig'
 import EditOffer from '../screens/EditOffer'
 
 import SearchSellers from '../screens/SearchSellers'
@@ -45,7 +46,8 @@ HomeStack.navigationOptions = {
 
 const SearchSellersStack = createStackNavigator({
   SearchSellers: SearchSellers,
-  SpecificSeller: SpecificSeller
+  SpecificSeller: SpecificSeller,
+  BefriendConfig: BefriendSpecificSellerConfig,
 });
 
 SearchSellersStack.navigationOptions = {

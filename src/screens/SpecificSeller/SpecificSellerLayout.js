@@ -1,35 +1,122 @@
 import React from 'react';
-import { Image, ScrollView, View, FlatList, StyleSheet } from 'react-native';
+import {
+  Image, ScrollView, View, TouchableHighlight,
+  FlatList, StyleSheet,
+} from 'react-native';
 import CustomHeader from '../../components/CustomHeader';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
 import { OFFERS_QUERY } from '../../graphql/queries/OFFERS_QUERY';
 import { DELETE_OFFER } from '../../graphql/mutations/DELETE_OFFER';
-import { EDIT_OFFER } from '../../graphql/mutations/EDIT_OFFER';
+import { ADD_SELLER_TO_FRIENDS } from '../../graphql/mutations/ADD_SELLER_TO_FRIENDS';
 import OfferRow from '../../components/OfferRow';
 import { connect } from 'react-redux';
 import { clearLog } from '../../utils';
-import { Card, Text, ListItem, Button} from 'react-native-elements'
+import { Card, Text, ListItem, Button } from 'react-native-elements'
 import cardHeaderImage from './sellerCardHeader.jpg'
+import TextField from '../../components/TextField';
+
+const defaultState = {
+  values: {
+    friendsBecause: [],
+    offerAllowance: 1,
+    friendsBecauseReason:'',
+  },
+  errors: {},
+  isSubmitting: false,
+  modalVisible: false,
+}
+
+const pickerValues = [...Array(10).keys()]
 
 class SpecificSeller extends React.Component {
-
-  static navigationOptions = ( {navigation } ) => {
+  static navigationOptions = ( { navigation } ) => {
     return {
       title: navigation.state.routeName,
     }
   };
 
-  addSellerToFriends = () => {
-    const seller = this.props.specificSeller
-    clearLog('addSellerToFriends', seller )
+  state = defaultState
+
+  navToBefriendConfig = () => {
+   this.props.navigation.navigate('BefriendConfig');
   };
 
+  befriendSeller = () => {
+    const seller = this.props.specificSeller
+    clearLog('befriendSeller', seller )
+  };
+
+  setModalVisible(visible) {
+    this.setState({modalVisible: visible});
+  }
+
+  onChangeText = (key, value) => {
+    this.setState(state => ({
+      values: {
+        ...state.values,
+        [key]: value,
+      },
+    }));
+  };
+
+  addFriendShipReason(reason) {
+    const currentReasons = [...this.state.values.friendsBecause]
+    clearLog('currentReasons', currentReasons)
+
+    const updatedReasons = currentReasons.push(reason)
+
+    this.setState(state => ({
+      values: {
+        ...state.values,
+        friendsBecause: updatedReasons,
+        friendsBecauseReason: 'Add Another Reason'
+      },
+    }));
+
+  }
+
+  submit = async (values) => {
+    const { friend, friendsBecause, offerAllowance } = values;
+
+    const { variables } = this.props.specificSeller
+    clearLog("EDIT_OFFER_LAYOUT, variables", variables)
+    let response;
+    try {
+      response = await this.props.editOffer({
+        variables: {
+          id,
+          text,
+          title,
+        },
+        // update: (store, { data: { updateOffer } }) => {
+        //   const data = store.readQuery({ query: OFFERS_QUERY, variables });
+        //
+        //   data.offersConnection.edges = data.offersConnection.edges.map(o =>
+        //     (o.node.id === updateOffer.id
+        //       ? { __typename: 'Node', cursor: updateOffer.id, node: updateOffer }
+        //       : o));
+        //   store.writeQuery({ query: OFFERS_QUERY, data, variables });
+        // }
+      });
+    } catch (err) {
+      console.log('there was an error');
+      console.log(err);
+      return;
+    }
+
+    clearLog('response', response)
+
+    this.props.navigation.navigate('Offer');
+  };
 
   render() {
     const { specificSeller: { name, about, sells } } = this.props
-    // clearLog('SPECIFIC_SELLER_LAYOUT, props', this.props)
-    clearLog('SPECIFIC_SELLER_LAYOUT, about', about)
+    const { friendsBecauseReason, offerAllowance } = this.state.values
+
+    clearLog('SPECIFIC_SELLER_LAYOUT, state', this.state)
+    //clearLog('SPECIFIC_SELLER_LAYOUT, about', about)
+    //clearLog('SPECIFIC_SELLER_LAYOUT, specificSeller', this.props.specificSeller)
     return (
       <ScrollView style={styles.container} >
         <View style={styles.cardContainer}>
@@ -45,7 +132,7 @@ class SpecificSeller extends React.Component {
               return <ListItem key={i} title={s} />
             })}
             <Button
-              onPress={() => this.addSellerToFriends()}
+              onPress={this.navToBefriendConfig}
               icon={{name: 'face'}}
               backgroundColor='#03A9F4'
               buttonStyle={{
@@ -69,13 +156,23 @@ const mapStateToProps = state => {
     };
 }
 
-export default connect(mapStateToProps)(graphql(EDIT_OFFER)(SpecificSeller))
+export default connect(mapStateToProps)(graphql(ADD_SELLER_TO_FRIENDS, {
+  options: { fetchPolicy: "cache-and-network" },
+  name: "addSellerToFriendsMutation"
+})(SpecificSeller))
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
     flex: 1,
     backgroundColor: "white",
+  },
+  modalContainer: {
+    flexDirection: "column",
+    flex: 1,
+    backgroundColor: "white",
+    alignItems: 'center',
+    marginTop: 22,
   },
   texTag: {
     fontSize: 20
@@ -108,3 +205,21 @@ const styles = StyleSheet.create({
 //     },
 //   };
 // };
+
+//
+// <Picker
+//   selectedValue={this.state.values.offerAllowance}
+//   onValueChange={(itemValue, itemIndex) => {
+//     this.setState(state => ({
+//       values: {
+//         ...state.values,
+//         offerAllowance: itemValue,
+//       },
+//     }))
+//   }}>
+//   {pickerValues.map((v, i) => {
+//     return (
+//       <Picker.Item label={v.toString()} value={v} key={i} />
+//     )
+//   })}
+// </Picker>
