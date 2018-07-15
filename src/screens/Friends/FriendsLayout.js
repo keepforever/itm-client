@@ -54,7 +54,7 @@ class FriendsLayout extends React.Component {
     //   clearLog(`${item.name}`, item.about)
     // })
 
-    clearLog('currentUser.friends', currentUser.friends)
+    //clearLog('currentUser.friends', currentUser.friends)
 
 
     return (

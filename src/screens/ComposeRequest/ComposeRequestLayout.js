@@ -1,14 +1,14 @@
 import React, { Component } from "react";
 import { Text } from "react-native-elements";
 import {
-  View,
-  ScrollView,
-  KeyboardAvoidingView,
-  StyleSheet,
-  Button,
+  View, ScrollView, KeyboardAvoidingView, StyleSheet, Button,
+  TouchableHighlight,
 } from "react-native";
+import { Icon } from 'expo';
+// Custom Components
 import OfferRow from '../../components/OfferRow';
 import TextField from '../../components/TextField';
+import MultilineTextField from '../../components/MultilineTextField';
 // Redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -32,6 +32,7 @@ const defaultState = {
   },
   errors: {},
   isSubmitting: false,
+  pendingWant: ''
 }
 
 class ComposeRequestLayout extends Component {
@@ -41,16 +42,14 @@ class ComposeRequestLayout extends Component {
 
   state = defaultState
 
-  componentDidMout() {
-    clearLog('hello from state', 'hello from state')
+  componentDidMount() {
     this.setState(state => ({
       values: {
         ...state.values,
         author: this.props.userId,
-        recipient: this.props.sellerInfo.id
+        recipient: this.props.specificSeller.id
       },
     }));
-    clearLog('hello from state', 'hello from state')
   }
 
   navToHome = () => {
@@ -93,6 +92,51 @@ class ComposeRequestLayout extends Component {
 
   };
 
+  addWant(want) {
+    if(want.length === 0) {
+      this.setState(state => ({
+        ...state,
+        pendingWant: ''
+      }));
+      return
+    }
+    const updatedWants = [
+      ...this.state.values.wants,
+      want.trim()
+    ]
+    clearLog('updatedReasons', updatedWants)
+
+    this.setState(state => ({
+      values: {
+        ...state.values,
+        wants: updatedWants,
+      },
+      pendingWant: ''
+    }));
+  }
+
+  removeWant = (index) => {
+    //clearLog('index', index)
+    const curWants = [ ...this.state.values.wants ]
+    //clearLog('currentReasons', curRe)
+    const updatedWants = curWants.filter( (w) => { return w !== curWants[index] })
+    //clearLog('updatedReasons', updatedReasons)
+    this.setState(state => ({
+      values: {
+        ...state.values,
+        wants: updatedWants,
+      },
+      friendsBecauseReason: ''
+    }));
+  }
+
+  onChangeWantsText = (key, value) => {
+    this.setState(state => ({
+      ...state,
+      pendingWant: value,
+    }));
+  };
+
   onChangeText = (key, value) => {
     this.setState(state => ({
       values: {
@@ -103,39 +147,91 @@ class ComposeRequestLayout extends Component {
   };
 
   render() {
-    const { errors, values: { title, text } } = this.state;
 
-    console.log('CREATE_OFFER_LAYOUT', this.props)
-    const {
-      specificSeller: {
-        name,
-        sells,
-        about,
-      },
-      userId,
-    } = this.props
+    const { pendingWant, errors, values: { title, text, wants } } = this.state;
+
+    const { specificSeller: { name, sells, about }, userId } = this.props;
+
+    let listOfWants = null;
+    if (wants.length > 0) {
+      listOfWants = (
+        wants.map((want, index) => {
+          return (
+            <View style={{
+              flexDirection: 'row',
+              width: '80%',
+              justifyContent: 'space-around'
+            }} key={index}>
+              <Text h4 >{want}</Text>
+              <TouchableHighlight
+                onPress={() => this.removeWant(index)}>
+                <Icon.Ionicons
+                  name="ios-nuclear-outline"
+                  size={36}
+                  color="red"
+                />
+              </TouchableHighlight>
+            </View>
+          )
+        })
+      )
+    }
+    // choices for ButtonGroup:
 
 
+    // console.log('CREATE_OFFER_LAYOUT', this.props)
 
     //clearLog('COMPOSE_REQUEST props', this.props)
     clearLog('COMPOSE_REQUEST state', this.state)
     return (
-      <View style={styles.container}>
-        <Button title="Nav Home" onPress={this.navToHome} />
-        <TextField
-          kolor="black"
-          value={title}
-          name="title"
-          onChangeText={this.onChangeText}
-        />
-        <TextField
-          kolor="black"
-          value={text}
-          name="text"
-          onChangeText={this.onChangeText}
-        />
-        <Button title="Add Offer" onPress={this.submit} />
-      </View>
+      <ScrollView>
+        <View style={styles.container}>
+          <Button title="Nav Home" onPress={this.navToHome} />
+          <View>
+            <Text h4>
+              Request Title:
+            </Text>
+          </View>
+          <TextField
+            kolor="black"
+            value={title}
+            name="title"
+            onChangeText={this.onChangeText}
+          />
+          <View>
+            <Text h4>
+              Request Text:
+            </Text>
+          </View>
+          <TextField
+            kolor="black"
+            value={text}
+            name="text"
+            onChangeText={this.onChangeText}
+          />
+          <View>
+            <Text h4>
+              Create Wants List:
+            </Text>
+          </View>
+          <TextField
+            kolor="black"
+            value={pendingWant}
+            name="enter want"
+            onChangeText={this.onChangeWantsText}
+          />
+          <Button
+            onPress={() => {
+              this.addWant(pendingWant);
+            }}
+            icon={{name: 'face'}}
+            backgroundColor='black'
+            title='Push Want'
+          />
+          <Button title="Send Request" onPress={this.submit} />
+          {listOfWants}
+        </View>
+      </ScrollView>
     );
   }
 }
