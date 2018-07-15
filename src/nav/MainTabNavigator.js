@@ -17,12 +17,14 @@ import SpecificOffer from '../screens/SpecificOffer'
 import SpecificSeller from '../screens/SpecificSeller'
 import BefriendSpecificSellerConfig from '../screens/BefriendSpecificSellerConfig'
 import EditOffer from '../screens/EditOffer'
+import ComposeRequest from '../screens/ComposeRequest'
 
 import SearchSellers from '../screens/SearchSellers'
 
 const HomeStack = createStackNavigator({
   PatronInbox: PatronInbox,
   Home: Home,
+  ComposeRequest: ComposeRequest,
   Friends: Friends,
   Offer: Offer,
   CreateOffer: CreateOffer,

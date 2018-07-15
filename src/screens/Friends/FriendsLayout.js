@@ -22,8 +22,11 @@ class FriendsLayout extends React.Component {
   state = {
     someThing: "some state"
   };
-  navToOffer = () => {
-   this.props.navigation.navigate('Offer');
+
+  navToComposeRequest = (seller) => {
+    clearLog('hello', 'hello hello')
+    this.props.selectSellerAction(seller)
+    this.props.navigation.navigate('ComposeRequest');
   };
 
   render() {
@@ -35,11 +38,11 @@ class FriendsLayout extends React.Component {
         variables,
         loading,
       },
-      userId, specificOffer
+      userId, specificSeller
     } = this.props
 
     if(loading) {
-      return <Text>Loading...</Text>
+      return <ActivityIndicator size="large" color="#00ff00"/>
     }
 
     //clearLog('this.props.listUserFriends', this.props.listUserFriends)
@@ -51,7 +54,7 @@ class FriendsLayout extends React.Component {
     //   clearLog(`${item.name}`, item.about)
     // })
 
-    clearLog('currentUser', currentUser)
+    clearLog('currentUser.friends', currentUser.friends)
 
 
     return (
@@ -70,7 +73,7 @@ class FriendsLayout extends React.Component {
                 return <ListItem key={i} title={s} />
               })}
               <Button
-                onPress={() => alert(item.friend.id)}
+                onPress={() => this.navToComposeRequest(item.friend)}
                 icon={{name: 'fingerprint'}}
                 backgroundColor='#03A9F4'
                 buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
@@ -99,7 +102,7 @@ export default connect(mapStateToProps, mapDispatchToProps)(
   graphql(FRIENDS_OF_USER_QUERY, {
     options: (props) => ({ variables: { id: props.userId } }),
     name: "listUserFriends"
-  }) (FriendsLayout));
+  })(FriendsLayout));
 
 const styles = StyleSheet.create({
   container: {

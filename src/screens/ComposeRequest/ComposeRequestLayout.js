@@ -9,32 +9,26 @@ import {
 } from "react-native";
 import OfferRow from '../../components/OfferRow';
 import TextField from '../../components/TextField';
+// Redux
+import { connect } from 'react-redux';
+import { bindActionCreators } from 'redux';
 // GraphQL Imports
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 //Q's & M's
-import { OFFERS_QUERY_NO_PAGEINATE } from '../../graphql/queries/OFFERS_QUERY_NO_PAGEINATE';
-import { CREATE_OFFER } from '../../graphql/mutations/CREATE_OFFER';
-import { CREATE_OFFER_OVERHALL } from '../../graphql/mutations/CREATE_OFFER_OVERHALL';
+import { selectSpecificSeller } from '../../store/actions/seller';
+import { CREATE_REQUEST } from '../../graphql/mutations/CREATE_REQUEST';
+// Helper
 import { clearLog } from '../../utils';
-
-//   id: ID! @unique
-//   recipient: Seller!
-//   author: User!
-//   wants: [String!]!
-//   title: String!
-//   text: String!
-//   isPublished: Boolean! @default(value: "true")
-//   createdAt: DateTime!
-//   updatedAt: DateTime!
 
 
 const defaultState = {
   values: {
     author: '',
     recipient: '',
-    expiresAt: '2019-07-04T05:48:36.648Z',
-    id: 'cjjhknwkchrj40b37ajndxl3u'
+    title: '',
+    text: '',
+    wants: [],
   },
   errors: {},
   isSubmitting: false,
@@ -45,8 +39,20 @@ class ComposeRequestLayout extends Component {
     title: "Choose Wisely",
   };
 
-
   state = defaultState
+
+  componentDidMout() {
+    clearLog('hello from state', 'hello from state')
+    this.setState(state => ({
+      values: {
+        ...state.values,
+        author: this.props.userId,
+        recipient: this.props.sellerInfo.id
+      },
+    }));
+    clearLog('hello from state', 'hello from state')
+  }
+
   navToHome = () => {
    this.props.navigation.navigate('Home');
   };
@@ -65,23 +71,12 @@ class ComposeRequestLayout extends Component {
     this.setState({ isSubmitting: true });
     let response;
     try {
-      response = await this.props.createOffer({
+      response = await this.props.createRequestMutation({
         variables: {
+          recipient,
+          author,
           title,
-          text,
-          expiresAt,
-          id
-        },
-        update: (store, {data: { createOffer }}) => {
-          const data = store.readQuery( { query: OFFERS_QUERY_NO_PAGEINATE, variables } );
-
-          data.offersConnection.edges = [
-            { __typename: 'Node', cursor: createOffer.id, node: createOffer },
-            ...data.offersConnection.edges,
-          ];
-          clearLog('VARIABLES 2222', variables)
-          // data.offersConnection.edges.filter(o => o.node.id !== id);
-          store.writeQuery({ query: OFFERS_QUERY_NO_PAGEINATE, data, variables });
+          text
         },
       });
     } catch(error) {
@@ -109,24 +104,21 @@ class ComposeRequestLayout extends Component {
 
   render() {
     const { errors, values: { title, text } } = this.state;
-    //console.log('CREATE_OFFER_LAYOUT', this.props)
+
+    console.log('CREATE_OFFER_LAYOUT', this.props)
     const {
-      listOffers: {
-        // offersConnection = {pageInfo: {}, edges: []},
-        variables,
-        loading,
+      specificSeller: {
+        name,
+        sells,
+        about,
       },
-      history
+      userId,
     } = this.props
 
-    //clearLog('loading', loading)
 
-    if (loading) {
-      return null;
-    }
 
-    //console.log('CreateOfferLayout: ', offersWithKey[0]);
-    let offersMap = {}; // to help address keys error in lue of adding random number
+    //clearLog('COMPOSE_REQUEST props', this.props)
+    clearLog('COMPOSE_REQUEST state', this.state)
     return (
       <View style={styles.container}>
         <Button title="Nav Home" onPress={this.navToHome} />
@@ -148,21 +140,24 @@ class ComposeRequestLayout extends Component {
   }
 }
 
-export default compose(
-  graphql(CREATE_OFFER_OVERHALL, {
+const mapStateToProps = state => {
+    return {
+        userId: state.user.userId,
+        specificSeller: state.seller.sellerInfo
+    };
+}
+
+// Dispatch not currently being invoked in this Screen.
+// May use later.
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({selectSellerAction: selectSpecificSeller}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(
+  graphql(CREATE_REQUEST, {
     options: { fetchPolicy: "cache-and-network" },
-    name: "createOffer"
-  }),
-  graphql(OFFERS_QUERY_NO_PAGEINATE, {
-    options: {
-      fetchPolicy: "cache-and-network",
-      variables: {
-        orderBy: 'createdAt_ASC'
-      }
-    },
-    name: "listOffers"
-  }),
-)(ComposeRequestLayout);
+    name: "createRequestMutation"
+  })(ComposeRequestLayout));
 
 
 const styles = StyleSheet.create({
