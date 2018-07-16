@@ -6,7 +6,6 @@ import {
 } from "react-native";
 import { Icon } from 'expo';
 // Custom Components
-import OfferRow from '../../components/OfferRow';
 import TextField from '../../components/TextField';
 import MultilineTextField from '../../components/MultilineTextField';
 // Redux
@@ -61,6 +60,7 @@ class ComposeRequestLayout extends Component {
       return;
     }
     const { values: { title, text, wants, author, recipient } } = this.state;
+    const isPublished = true;
 
     this.setState({ isSubmitting: true });
     let response;
@@ -71,11 +71,12 @@ class ComposeRequestLayout extends Component {
           recipient,
           title,
           text,
-          wants
+          wants,
+          isPublished,
         },
       });
     } catch(error) {
-      console.log(error)
+      clearLog('CREATE_REQUEST ERROR,', error)
       return
     }
     clearLog('CREATE_REQUEST response', response)
@@ -87,6 +88,9 @@ class ComposeRequestLayout extends Component {
       }
      });
 
+    alert(`Request Sucessfully Persisted: \n From: ${response.data.createRequest.author.name} \n To: ${response.data.createRequest.recipient.name} \n Title:  ${response.data.createRequest.title} \n Text: ${response.data.createRequest.text}\n`)
+
+    this.props.navigation.navigate('PatronInbox');
   };
 
   addWant(want) {

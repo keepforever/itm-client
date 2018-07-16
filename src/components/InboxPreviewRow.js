@@ -1,11 +1,19 @@
 import React from 'react';
 import {
-  Image, View, StyleSheet,
-  Button, TouchableHighlight,
- } from 'react-native';
-import {Text} from 'react-native-elements';
+  Image, View, StyleSheet, Button, TouchableHighlight,
+  ImageBackground
+} from 'react-native';
+import {Text, Tile} from 'react-native-elements';
 import { clearLog } from '../utils'
-
+import tileBackgroundImage from '../../assets/images/offerListItemTileImage.jpg'
+// <Tile
+//   imageSrc={tileBackgroundImage}
+//   title={`${title}`}
+//   featured
+//   containerStyle={{height: 100}}
+//   caption={`${authorName}`}
+// />
+//
 const InboxPreviewRow = ( props ) => {
   const {
     item: {title, text, id, author: { name }},
@@ -27,11 +35,16 @@ const InboxPreviewRow = ( props ) => {
 
   return (
     <TouchableHighlight onPress={() => props.viewThisOffer({text, title, id})}>
-      <View style={styles.container}>
-          <Text h3 style={styles.from}>From: {authorName}</Text>
-          <Text h3 style={styles.title}> {title}</Text>
-          <Text h3 style={styles.text}> {text}</Text>
-      </View>
+      <ImageBackground
+        source={tileBackgroundImage}
+        style={{width: '100%', height: 125}}
+      >
+        <View style={styles.container}>
+            <Text h4 style={styles.from}> {authorName}</Text>
+            <Text h4 style={styles.title}> {title}</Text>
+            <Text h4 style={styles.text}> {text}</Text>
+        </View>
+      </ImageBackground>
     </TouchableHighlight>
   );
 };
@@ -41,26 +54,19 @@ export default InboxPreviewRow;
 const styles = StyleSheet.create({
   container: {
     display: 'flex',
-    backgroundColor: 'rgba(52, 52, 52, 0.2)',
+    backgroundColor: 'rgba(52, 52, 52, 0.05)',
     justifyContent:'space-around',
     flexDirection: 'column',
-    margin: 10,
-    height:100,
+    height: 125,
     width: '100%',
-    borderBottomColor: 'blue',
-    borderBottomWidth: 0.5
   },
   from: {
-    fontSize: 25,
+    fontSize: 19,
   },
   title: {
     fontSize: 15,
   },
   text: {
     fontSize: 10,
-  },
-  image: {
-    height: 125,
-    width: 125,
   },
 });

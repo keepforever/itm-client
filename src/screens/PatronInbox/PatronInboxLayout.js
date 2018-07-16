@@ -14,7 +14,7 @@ import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import { selectSpecificOffer } from '../../store/actions/offer';
 
-const flatListHeight = Dimensions.get('window').height/2;
+const flatListHeight = Dimensions.get('window').height*0.6;
 
 class PatronInboxLayout extends Component {
   static navigationOptions = {header: null};

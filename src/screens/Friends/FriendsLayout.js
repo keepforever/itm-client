@@ -70,7 +70,7 @@ class FriendsLayout extends React.Component {
               </Text>
               <Text h3>Sells:</Text>
               {item.friend.sells.map((s, i) => {
-                return <ListItem key={i} title={s} />
+                return <ListItem hideChevron={true} key={i} title={s} />
               })}
               <Button
                 onPress={() => this.navToComposeRequest(item.friend)}

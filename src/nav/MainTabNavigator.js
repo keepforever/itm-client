@@ -24,8 +24,6 @@ import SearchSellers from '../screens/SearchSellers'
 const HomeStack = createStackNavigator({
   PatronInbox: PatronInbox,
   Home: Home,
-  ComposeRequest: ComposeRequest,
-  Friends: Friends,
   Offer: Offer,
   CreateOffer: CreateOffer,
   SpecificOffer: SpecificOffer,
@@ -46,6 +44,25 @@ HomeStack.navigationOptions = {
   ),
 };
 
+const FriendsStack = createStackNavigator({
+  Friends: Friends,
+  ComposeRequest: ComposeRequest,
+});
+
+FriendsStack.navigationOptions = {
+  tabBarLabel: 'Friends',
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={
+        Platform.OS === 'ios'
+          ? `ios-remove-circle${focused ? '' : '-outline'}`
+          : 'md-remove-circle'
+      }
+    />
+  ),
+};
+
 const SearchSellersStack = createStackNavigator({
   SearchSellers: SearchSellers,
   SpecificSeller: SpecificSeller,
@@ -53,7 +70,7 @@ const SearchSellersStack = createStackNavigator({
 });
 
 SearchSellersStack.navigationOptions = {
-  tabBarLabel: 'SearchSellers',
+  tabBarLabel: 'Sellers',
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
@@ -78,6 +95,7 @@ SettingsStack.navigationOptions = {
 
 export default createBottomTabNavigator({
   HomeStack,
+  FriendsStack,
   SearchSellersStack,
   SettingsStack,
 });

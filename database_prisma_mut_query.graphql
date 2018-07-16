@@ -1,6 +1,15 @@
 {
   "Authorization":"Bearer <TOKEN>"
 }
+### Create Request Query Args
+{
+  "author": "cjjj0sapuq2vd0b37czhnbj80",
+  "recipient": "cjjj16bqeq43j0b378utu796v",
+  "title": "String!",
+  "text": "String!",
+  "wants": ["String"],
+  "isPublished": true
+}
 
 ###############################################################################
 
