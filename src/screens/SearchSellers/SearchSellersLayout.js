@@ -18,27 +18,28 @@ import cardHeaderImage from './sellerCardHeader.jpg'
 import CustomHeader from '../../components/CustomHeader'
 
 class SearchSellersLayout extends Component {
-  // static navigationOptions = ({ navigation }) => {
-  //   //clearLog('NAVIGATION', navigation)
-  //   return {
-  //     headerTitle: <CustomHeader titleText={navigation.state.routeName} />,
-  //     headerStyle: {
-  //       backgroundColor: '#fff',
-  //     },
-  //   };
-  // };
-
-  static navigationOptions = ( { navigation } ) => {
+  static navigationOptions = ({navigation}) => {
+    const {routeName} = navigation.state
     return {
-      header: null
-    }
+      title: `${routeName}`,
+      headerStyle: {
+        backgroundColor: 'black',
+        height: 50,
+        width: '100%'
+      },
+      headerTintColor: 'white',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        fontSize: 16
+      }
+    };
   };
 
   navToSpecificSeller = (seller) => {
     //clearLog("navToSpecificSeller, seller:", seller)
     this.props.selectSellerAction(seller)
     //clearLog('SEARCH_SELLERS_LAYOUT specificSeller:', this.props.specificSeller)
-    this.props.navigation.navigate('SpecificSeller');
+    this.props.navigation.navigate('SpecificSeller', {sellerName: seller.name});
   };
 
   state = {
@@ -64,7 +65,6 @@ class SearchSellersLayout extends Component {
 
     return (
       <View style={styles.container}>
-        <CustomHeader titleText={this.props.navigation.state.routeName} />
         <FlatList
           keyExtractor={item => item.id }
           data={sellers}

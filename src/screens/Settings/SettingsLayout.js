@@ -1,15 +1,25 @@
 import React, { Component } from "react";
 import {
-  View,
-  StyleSheet,
-  Button,
-  AsyncStorage
+  View, StyleSheet, AsyncStorage,
 } from "react-native";
-import { Text } from "react-native-elements";
+import { Text, Button } from "react-native-elements";
 
 class SettingsScreen extends Component {
-  static navigationOptions = {
-    title: "SettingsLayout",
+  static navigationOptions = ({navigation}) => {
+    const {routeName} = navigation.state
+    return {
+      title: `${routeName}`,
+      headerStyle: {
+        backgroundColor: 'black',
+        height: 50,
+        width: '100%'
+      },
+      headerTintColor: 'white',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        fontSize: 16
+      }
+    };
   };
 
   state = {
@@ -28,13 +38,21 @@ class SettingsScreen extends Component {
 
     return (
       <View style={styles.container}>
-        <Text h3>
-          SettingsLayout
-          <Button
-            title="Press Here to Logout"
-            onPress={this._logOutAsync}
-          />
-        </Text>
+        <Button
+          onPress={() => this._logOutAsync()}
+          icon={{name: 'fingerprint'}}
+          backgroundColor='black'
+          buttonStyle={{
+            width: 250,
+            borderRadius: 0,
+            borderWidth: 1,
+            borderColor: 'white',
+            marginTop: 20,
+            marginLeft: 0,
+            marginRight: 0,
+            marginBottom: 0
+          }}
+          title='Log Out' />
       </View>
     )
   }
@@ -45,11 +63,10 @@ export default SettingsScreen;
 
 const styles = StyleSheet.create({
   container: {
-    alignItems: 'center',
-    justifyContent: 'center',
     flexDirection: "column",
     flex: 1,
-    backgroundColor: "white",
-    padding: 10
+    alignItems:'center',
+    justifyContent: 'center',
+    backgroundColor: "black",
   }
 })

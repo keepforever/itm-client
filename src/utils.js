@@ -22,7 +22,7 @@ export const updateObject = (oldObject, updatedProperties) => {
     ...oldObject,
     ...updatedProperties
   }
-  clearLog('newObject', newObject)
+  //clearLog('newObject', newObject)
   return newObject
 };
 

@@ -12,21 +12,36 @@ import { bindActionCreators } from 'redux';
 import { selectSpecificSeller } from '../../store/actions/seller';
 import { clearLog } from '../../utils';
 import TextField from '../../components/TextField';
+import CustomHeader from '../../components/CustomHeader'
 
 import { ListItem, Text, Card } from 'react-native-elements';
 
 class FriendsLayout extends React.Component {
-  static navigationOptions = {
-    title: "FriendsLayout",
+  static navigationOptions = ({navigation}) => {
+    const {routeName} = navigation.state
+    return {
+      title: `${routeName}`,
+      headerStyle: {
+        backgroundColor: 'black',
+        height: 50,
+        width: '100%'
+      },
+      headerTintColor: 'white',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        fontSize: 16
+      }
+    };
   };
+
   state = {
     someThing: "some state"
   };
 
   navToComposeRequest = (seller) => {
-    clearLog('hello', 'hello hello')
+    //clearLog('navToComposeRequest', seller)
     this.props.selectSellerAction(seller)
-    this.props.navigation.navigate('ComposeRequest');
+    this.props.navigation.navigate('ComposeRequest', {sellerName: seller.name});
   };
 
   render() {

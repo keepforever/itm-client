@@ -3,7 +3,6 @@ import {
   Image, ScrollView, View, TouchableHighlight,
   FlatList, StyleSheet,
 } from 'react-native';
-import CustomHeader from '../../components/CustomHeader';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
 import { OFFERS_QUERY } from '../../graphql/queries/OFFERS_QUERY';
@@ -15,6 +14,7 @@ import { clearLog } from '../../utils';
 import { Card, Text, ListItem, Button } from 'react-native-elements'
 import cardHeaderImage from './sellerCardHeader.jpg'
 import TextField from '../../components/TextField';
+import CustomHeaderBack from '../../components/CustomHeaderBack'
 
 const defaultState = {
   values: {
@@ -30,10 +30,21 @@ const defaultState = {
 const pickerValues = [...Array(10).keys()]
 
 class SpecificSeller extends React.Component {
-  static navigationOptions = ( { navigation } ) => {
+  static navigationOptions = ({navigation}) => {
+    const title = navigation.getParam('sellerName')
     return {
-      title: navigation.state.routeName,
-    }
+      title: `Seller Info`,
+      headerStyle: {
+        backgroundColor: 'black',
+        height: 50,
+        width: '100%'
+      },
+      headerTintColor: 'white',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        fontSize: 16
+      }
+    };
   };
 
   state = defaultState
@@ -42,10 +53,10 @@ class SpecificSeller extends React.Component {
    this.props.navigation.navigate('BefriendConfig');
   };
 
-  befriendSeller = () => {
-    const seller = this.props.specificSeller
-    clearLog('befriendSeller', seller )
-  };
+  // mabye add one click add friend in future
+  // befriendSeller = () => {
+  //   const seller = this.props.specificSeller
+  // };
 
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
@@ -62,7 +73,7 @@ class SpecificSeller extends React.Component {
 
   addFriendShipReason(reason) {
     const currentReasons = [...this.state.values.friendsBecause]
-    clearLog('currentReasons', currentReasons)
+    //clearLog('currentReasons', currentReasons)
 
     const updatedReasons = currentReasons.push(reason)
 
@@ -80,7 +91,7 @@ class SpecificSeller extends React.Component {
     const { friend, friendsBecause, offerAllowance } = values;
 
     const { variables } = this.props.specificSeller
-    clearLog("EDIT_OFFER_LAYOUT, variables", variables)
+    //clearLog("EDIT_OFFER_LAYOUT, variables", variables)
     let response;
     try {
       response = await this.props.editOffer({
@@ -105,7 +116,7 @@ class SpecificSeller extends React.Component {
       return;
     }
 
-    clearLog('response', response)
+    //clearLog('response', response)
 
     this.props.navigation.navigate('Offer');
   };
@@ -114,7 +125,7 @@ class SpecificSeller extends React.Component {
     const { specificSeller: { name, about, sells } } = this.props
     const { friendsBecauseReason, offerAllowance } = this.state.values
 
-    clearLog('SPECIFIC_SELLER_LAYOUT, state', this.state)
+    //clearLog('SPECIFIC_SELLER_LAYOUT, state', this.state)
     //clearLog('SPECIFIC_SELLER_LAYOUT, about', about)
     //clearLog('SPECIFIC_SELLER_LAYOUT, specificSeller', this.props.specificSeller)
     return (

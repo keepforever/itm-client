@@ -35,8 +35,21 @@ const defaultState = {
 }
 
 class ComposeRequestLayout extends Component {
-  static navigationOptions = {
-    title: "Choose Wisely",
+  static navigationOptions = ({navigation}) => {
+    const name = navigation.getParam('sellerName')
+    return {
+      title: `To: ${name}`,
+      headerStyle: {
+        backgroundColor: 'black',
+        height: 50,
+        width: '100%'
+      },
+      headerTintColor: 'white',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        fontSize: 16
+      }
+    };
   };
 
   state = defaultState
@@ -79,7 +92,7 @@ class ComposeRequestLayout extends Component {
       clearLog('CREATE_REQUEST ERROR,', error)
       return
     }
-    clearLog('CREATE_REQUEST response', response)
+    //clearLog('CREATE_REQUEST response', response)
     this.setState({
       isSubmitting: false,
       pendingWant:'',
@@ -105,7 +118,7 @@ class ComposeRequestLayout extends Component {
       ...this.state.values.wants,
       want.trim()
     ]
-    clearLog('updatedReasons', updatedWants)
+    //clearLog('updatedReasons', updatedWants)
 
     this.setState(state => ({
       values: {
@@ -183,7 +196,7 @@ class ComposeRequestLayout extends Component {
     // console.log('CREATE_OFFER_LAYOUT', this.props)
 
     //clearLog('COMPOSE_REQUEST props', this.props)
-    clearLog('COMPOSE_REQUEST state', this.state)
+    //clearLog('COMPOSE_REQUEST state', this.state)
     return (
       <ScrollView>
         <View style={styles.container}>

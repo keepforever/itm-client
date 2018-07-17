@@ -17,16 +17,25 @@ import { selectSpecificOffer } from '../../store/actions/offer';
 const flatListHeight = Dimensions.get('window').height*0.6;
 
 class PatronInboxLayout extends Component {
-  static navigationOptions = {header: null};
-  // static navigationOptions = ({ navigation }) => {
-  //   return {
-  //     headerTitle: <CustomHeader titleText={navigation.state.routeName} />,
-  //     headerStyle: {
-  //       backgroundColor: '#fff',
-  //     },
-  //   };
-  // };
-  //
+
+  static navigationOptions = ({navigation}) => {
+    const {routeName} = navigation.state
+    return {
+      title: `${routeName}`,
+      headerStyle: {
+        backgroundColor: 'black',
+        height: 50,
+        width: '100%'
+      },
+      headerTintColor: 'white',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        fontSize: 16
+      }
+    };
+  };
+
+
   state = {
     offers: []
   };
@@ -38,10 +47,11 @@ class PatronInboxLayout extends Component {
   navToSpecificOffer = (offer) => {
     //console.log("offer in navToSpecificOffer: ", offer)
     this.props.selectOfferAction(offer)
-    this.props.navigation.navigate('SpecificOffer');
+    this.props.navigation.navigate('SpecificOffer', {offerTitle: offer.title});
   };
 
   render() {
+    //clearLog('NAVIGATION PROPS', this.props.navigation)
     const {
       listOffers: {
         offersConnection = {pageInfo: {}, edges: []},
@@ -58,7 +68,6 @@ class PatronInboxLayout extends Component {
     let offersMap = {}; // to help address keys error in lue of adding random number
     return (
       <SafeAreaView style={styles.container}>
-        <CustomHeader titleText={this.props.navigation.state.routeName} />
         <View style={styles.flatListContainer}>
           <FlatList
             keyExtractor={item => item.id }

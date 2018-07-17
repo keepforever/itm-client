@@ -6,7 +6,7 @@ const initialState = {
 };
 
 const setSeller = ( state, action ) => {
-  clearLog("seller reducer fired", action.seller)
+  //clearLog("seller reducer fired", action.seller)
   return updateObject(state, {
     sellerInfo: action.seller
   })
