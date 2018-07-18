@@ -1,5 +1,5 @@
 {
-  "Authorization":"Bearer <TOKEN>"
+  "Authorization":"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiJjampqMHNhcHVxMnZkMGIzN2N6aG5iajgwIiwiZXhwaXJlc0luIjoiN2QiLCJpYXQiOjE1MzE4NzY1NjB9.1jUHtKqYqEhXRrL-KuQ0sKuCMnCOUmkgY9xv6tYKSA4"
 }
 ### Create Request Query Args
 {
@@ -319,4 +319,33 @@ query zFeedUsers {
       }
     }
   }
+}
+
+
+query (
+  $after: String,
+  $orderBy: OfferOrderByInput,
+  $id: ID
+) {
+  offersConnection(
+    after: $after,
+    first: 3,
+    orderBy: $orderBy,
+    where: {id:}) {
+      pageInfo {
+        hasNextPage
+        endCursor
+      }
+      edges {
+        node {
+          id
+          title
+          text
+          author {
+            id
+            name
+          }
+        }
+      }
+    }
 }

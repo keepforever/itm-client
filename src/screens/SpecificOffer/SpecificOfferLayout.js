@@ -1,5 +1,5 @@
 import React from 'react';
-import { Image, Text, View, Button, FlatList, StyleSheet } from 'react-native';
+import { Image, View, FlatList, StyleSheet } from 'react-native';
 import CustomHeader from '../../components/CustomHeader'
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
@@ -8,6 +8,7 @@ import { DELETE_OFFER } from '../../graphql/mutations/DELETE_OFFER';
 import { EDIT_OFFER } from '../../graphql/mutations/EDIT_OFFER';
 import OfferRow from '../../components/OfferRow'
 import { connect } from 'react-redux'
+import { Text, Button } from "react-native-elements";
 
 class SpecificOfferLayout extends React.Component {
   static navigationOptions = ({navigation}) => {
@@ -22,7 +23,7 @@ class SpecificOfferLayout extends React.Component {
       headerTintColor: 'white',
       headerTitleStyle: {
         fontWeight: 'bold',
-        fontSize: 16
+        fontSize: 8
       }
     };
   };
@@ -55,8 +56,20 @@ class SpecificOfferLayout extends React.Component {
     return (
       <View style={styles.container} >
         <Button
-          title="Press Edit This Offer"
-          onPress={() => this.navToEditOffer()}/>
+          onPress={() => alert('TODO: archive this offer/remove from inbox')}
+          icon={{name: 'fingerprint'}}
+          backgroundColor='black'
+          buttonStyle={{
+            width: 250,
+            borderRadius: 0,
+            borderWidth: 1,
+            borderColor: 'white',
+            marginTop: 20,
+            marginLeft: 0,
+            marginRight: 0,
+            marginBottom: 0
+          }}
+          title='ARCHIVE OFFER' />
         <Text style={styles.texTag}>Specific-Offer:</Text>
         <Text style={styles.texTag}>ID: {id}</Text>
         <Text style={styles.texTag}>TI: {title}</Text>
@@ -79,11 +92,12 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "black",
     padding: 10,
     marginBottom: 0.25,
   },
   texTag: {
-    fontSize: 20
+    fontSize: 20,
+    color: 'white'
   }
 });

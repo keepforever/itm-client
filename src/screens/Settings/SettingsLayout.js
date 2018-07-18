@@ -3,6 +3,7 @@ import {
   View, StyleSheet, AsyncStorage,
 } from "react-native";
 import { Text, Button } from "react-native-elements";
+import { clearLog } from '../../utils';
 
 class SettingsScreen extends Component {
   static navigationOptions = ({navigation}) => {
@@ -28,9 +29,9 @@ class SettingsScreen extends Component {
 
   _logOutAsync = async () => {
     alert("You have been signed out. Longin again to resume.")
-    console.log( await AsyncStorage.getAllKeys())
+    //console.log( await AsyncStorage.getAllKeys())
     await AsyncStorage.clear()
-    console.log( await AsyncStorage.getAllKeys())
+    clearLog('LOG_OUT_ASYNC CALLED', await AsyncStorage.getAllKeys())
     this.props.navigation.navigate('Auth');
   }
 

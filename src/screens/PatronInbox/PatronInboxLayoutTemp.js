@@ -161,7 +161,6 @@ class PatronInboxLayout extends Component {
 const mapStateToProps = state => {
     return {
         user: state.user,
-        userId: state.user.userId,
         specificOffer: state.offer.specificOffer
     };
 }
@@ -171,13 +170,12 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(graphql(OFFERS_QUERY, {
-  options: (props) => ({
-    variables: {
-      id: props.userId,
-      orderBy: 'createdAt_ASC'
-    },
+  options: {
     fetchPolicy: "cache-and-network",
-  }),
+    variables: {
+      orderBy: 'createdAt_ASC'
+    }
+  },
   name: "listOffers"
 })(PatronInboxLayout))
 
