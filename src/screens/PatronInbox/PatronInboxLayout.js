@@ -10,6 +10,7 @@ import { Text, Header, Avatar } from "react-native-elements";
 import { clearLog } from '../../utils';
 import InboxPreviewRow from '../../components/InboxPreviewRow'
 import CustomHeader from '../../components/CustomHeader'
+import FlatListLoadingFooter from '../../components/FlatListLoadingFooter'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
 import { selectSpecificOffer } from '../../store/actions/offer';
@@ -55,7 +56,7 @@ class PatronInboxLayout extends Component {
   };
 
   navToSpecificOffer = (offer) => {
-    //console.log("offer in navToSpecificOffer: ", offer)
+    clearLog("offer in navToSpecificOffer: ", offer.name)
     this.props.selectOfferAction(offer)
     this.props.navigation.navigate('SpecificOffer', {offerTitle: offer.title});
   };
@@ -78,7 +79,7 @@ class PatronInboxLayout extends Component {
     user.inboxCount = userInboxCount
     user.friendCount = userFriendCount
 
-    clearLog('USER', user)
+    //clearLog('USER', user)
     //clearLog('offersConnection, ', offersConnection)
     //clearLog('WindowHeight', flatListHeight)
     if(!user.userName || !user.userAbout) {
@@ -150,7 +151,7 @@ class PatronInboxLayout extends Component {
             }}
             onEndReachedThreshold={0}
             ListFooterComponent={() => (
-              offersConnection.pageInfo.hasNextPage ? <ActivityIndicator size="large" color="#00ff00"/> : null)}
+              offersConnection.pageInfo.hasNextPage ? <FlatListLoadingFooter /> : null)}
           />
         </View>
       </SafeAreaView>

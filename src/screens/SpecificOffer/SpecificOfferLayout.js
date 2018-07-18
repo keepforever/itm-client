@@ -23,7 +23,7 @@ class SpecificOfferLayout extends React.Component {
       headerTintColor: 'white',
       headerTitleStyle: {
         fontWeight: 'bold',
-        fontSize: 8
+        fontSize: 14
       }
     };
   };
@@ -55,25 +55,29 @@ class SpecificOfferLayout extends React.Component {
 
     return (
       <View style={styles.container} >
-        <Button
-          onPress={() => alert('TODO: archive this offer/remove from inbox')}
-          icon={{name: 'fingerprint'}}
-          backgroundColor='black'
-          buttonStyle={{
-            width: 250,
-            borderRadius: 0,
-            borderWidth: 1,
-            borderColor: 'white',
-            marginTop: 20,
-            marginLeft: 0,
-            marginRight: 0,
-            marginBottom: 0
-          }}
-          title='ARCHIVE OFFER' />
-        <Text style={styles.texTag}>Specific-Offer:</Text>
-        <Text style={styles.texTag}>ID: {id}</Text>
-        <Text style={styles.texTag}>TI: {title}</Text>
-        <Text style={styles.texTag}>TX: {text}</Text>
+        <View>
+          <Button
+            onPress={() => alert('TODO: archive this offer/remove from inbox')}
+            icon={{name: 'fingerprint'}}
+            backgroundColor='black'
+            buttonStyle={{
+              width: 250,
+              borderRadius: 0,
+              borderWidth: 1,
+              borderColor: 'white',
+              marginTop: 20,
+              marginLeft: 0,
+              marginRight: 0,
+              marginBottom: 0
+            }}
+            title='ARCHIVE OFFER' />
+        </View>
+        <View style={styles.textBox}>
+          <Text h4 style={styles.texTagHeading}>Title: </Text>
+          <Text style={styles.texTag}>{title}</Text>
+          <Text h4 style={styles.texTagHeading}>Text:</Text>
+          <Text style={styles.texTag}>{text}</Text>
+        </View>
       </View>
     );
   }
@@ -90,14 +94,22 @@ export default connect(mapStateToProps)(graphql(EDIT_OFFER)(SpecificOfferLayout)
 
 const styles = StyleSheet.create({
   container: {
+
     flexDirection: "column",
     flex: 1,
     backgroundColor: "black",
     padding: 10,
     marginBottom: 0.25,
   },
+  textBox: {
+    marginTop: 30,
+    padding: 10,
+  },
+  texTagHeading: {
+    color: 'white',
+  },
   texTag: {
-    fontSize: 20,
+    fontSize: 15,
     color: 'white'
   }
 });

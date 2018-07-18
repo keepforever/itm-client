@@ -1,9 +1,10 @@
 import React, { Component } from "react";
 import { Text } from "react-native-elements";
 import {
-  View, ScrollView, KeyboardAvoidingView, StyleSheet, Button,
-  TouchableHighlight,
+  View, ScrollView, KeyboardAvoidingView, StyleSheet,
+  TouchableHighlight, FlatList
 } from "react-native";
+import {Button } from 'react-native-elements'
 import { Icon } from 'expo';
 // Custom Components
 import TextField from '../../components/TextField';
@@ -169,14 +170,16 @@ class ComposeRequestLayout extends Component {
     let listOfWants = null;
     if (wants.length > 0) {
       listOfWants = (
-        wants.map((want, index) => {
-          return (
+        <FlatList
+          keyExtractor={item => item }
+          data={wants} //[{id: "1"}, {id: "2"}]
+          renderItem={({ item }, index) => (
             <View style={{
               flexDirection: 'row',
               width: '80%',
               justifyContent: 'space-around'
             }} key={index}>
-              <Text h4 >{want}</Text>
+              <Text h4 >{item}</Text>
               <TouchableHighlight
                 onPress={() => this.removeWant(index)}>
                 <Icon.Ionicons
@@ -186,8 +189,8 @@ class ComposeRequestLayout extends Component {
                 />
               </TouchableHighlight>
             </View>
-          )
-        })
+          )}
+        />
       )
     }
     // choices for ButtonGroup:
@@ -198,9 +201,8 @@ class ComposeRequestLayout extends Component {
     //clearLog('COMPOSE_REQUEST props', this.props)
     //clearLog('COMPOSE_REQUEST state', this.state)
     return (
-      <ScrollView>
-        <View style={styles.container}>
-          <Button title="Nav Home" onPress={this.navToHome} />
+      <ScrollView style={styles.container}>
+        <View style={styles.vue}>
           <View>
             <Text h4>
               Request Title:
@@ -238,11 +240,29 @@ class ComposeRequestLayout extends Component {
             onPress={() => {
               this.addWant(pendingWant);
             }}
-            icon={{name: 'face'}}
+            icon={{name: 'add'}}
             backgroundColor='black'
-            title='Push Want'
-          />
-          <Button title="Send Request" onPress={this.submit} />
+            buttonStyle={{
+              borderWidth: 1,
+              borderColor: '#D3D3D3',
+              marginTop: 20,
+            }}
+            title='Push Want' />
+            <Button
+              title='Send Request'
+              onPress={() => {
+                this.submit();
+              }}
+              icon={{name: 'add'}}
+              backgroundColor='#267326'
+              buttonStyle={{
+                borderWidth: 1,
+                borderColor: '#D3D3D3',
+                marginTop: 5,
+              }}/>
+              <Text h4>
+                Current Wants List:
+              </Text>
           {listOfWants}
         </View>
       </ScrollView>
@@ -274,8 +294,62 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "#D3D3D3",
     padding: 10,
-    marginBottom: 5
+  },
+  vue: {
+    height: 2000
   }
 });
+//
+//
+// return (
+//   <ScrollView style={styles.container}>
+//     <View >
+//       <Button title="Nav Home" onPress={this.navToHome} />
+//       <View>
+//         <Text h4>
+//           Request Title:
+//         </Text>
+//       </View>
+//       <TextField
+//         kolor="black"
+//         value={title}
+//         name="title"
+//         onChangeText={this.onChangeText}
+//       />
+//       <View>
+//         <Text h4>
+//           Request Text:
+//         </Text>
+//       </View>
+//       <TextField
+//         kolor="black"
+//         value={text}
+//         name="text"
+//         onChangeText={this.onChangeText}
+//       />
+//       <View>
+//         <Text h4>
+//           Create Wants List:
+//         </Text>
+//       </View>
+//       <TextField
+//         kolor="black"
+//         value={pendingWant}
+//         name="enter want"
+//         onChangeText={this.onChangeWantsText}
+//       />
+//       <Button
+//         onPress={() => {
+//           this.addWant(pendingWant);
+//         }}
+//         icon={{name: 'face'}}
+//         backgroundColor='black'
+//         title='Push Want'
+//       />
+//       <Button title="Send Request" onPress={this.submit} />
+//       {listOfWants}
+//     </View>
+//   </ScrollView>
+// );

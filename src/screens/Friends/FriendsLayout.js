@@ -1,6 +1,6 @@
 import React from 'react';
 import {
-  Image, View, Button,
+  Image, View,
   FlatList, StyleSheet, ActivityIndicator
 } from 'react-native';
 import gql from 'graphql-tag';
@@ -14,7 +14,7 @@ import { clearLog } from '../../utils';
 import TextField from '../../components/TextField';
 import CustomHeader from '../../components/CustomHeader'
 
-import { ListItem, Text, Card } from 'react-native-elements';
+import { ListItem, Text, Card, Button } from 'react-native-elements';
 
 class FriendsLayout extends React.Component {
   static navigationOptions = ({navigation}) => {
@@ -79,20 +79,34 @@ class FriendsLayout extends React.Component {
           data={friends} //[{id: "1"}, {id: "2"}]
           renderItem={({ item }) => (
             <Card
+              containerStyle={{
+                backgroundColor: '#D3D3D3'
+              }}
               title={item.friend.name}>
               <Text style={{marginBottom: 10}}>
                 {item.friend.about}
               </Text>
               <Text h3>Sells:</Text>
-              {item.friend.sells.map((s, i) => {
-                return <ListItem hideChevron={true} key={i} title={s} />
-              })}
+              <View style={styles.sellsWrap}>
+                {item.friend.sells.map((s, i) => {
+                  return i === (item.friend.sells.length - 1) ? <Text key={i}>{s}.</Text> : <Text key={i}>{s}, </Text>
+                  {/* <ListItem hideChevron={true} key={i} title={s} /> */}
+                })}
+              </View>
               <Button
                 onPress={() => this.navToComposeRequest(item.friend)}
-                icon={{name: 'fingerprint'}}
-                backgroundColor='#03A9F4'
-                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
-                title='Compose Request' />
+                icon={{name: 'email'}}
+                backgroundColor='black'
+                buttonStyle={{
+                  borderRadius: 0,
+                  borderWidth: 1,
+                  borderColor: 'white',
+                  marginTop: 20,
+                  marginLeft: 0,
+                  marginRight: 0,
+                  marginBottom: 0
+                }}
+                title='Write Seller' />
             </Card>
           )}
         />
@@ -121,9 +135,13 @@ export default connect(mapStateToProps, mapDispatchToProps)(
 
 const styles = StyleSheet.create({
   container: {
-    flexDirection: "column",
     flex: 1,
-    backgroundColor: "white",
-    padding: 10
+    flexDirection: "column",
+    backgroundColor: "black",
+    padding: 1
+  },
+  sellsWrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap'
   }
 });

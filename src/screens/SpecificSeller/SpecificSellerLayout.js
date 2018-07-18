@@ -139,15 +139,18 @@ class SpecificSeller extends React.Component {
               {about}
             </Text>
             <Text h4>Sells:</Text>
-            {sells.map((s, i) => {
-              return <ListItem key={i} title={s} />
-            })}
+            <View style={styles.sellsWrap}>
+              {sells.map((s, i) => {
+                return i === (sells.length - 1) ? <Text key={i}>{s}.</Text> : <Text key={i}>{s}, </Text>
+                {/* <ListItem hideChevron={true} key={i} title={s} /> */}
+              })}
+            </View>
             <Button
               onPress={this.navToBefriendConfig}
               icon={{name: 'face'}}
-              backgroundColor='#03A9F4'
+              backgroundColor='4d4d4d'
               buttonStyle={{
-                borderRadius: 15,
+                borderRadius: 0,
                 marginTop: 10,
                 marginRight: 0,
                 marginBottom: 5
@@ -190,6 +193,10 @@ const styles = StyleSheet.create({
   },
   cardContainer: {
     marginBottom: 15
+  },
+  sellsWrap: {
+    flexDirection: 'row',
+    flexWrap: 'wrap'
   }
 });
 

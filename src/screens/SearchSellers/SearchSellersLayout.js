@@ -70,6 +70,9 @@ class SearchSellersLayout extends Component {
           data={sellers}
           renderItem={({ item }) => (
             <Card
+              containerStyle={{
+                backgroundColor: '#D3D3D3'
+              }}
               title={item.name}
               image={cardHeaderImage}>
               <Text style={{marginBottom: 10}}>
@@ -78,7 +81,7 @@ class SearchSellersLayout extends Component {
               <Button
                 onPress={() => this.navToSpecificSeller(item)}
                 icon={{name: 'fingerprint'}}
-                backgroundColor='#03A9F4'
+                backgroundColor='#4d4d4d'
                 buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
                 title='DETAILS' />
             </Card>
@@ -124,6 +127,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: "white",
+    backgroundColor: "black",
   }
 })
