@@ -81,8 +81,11 @@ class SearchSellersLayout extends Component {
               <Button
                 onPress={() => this.navToSpecificSeller(item)}
                 icon={{name: 'fingerprint'}}
-                backgroundColor='#4d4d4d'
-                buttonStyle={{borderRadius: 0, marginLeft: 0, marginRight: 0, marginBottom: 0}}
+                backgroundColor='black'
+                buttonStyle={{
+                  borderWidth: 1,
+                  borderColor: 'white',
+                }}
                 title='DETAILS' />
             </Card>
             // <SellerRow

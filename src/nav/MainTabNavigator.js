@@ -18,8 +18,10 @@ import SpecificSeller from '../screens/SpecificSeller'
 import BefriendSpecificSellerConfig from '../screens/BefriendSpecificSellerConfig'
 import EditOffer from '../screens/EditOffer'
 import ComposeRequest from '../screens/ComposeRequest'
-
 import SearchSellers from '../screens/SearchSellers'
+
+
+const TabBarComponent = (props) => (<BottomTabBar {...props} />);
 
 const HomeStack = createStackNavigator({
   PatronInbox: PatronInbox,
@@ -98,4 +100,9 @@ export default createBottomTabNavigator({
   FriendsStack,
   SearchSellersStack,
   SettingsStack,
-});
+},{
+tabBarOptions: {
+  style: {
+    backgroundColor: 'black',
+  }
+}});

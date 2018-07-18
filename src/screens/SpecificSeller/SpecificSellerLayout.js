@@ -132,6 +132,9 @@ class SpecificSeller extends React.Component {
       <ScrollView style={styles.container} >
         <View style={styles.cardContainer}>
           <Card
+            containerStyle={{
+              backgroundColor: '#D3D3D3'
+            }}
             title={name}
             image={cardHeaderImage}>
             <Text h4>About:</Text>
@@ -148,9 +151,11 @@ class SpecificSeller extends React.Component {
             <Button
               onPress={this.navToBefriendConfig}
               icon={{name: 'face'}}
-              backgroundColor='4d4d4d'
+              backgroundColor='black'
               buttonStyle={{
                 borderRadius: 0,
+                borderWidth: 1,
+                borderColor: 'white',
                 marginTop: 10,
                 marginRight: 0,
                 marginBottom: 5
@@ -179,7 +184,7 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "black",
   },
   modalContainer: {
     flexDirection: "column",
