@@ -14,8 +14,8 @@ import { selectSpecificSeller } from '../../store/actions/seller';
 import { clearLog } from '../../utils';
 import TextField from '../../components/TextField';
 import { Card, Button } from 'react-native-elements'
-import cardHeaderImage from './sellerCardHeader.jpg'
-import CustomHeader from '../../components/CustomHeader'
+import SearchSellerCard from '../../components/SearchSellerCard'
+
 
 class SearchSellersLayout extends Component {
   static navigationOptions = ({navigation}) => {
@@ -36,32 +36,16 @@ class SearchSellersLayout extends Component {
   };
 
   navToSpecificSeller = (seller) => {
-    //clearLog("navToSpecificSeller, seller:", seller)
     this.props.selectSellerAction(seller)
-    //clearLog('SEARCH_SELLERS_LAYOUT specificSeller:', this.props.specificSeller)
     this.props.navigation.navigate('SpecificSeller', {sellerName: seller.name});
   };
 
-  state = {
-    someThing: 'some state'
-  }
-
   render() {
-
     const {
-      listSellers: {
-        sellers,
-        variables,
-        fetchMore,
-        loading,
-      },
+      listSellers: { sellers, variables, fetchMore,  loading, },
       userId,
       specificSeller
     } = this.props
-
-    //clearLog('SearchSellersLayout, sellers', sellers)
-    //clearLog("SearchSellersLayout, listSellers", this.props.listSellers )
-    //clearLog('SEARCH_SELLERS_LAYOUT props:', this.props)
 
     return (
       <View style={styles.container}>
@@ -69,31 +53,10 @@ class SearchSellersLayout extends Component {
           keyExtractor={item => item.id }
           data={sellers}
           renderItem={({ item }) => (
-            <Card
-              containerStyle={{
-                backgroundColor: '#D3D3D3'
-              }}
-              title={item.name}
-              image={cardHeaderImage}>
-              <Text style={{marginBottom: 10}}>
-                {item.about}
-              </Text>
-              <Button
-                onPress={() => this.navToSpecificSeller(item)}
-                icon={{name: 'fingerprint'}}
-                backgroundColor='black'
-                buttonStyle={{
-                  borderWidth: 1,
-                  borderColor: 'white',
-                }}
-                title='DETAILS' />
-            </Card>
-            // <SellerRow
-            //   userId={userId}
-            //   item={item}
-            //   viewThisSeller={this.navToSpecificSeller}
-            // />
-          )}
+            <SearchSellerCard
+              navToSpecificSeller={() => this.navToSpecificSeller(item)}
+              item={item} />   )
+            }
         />
       </View>
     )

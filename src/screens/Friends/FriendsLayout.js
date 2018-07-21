@@ -79,13 +79,14 @@ class FriendsLayout extends React.Component {
           data={friends} //[{id: "1"}, {id: "2"}]
           renderItem={({ item }) => (
             <Card
+              titleStyle={{ padding: 5, backgroundColor:'black', color: 'white', fontSize: 20}}
               containerStyle={{
                 backgroundColor: '#D3D3D3'
               }}
               title={item.friend.name}>
-              <Text style={{marginBottom: 10}}>
+              {/* <Text style={{marginBottom: 10}}>
                 {item.friend.about}
-              </Text>
+              </Text> */}
               <Text h3>Sells:</Text>
               <View style={styles.sellsWrap}>
                 {item.friend.sells.map((s, i) => {

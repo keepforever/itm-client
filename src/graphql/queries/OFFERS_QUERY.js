@@ -14,6 +14,16 @@ export const OFFERS_QUERY = gql`
       }
       edges {
         node {
+          recipient {
+            name
+            about
+            friends{
+              id
+            }
+            inbox{
+              id
+            }
+          }
           id
           title
           text

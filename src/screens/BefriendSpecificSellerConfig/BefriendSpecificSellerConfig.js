@@ -1,18 +1,19 @@
 import React from 'react';
 import {
   Image, ScrollView, View, TouchableHighlight,
-  FlatList, StyleSheet, Modal, Picker, KeyboardAvoidingView
+  FlatList, StyleSheet, Modal, Picker
 } from 'react-native';
 import CustomHeader from '../../components/CustomHeader';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
-import { ADD_SELLER_TO_FRIENDS } from '../../graphql/mutations/ADD_SELLER_TO_FRIENDS';
 import OfferRow from '../../components/OfferRow';
 import { connect } from 'react-redux';
 import { clearLog } from '../../utils';
-import { Card, Text, ListItem, Button, ButtonGroup } from 'react-native-elements'
+import { Card, Icon, Text, ListItem, Button, ButtonGroup } from 'react-native-elements'
 import TextField from '../../components/TextField';
-import { Icon } from 'expo';
+import { resetSellerInfo } from '../../store/actions/seller';
+import { bindActionCreators } from 'redux';
+import { ADD_SELLER_TO_FRIENDS } from '../../graphql/mutations/ADD_SELLER_TO_FRIENDS';
 
 const defaultState = {
   values: {
@@ -26,21 +27,25 @@ const defaultState = {
   selectedIndex: 0,
 }
 
-const pickerValues = [...Array(10).keys()]
-
 class BefriendSpecificSellerConfig extends React.Component {
-  static navigationOptions = ( { navigation } ) => {
+  static navigationOptions = ({navigation}) => {
+    const {routeName} = navigation.state
     return {
-      title: navigation.state.routeName,
-    }
+      title: `${routeName}`,
+      headerStyle: {
+        backgroundColor: 'black',
+        height: 50,
+        width: '100%'
+      },
+      headerTintColor: 'white',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        fontSize: 16
+      }
+    };
   };
 
   state = defaultState
-
-  befriendSeller = () => {
-    const seller = this.props.specificSeller
-    clearLog('befriendSeller', seller )
-  };
 
   onChangeText = (key, value) => {
     this.setState(state => ({
@@ -87,11 +92,8 @@ class BefriendSpecificSellerConfig extends React.Component {
   };
 
   removeFriendshipReason = (index) => {
-    //clearLog('index', index)
     const curRe = [ ...this.state.values.friendsBecause ]
-    //clearLog('currentReasons', curRe)
     const updatedReasons = curRe.filter( (el) => { return el !== curRe[index] })
-    //clearLog('updatedReasons', updatedReasons)
     this.setState(state => ({
       values: {
         ...state.values,
@@ -103,9 +105,7 @@ class BefriendSpecificSellerConfig extends React.Component {
 
   updateIndex = (selectedIndex) => {
     const localButtons = [1,2,3,4]
-
     const offerAllowance = localButtons[selectedIndex]
-
     this.setState(state => ({
       values: {
         ...state.values,
@@ -117,13 +117,11 @@ class BefriendSpecificSellerConfig extends React.Component {
 
   submit = async () => {
     const { friendsBecause, offerAllowance } = this.state.values;
-
     const id = this.props.specificSeller.id
-
-    clearLog("SUBMIT, friend", id)
-    clearLog("SUBMIT, friendsBecause", friendsBecause)
-    clearLog("SUBMIT, offerAllowance", offerAllowance)
-    clearLog("SUBMIT, addSellerToFriendsMutation", this.props.addSellerToFriendsMutation)
+    // clearLog("SUBMIT, friend", id)
+    // clearLog("SUBMIT, friendsBecause", friendsBecause)
+    // clearLog("SUBMIT, offerAllowance", offerAllowance)
+    // clearLog("SUBMIT, addSellerToFriendsMutation", this.props.addSellerToFriendsMutation)
 
     let response;
     try {
@@ -142,10 +140,49 @@ class BefriendSpecificSellerConfig extends React.Component {
 
     clearLog('RESPONSE addSellerToFriendsMutation', response)
 
-    this.props.navigation.navigate('Home');
+    this.setState({ ...defaultState })
+    //this.props.resetSellerAction()
+    this.props.navigation.navigate('PatronInbox');
+
   };
 
   render() {
+    const component1 = () => (
+      <Icon
+        color='black'
+        size={30}
+        containerStyle={{
+          backgroundColor: 'red'
+      }}
+      name='filter-1' />)
+    const component2 = () => (
+      <Icon
+        color='black'
+        size={30}
+        containerStyle={{
+          backgroundColor: 'red'
+      }}
+      name='filter-2' />)
+    const component3 = () => (
+      <Icon
+        color='black'
+        size={30}
+        containerStyle={{
+          backgroundColor: 'red'
+      }}
+      name='filter-3' />)
+    const component4 = () => (
+      <Icon
+        color='black'
+        size={30}
+        containerStyle={{
+          backgroundColor: 'red'
+        }}
+    name='filter-4' />)
+
+    // const buttons = ["1","2","3","4"]
+    const altButtons = [{ element: component1 }, { element: component2 }, { element: component3 }, { element: component4 }]
+
     const { specificSeller: { name, about, sells } } = this.props
     const { friendsBecauseReason, selectedIndex } = this.state
     const { offerAllowance, friendsBecause } = this.state.values
@@ -156,11 +193,12 @@ class BefriendSpecificSellerConfig extends React.Component {
         friendsBecause.map((reason, index) => {
           return (
             <View key={index}>
-              <Text >{reason}</Text>
+              <Text style={{color: 'white', marginTop: 10}}>Reasons: </Text>
+              <Text style={styles.reasons} >{reason}</Text>
               <TouchableHighlight
                 onPress={() => this.removeFriendshipReason(index)}>
-                <Icon.Ionicons
-                  name="ios-nuclear-outline"
+                <Icon
+                  name="delete"
                   size={26}
                   color="red"
                 />
@@ -170,40 +208,39 @@ class BefriendSpecificSellerConfig extends React.Component {
         })
       )
     }
-    // choices for ButtonGroup:
-    const buttons = ["1","2","3","4"]
 
-    //clearLog(`BEFRIEND_SPECIFIC_SELLER_CONFIG friendsBecause`, friendsBecause)
-    //clearLog('SPECIFIC_SELLER_LAYOUT, about', about)
-    //clearLog('SPECIFIC_SELLER_LAYOUT, specificSeller', this.props.specificSeller)
     return (
-      <KeyboardAvoidingView style={styles.container}>
-        <View style={{marginTop: 15}}>
-          <Button
-            onPress={this.submit}
-            icon={{name: 'face'}}
-            backgroundColor='green'
-            title='Add Friend'
-          />
-        </View>
+      <View style={styles.container}>
         <ScrollView>
           <View >
-            <Text h4>Set Offer Allowance:</Text>
+            <Text h5 style={{color: 'white'}}>Set Offer Allowance:</Text>
             <ButtonGroup
               onPress={this.updateIndex}
               selectedIndex={selectedIndex}
-              buttons={buttons}
-              containerStyle={{height: 100}}
+              selectedButtonStyle={{
+                backgroundColor: '#555555'
+              }}
+              buttons={altButtons}
+              containerStyle={{
+                height: 60,
+                backgroundColor: 'transparent',
+                borderWidth: 0
+              }}
             />
           </View>
           <View>
             <TextField
-              kolor="black"
+              kolor="white"
               value={friendsBecauseReason}
-              name="Reason to befriend..."
+              name="Reason you like seller..."
               onChangeText={this.onChangeReasonText}
             />
             <Button
+              buttonStyle={{
+                borderWidth: 1,
+                borderColor: 'white',
+                marginTop: 5,
+              }}
               onPress={() => {
                 this.addFriendShipReason(friendsBecauseReason);
               }}
@@ -215,14 +252,31 @@ class BefriendSpecificSellerConfig extends React.Component {
           {listOfReasons}
           <View style={{marginTop: 15}}>
             <Button
+              color="red"
+              buttonStyle={{
+                borderWidth: 1,
+                borderColor: 'red',
+                marginTop: 5,
+              }}
               onPress={this.cancelBefriendSeller }
-              icon={{name: 'face'}}
-              backgroundColor='red'
-              title='Cancel Add Seller'
+              icon={{name: 'cancel', color: 'red'}}
+              backgroundColor='black'
+              title='Cancel'
             />
           </View>
+          <Button
+            onPress={this.submit}
+            icon={{name: 'face'}}
+            backgroundColor='black'
+            buttonStyle={{
+              borderWidth: 1,
+              borderColor: 'green',
+              marginTop: 15,
+            }}
+            title='Add Friend'
+          />
         </ScrollView>
-      </KeyboardAvoidingView>
+      </View>
     );
   }
 };
@@ -254,13 +308,20 @@ const addFriendMutation = gql`
   }
 `;
 
-export default connect(mapStateToProps)(graphql(addFriendMutation)(BefriendSpecificSellerConfig))
+const mapDispatchToProps = dispatch => {
+  return bindActionCreators({resetSellerAction: resetSellerInfo}, dispatch)
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(graphql(addFriendMutation)(BefriendSpecificSellerConfig))
 
 const styles = StyleSheet.create({
   container: {
     flexDirection: "column",
     flex: 1,
-    backgroundColor: "white",
+    backgroundColor: "black",
     padding: 25
   },
+  reasons: {
+    color: 'white',
+  }
 });

@@ -11,8 +11,7 @@ import {Button} from 'react-native-elements'
 import TextField from '../../components/TextField';
 import wallpaper from  '../../../assets/images/Wallpaper_StormSeeker.jpg';
 
-
-
+import { clearLog } from '../../utils';
 
 const defaultState = {
   values: {
@@ -25,9 +24,23 @@ const defaultState = {
 };
 
 class Signup extends Component {
-  static navigationOptions = {
-    title: "SignUp Layout",
+  static navigationOptions = ({navigation}) => {
+    const {routeName} = navigation.state
+    return {
+      title: `${routeName}`,
+      headerStyle: {
+        backgroundColor: 'black',
+        height: 50,
+        width: '100%'
+      },
+      headerTintColor: 'white',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        fontSize: 16
+      }
+    };
   };
+
   state = defaultState;
 
   onChangeText = (key, value) => {
@@ -55,7 +68,8 @@ class Signup extends Component {
 
     const pattern = /[a-z0-9!#$%&'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?/;
 
-    isEmailValid = await pattern.test(this.state.values.email)
+    isEmailValid = pattern.test(this.state.values.email)
+    clearLog('isEmailValid', isEmailValid)
 
     if(!isEmailValid) {
       alert("Please Enter a Valid Email")
@@ -75,6 +89,7 @@ class Signup extends Component {
         variables: this.state.values,
       });
     } catch (err) {
+      clearLog('ERR', err)
       this.setState({
         errors: {
           email: 'Already taken',
@@ -83,10 +98,35 @@ class Signup extends Component {
       });
       return;
     }
+    clearLog('response', response)
 
-    await AsyncStorage.setItem('userToken', response.data.signup.token);
-    console.log('token: ', response.data.signup.token)
-    this.props.navigation.navigate('AuthLoading');
+    await AsyncStorage.clear()
+    clearLog('CLEAR ASYNC CALLED', await AsyncStorage.getAllKeys())
+
+    const numFriends = response.data.signup.user.friends.length.toString()
+    const numInbox = response.data.signup.user.inbox.length.toString()
+
+    await AsyncStorage.multiSet([
+      ['userToken', response.data.signup.token],
+      ['userName', response.data.signup.user.name],
+      ['userAbout', response.data.signup.user.about],
+      ['userInboxCount', numInbox],
+      ['userFriendCount', numFriends],
+    ]);
+
+    const asyncGetUserInfo = async () => {
+      return {
+        userName: await AsyncStorage.getItem('userName'),
+        userAbout: await AsyncStorage.getItem('userAbout'),
+        userInboxCount: await AsyncStorage.getItem('userInboxCount'),
+        userFriendCount: await AsyncStorage.getItem('userFriendCount')
+      }
+    }
+
+    clearLog('asyncGetUserInfo', await asyncGetUserInfo())
+
+    clearLog('token: ', response.data.signup.token)
+    this.props.navigation.navigate('Main');
 
   };
 
@@ -107,6 +147,7 @@ class Signup extends Component {
   render() {
     const { errors, values: { name, email, password } } = this.state;
 
+    clearLog('state', this.state)
     if(!wallpaper){
       return null
     }
@@ -175,8 +216,24 @@ class Signup extends Component {
 
 const signUpMutation = gql`
   mutation($name: String!, $email: String!, $password: String!) {
-    signup(name: $name, email: $email, password: $password) {
+    signup(
+      name: $name,
+      email: $email,
+      password: $password,
+      about:"Just trying to live the best life I can.",
+      interests: {set: ["cloths", "food", "concerts"]}) {
       token
+      user {
+        id
+        name
+        about
+        friends{
+          id
+        }
+        inbox{
+          id
+        }
+      }
     }
   }
 `;

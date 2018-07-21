@@ -53,11 +53,6 @@ class SpecificSeller extends React.Component {
    this.props.navigation.navigate('BefriendConfig');
   };
 
-  // mabye add one click add friend in future
-  // befriendSeller = () => {
-  //   const seller = this.props.specificSeller
-  // };
-
   setModalVisible(visible) {
     this.setState({modalVisible: visible});
   }
@@ -204,45 +199,3 @@ const styles = StyleSheet.create({
     flexWrap: 'wrap'
   }
 });
-
-// deleteOffer = (id) => {
-//   console.log("deleteOffer arg, ", id)
-//   this.props.deleteOffer({
-//     variables: {
-//       id
-//     },
-//     update: (store) => {
-//       const data = store.readQuery({ query: OFFERS_QUERY });
-//       data.offers = data.offers.filter(o => o.id !== id);
-//       store.writeQuery({ query: OFFERS_QUERY, data });
-//     }
-//   })
-// }
-
-// static navigationOptions = ({ navigation }) => {
-//   //clearLog('NAVIGATION', navigation)
-//   return {
-//     headerTitle: <CustomHeader titleText={navigation.state.routeName} />,
-//     headerStyle: {
-//       backgroundColor: '#fff',
-//     },
-//   };
-// };
-
-//
-// <Picker
-//   selectedValue={this.state.values.offerAllowance}
-//   onValueChange={(itemValue, itemIndex) => {
-//     this.setState(state => ({
-//       values: {
-//         ...state.values,
-//         offerAllowance: itemValue,
-//       },
-//     }))
-//   }}>
-//   {pickerValues.map((v, i) => {
-//     return (
-//       <Picker.Item label={v.toString()} value={v} key={i} />
-//     )
-//   })}
-// </Picker>

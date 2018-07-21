@@ -25,9 +25,8 @@ const asyncGetUserInfo = async () => {
   userAbout = await AsyncStorage.getItem('userAbout');
   userInboxCount = await AsyncStorage.getItem('userInboxCount');
   userFriendCount = await AsyncStorage.getItem('userFriendCount');
+  //clearLog('thishappened', 'thishappened')
 }
-
-asyncGetUserInfo()
 
 class PatronInboxLayout extends Component {
   static navigationOptions = ({navigation}) => {
@@ -56,12 +55,13 @@ class PatronInboxLayout extends Component {
   };
 
   navToSpecificOffer = (offer) => {
-    clearLog("offer in navToSpecificOffer: ", offer.name)
+    //clearLog("offer in navToSpecificOffer: ", offer.name)
     this.props.selectOfferAction(offer)
     this.props.navigation.navigate('SpecificOffer', {offerTitle: offer.title});
   };
 
   render() {
+    asyncGetUserInfo()
     //clearLog('NAVIGATION PROPS', this.props.navigation)
     const {
       listOffers: {

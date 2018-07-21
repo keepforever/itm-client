@@ -5,8 +5,14 @@ const initialState = {
     sellerInfo: null,
 };
 
+const resetSeller = ( state, action ) => {
+  clearLog("RESET_SELLER_INFO reducer fired", 'XX')
+  return updateObject(state, {
+    sellerInfo: null,
+  })
+}
+
 const setSeller = ( state, action ) => {
-  //clearLog("seller reducer fired", action.seller)
   return updateObject(state, {
     sellerInfo: action.seller
   })
@@ -15,6 +21,7 @@ const setSeller = ( state, action ) => {
 const reducer = (state = initialState, action) => {
     switch (action.type) {
       case actionTypes.SET_SPECIFIC_SELLER: return setSeller(state, action)
+      case actionTypes.RESET_SELLER_INFO: return resetSeller(state, action)
       default: return state;
     }
 }

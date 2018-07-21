@@ -22,8 +22,21 @@ const defaultState = {
 };
 
 class Login extends React.Component {
-  static navigationOptions = {
-    title: "Login Layout",
+  static navigationOptions = ({navigation}) => {
+    const {routeName} = navigation.state
+    return {
+      title: `${routeName}`,
+      headerStyle: {
+        backgroundColor: 'black',
+        height: 50,
+        width: '100%'
+      },
+      headerTintColor: 'white',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        fontSize: 16
+      }
+    };
   };
 
   state = defaultState;
@@ -95,7 +108,7 @@ class Login extends React.Component {
         <KeyboardAvoidingView
           style={styles.container}
         >
-          <View style={{ width: 200 }}>
+          <View style={{ width: 250 }}>
             {errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
             <TextField value={email} name="email" onChangeText={this.onChangeText} />
             {errors.password && <Text style={{ color: 'red' }}>{errors.password}</Text>}

@@ -131,17 +131,18 @@ class ComposeRequestLayout extends Component {
   }
 
   removeWant = (index) => {
-    //clearLog('index', index)
+
+    clearLog('index', index)
     const curWants = [ ...this.state.values.wants ]
-    //clearLog('currentReasons', curRe)
+
     const updatedWants = curWants.filter( (w) => { return w !== curWants[index] })
-    //clearLog('updatedReasons', updatedReasons)
+
     this.setState(state => ({
       values: {
         ...state.values,
         wants: updatedWants,
       },
-      friendsBecauseReason: ''
+      pendingWant: ''
     }));
   }
 
@@ -173,13 +174,14 @@ class ComposeRequestLayout extends Component {
         <FlatList
           keyExtractor={item => item }
           data={wants} //[{id: "1"}, {id: "2"}]
-          renderItem={({ item }, index) => (
+          renderItem={({ item, index }) => (
             <View style={{
               flexDirection: 'row',
               width: '80%',
               justifyContent: 'space-around'
             }} key={index}>
               <Text h4 >{item}</Text>
+              <View><Text>index: {index}</Text></View>
               <TouchableHighlight
                 onPress={() => this.removeWant(index)}>
                 <Icon.Ionicons
