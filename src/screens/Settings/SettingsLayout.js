@@ -28,7 +28,7 @@ class SettingsScreen extends Component {
   }
 
   _logOutAsync = async () => {
-    alert("You have been signed out. Longin again to resume.")
+    alert("You have been signed out. Login again to resume.")
     //console.log( await AsyncStorage.getAllKeys())
     await AsyncStorage.clear()
     clearLog('LOG_OUT_ASYNC CALLED', await AsyncStorage.getAllKeys())
