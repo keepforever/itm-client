@@ -2,34 +2,25 @@ import React from 'react';
 import { Platform } from 'react-native';
 import {
   createStackNavigator,
-  createBottomTabNavigator
-} from 'react-navigation';
+  createBottomTabNavigator } from 'react-navigation';
 import TabBarIcon from '../components/TabBarIcon';
+// HomeStack screens
+import PatronInbox from '../screens/main/homeStack/PatronInbox';
+import SpecificOffer from '../screens/main/homeStack/SpecificOffer';
+// FriendsStack screens
+import ComposeRequest from '../screens/main/friendsStack/ComposeRequest'
+import Friends from '../screens/main/friendsStack/Friends'
+// SearchSellesrStack screens
+import SearchSellers from '../screens/main/searchSellersStack/SearchSellers'
+import SpecificSeller from '../screens/main/searchSellersStack/SpecificSeller'
+import BefriendSpecificSellerConfig from '../screens/main/searchSellersStack/BefriendSpecificSellerConfig'
+// SettingsStack screens
+import SettingsScreen from '../screens/main/settingsStack/Settings';
 
-import Home from '../screens/Home';
-import PatronInbox from '../screens/PatronInbox';
-import Links from '../screens/Links';
-import SettingsScreen from '../screens/Settings';
-import Friends from '../screens/Friends'
-import Offer from '../screens/Offer'
-import CreateOffer from '../screens/CreateOffer'
-import SpecificOffer from '../screens/SpecificOffer'
-import SpecificSeller from '../screens/SpecificSeller'
-import BefriendSpecificSellerConfig from '../screens/BefriendSpecificSellerConfig'
-import EditOffer from '../screens/EditOffer'
-import ComposeRequest from '../screens/ComposeRequest'
-import SearchSellers from '../screens/SearchSellers'
-
-
-const TabBarComponent = (props) => (<BottomTabBar {...props} />);
 
 const HomeStack = createStackNavigator({
   PatronInbox: PatronInbox,
-  Home: Home,
-  Offer: Offer,
-  CreateOffer: CreateOffer,
   SpecificOffer: SpecificOffer,
-  EditOffer: EditOffer
 });
 
 HomeStack.navigationOptions = {

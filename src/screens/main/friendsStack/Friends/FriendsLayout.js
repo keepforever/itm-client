@@ -5,14 +5,14 @@ import {
 } from 'react-native';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
-import { FRIENDS_OF_USER_QUERY } from '../../graphql/queries/FRIENDS_OF_USER_QUERY';
-import OfferRow from '../../components/OfferRow'
+import { FRIENDS_OF_USER_QUERY } from '../../../../graphql/queries/FRIENDS_OF_USER_QUERY';
+import OfferRow from '../../../../components/OfferRow'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import { selectSpecificSeller } from '../../store/actions/seller';
-import { clearLog } from '../../utils';
-import TextField from '../../components/TextField';
-import CustomHeader from '../../components/CustomHeader'
+import { selectSpecificSeller } from '../../../../store/actions/seller';
+import { clearLog } from '../../../../utils';
+import TextField from '../../../../components/TextField';
+import CustomHeader from '../../../../components/CustomHeader'
 
 import { ListItem, Text, Card, Button } from 'react-native-elements';
 

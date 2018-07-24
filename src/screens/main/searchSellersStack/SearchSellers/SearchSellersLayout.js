@@ -5,16 +5,16 @@ import {
 } from 'react-native';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
-import { OFFERS_QUERY } from '../../graphql/queries/OFFERS_QUERY';
-import { SELLERS_QUERY } from '../../graphql/queries/SELLERS_QUERY';
+import { OFFERS_QUERY } from '../../../../graphql/queries/OFFERS_QUERY';
+import { SELLERS_QUERY } from '../../../../graphql/queries/SELLERS_QUERY';
 // import SellerRow from '../../components/SellerRow'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import { selectSpecificSeller } from '../../store/actions/seller';
-import { clearLog } from '../../utils';
-import TextField from '../../components/TextField';
+import { selectSpecificSeller } from '../../../../store/actions/seller';
+import { clearLog } from '../../../../utils';
+import TextField from '../../../../components/TextField';
 import { Card, Button } from 'react-native-elements'
-import SearchSellerCard from '../../components/SearchSellerCard'
+import SearchSellerCard from '../../../../components/SearchSellerCard'
 
 
 class SearchSellersLayout extends Component {

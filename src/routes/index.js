@@ -1,7 +1,7 @@
 import React from 'react';
 import { Platform, StatusBar, StyleSheet, View } from 'react-native';
 import { AppLoading, Asset, Font, Icon } from 'expo';
-import AppNavigator from '../../nav/AppNavigator';
+import AppNavigator from '../nav/AppNavigator';
 
 export default class Routes extends React.Component {
   state = {
@@ -30,15 +30,15 @@ export default class Routes extends React.Component {
   _loadResourcesAsync = async () => {
     return Promise.all([
       Asset.loadAsync([
-        require('../itm.jpg'),
-        require('../itm.jpg'),
+        require('./itm.jpg'),
+        require('./itm.jpg'),
       ]),
       Font.loadAsync({
         // This is the font that we are using for our tab bar
         ...Icon.Ionicons.font,
-        // We include SpaceMono because we use it in HomeScreen.js. Feel free
-        // to remove this if you are not using it in your app
-        'space-mono': require('../../../assets/fonts/SpaceMono-Regular.ttf'),
+        // We include SpaceMono because we use it in HomeScreen.js.
+        // Feel free to remove this if you are not using it in your app
+        'space-mono': require('../../assets/fonts/SpaceMono-Regular.ttf'),
       }),
     ]);
   };

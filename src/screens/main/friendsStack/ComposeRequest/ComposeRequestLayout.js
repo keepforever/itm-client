@@ -7,8 +7,8 @@ import {
 import {Button } from 'react-native-elements'
 import { Icon } from 'expo';
 // Custom Components
-import TextField from '../../components/TextField';
-import MultilineTextField from '../../components/MultilineTextField';
+import TextField from '../../../../components/TextField';
+import MultilineTextField from '../../../../components/MultilineTextField';
 // Redux
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -16,10 +16,10 @@ import { bindActionCreators } from 'redux';
 import { graphql, compose } from 'react-apollo';
 import gql from 'graphql-tag';
 //Q's & M's
-import { selectSpecificSeller } from '../../store/actions/seller';
-import { CREATE_REQUEST } from '../../graphql/mutations/CREATE_REQUEST';
+import { selectSpecificSeller } from '../../../../store/actions/seller';
+import { CREATE_REQUEST } from '../../../../graphql/mutations/CREATE_REQUEST';
 // Helper
-import { clearLog } from '../../utils';
+import { clearLog } from '../../../../utils';
 
 
 const defaultState = {

@@ -8,10 +8,10 @@ import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
 import {Button} from 'react-native-elements'
 
-import TextField from '../../components/TextField';
-import wallpaper from  '../../../assets/images/Wallpaper_StormSeeker.jpg';
+import TextField from '../../../components/TextField';
+import wallpaper from  '../../../../assets/images/Wallpaper_StormSeeker.jpg';
 
-import { clearLog } from '../../utils';
+import { clearLog } from '../../../utils';
 
 const defaultState = {
   values: {

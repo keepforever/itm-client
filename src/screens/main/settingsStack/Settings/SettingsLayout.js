@@ -3,7 +3,7 @@ import {
   View, StyleSheet, AsyncStorage,
 } from "react-native";
 import { Text, Button } from "react-native-elements";
-import { clearLog } from '../../utils';
+import { clearLog } from '../../../../utils';
 
 class SettingsScreen extends Component {
   static navigationOptions = ({navigation}) => {

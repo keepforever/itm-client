@@ -5,15 +5,16 @@ import {
   Dimensions, SafeAreaView, AsyncStorage, Tile
 } from "react-native";
 import { graphql, compose } from 'react-apollo';
-import { OFFERS_QUERY } from '../../graphql/queries/OFFERS_QUERY';
+import { OFFERS_QUERY } from '../../../../graphql/queries/OFFERS_QUERY';
 import { Text, Header, Avatar } from "react-native-elements";
-import { clearLog } from '../../utils';
-import InboxPreviewRow from '../../components/InboxPreviewRow'
-import CustomHeader from '../../components/CustomHeader'
+import { clearLog } from '../../../../utils';
+import InboxPreviewRow from '../../../../components/InboxPreviewRow'
+import CustomHeader from '../../../../components/CustomHeader'
+import FlatListLoadingFooter from '../../../../components/FlatListLoadingFooter'
 import { connect } from 'react-redux'
 import { bindActionCreators } from 'redux';
-import { selectSpecificOffer } from '../../store/actions/offer';
-import monkeyAvatar from  '../../../assets/images/monkey.jpg';
+import { selectSpecificOffer } from '../../../../store/actions/offer';
+import monkeyAvatar from  '../../../../../assets/images/monkey.jpg';
 
 const flatListHeight = Dimensions.get('window').height*0.6;
 
@@ -24,9 +25,8 @@ const asyncGetUserInfo = async () => {
   userAbout = await AsyncStorage.getItem('userAbout');
   userInboxCount = await AsyncStorage.getItem('userInboxCount');
   userFriendCount = await AsyncStorage.getItem('userFriendCount');
+  //clearLog('thishappened', 'thishappened')
 }
-
-asyncGetUserInfo()
 
 class PatronInboxLayout extends Component {
   static navigationOptions = ({navigation}) => {
@@ -55,12 +55,13 @@ class PatronInboxLayout extends Component {
   };
 
   navToSpecificOffer = (offer) => {
-    //console.log("offer in navToSpecificOffer: ", offer)
+    //clearLog("offer in navToSpecificOffer: ", offer.name)
     this.props.selectOfferAction(offer)
     this.props.navigation.navigate('SpecificOffer', {offerTitle: offer.title});
   };
 
   render() {
+    asyncGetUserInfo()
     //clearLog('NAVIGATION PROPS', this.props.navigation)
     const {
       listOffers: {
@@ -78,7 +79,7 @@ class PatronInboxLayout extends Component {
     user.inboxCount = userInboxCount
     user.friendCount = userFriendCount
 
-    clearLog('USER', user)
+    //clearLog('USER', user)
     //clearLog('offersConnection, ', offersConnection)
     //clearLog('WindowHeight', flatListHeight)
     if(!user.userName || !user.userAbout) {
@@ -150,7 +151,7 @@ class PatronInboxLayout extends Component {
             }}
             onEndReachedThreshold={0}
             ListFooterComponent={() => (
-              offersConnection.pageInfo.hasNextPage ? <ActivityIndicator size="large" color="#00ff00"/> : null)}
+              offersConnection.pageInfo.hasNextPage ? <FlatListLoadingFooter /> : null)}
           />
         </View>
       </SafeAreaView>
@@ -161,6 +162,7 @@ class PatronInboxLayout extends Component {
 const mapStateToProps = state => {
     return {
         user: state.user,
+        userId: state.user.userId,
         specificOffer: state.offer.specificOffer
     };
 }
@@ -170,12 +172,13 @@ const mapDispatchToProps = dispatch => {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(graphql(OFFERS_QUERY, {
-  options: {
-    fetchPolicy: "cache-and-network",
+  options: (props) => ({
     variables: {
+      id: props.userId,
       orderBy: 'createdAt_ASC'
-    }
-  },
+    },
+    fetchPolicy: "cache-and-network",
+  }),
   name: "listOffers"
 })(PatronInboxLayout))
 

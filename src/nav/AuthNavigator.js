@@ -3,8 +3,8 @@ import React from 'react';
 import { createStackNavigator } from 'react-navigation';
 //import TabBarIcon from '../components/TabBarIcon';
 
-import Login from '../screens/Login'
-import SignUp from '../screens/SignUp'
+import Login from '../screens/auth/Login'
+import SignUp from '../screens/auth/SignUp'
 
 export default createStackNavigator({
   SignUp: SignUp,

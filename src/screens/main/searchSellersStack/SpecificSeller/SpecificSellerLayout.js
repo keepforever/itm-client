@@ -5,16 +5,16 @@ import {
 } from 'react-native';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
-import { OFFERS_QUERY } from '../../graphql/queries/OFFERS_QUERY';
-import { DELETE_OFFER } from '../../graphql/mutations/DELETE_OFFER';
-import { ADD_SELLER_TO_FRIENDS } from '../../graphql/mutations/ADD_SELLER_TO_FRIENDS';
-import OfferRow from '../../components/OfferRow';
+import { OFFERS_QUERY } from '../../../../graphql/queries/OFFERS_QUERY';
+import { DELETE_OFFER } from '../../../../graphql/mutations/DELETE_OFFER';
+import { ADD_SELLER_TO_FRIENDS } from '../../../../graphql/mutations/ADD_SELLER_TO_FRIENDS';
+import OfferRow from '../../../../components/OfferRow';
 import { connect } from 'react-redux';
-import { clearLog } from '../../utils';
+import { clearLog } from '../../../../utils';
 import { Card, Text, ListItem, Button } from 'react-native-elements'
 import cardHeaderImage from './sellerCardHeader.jpg'
-import TextField from '../../components/TextField';
-import CustomHeaderBack from '../../components/CustomHeaderBack'
+import TextField from '../../../../components/TextField';
+import CustomHeaderBack from '../../../../components/CustomHeaderBack'
 
 const defaultState = {
   values: {

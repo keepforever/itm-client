@@ -3,17 +3,17 @@ import {
   Image, ScrollView, View, TouchableHighlight,
   FlatList, StyleSheet, Modal, Picker
 } from 'react-native';
-import CustomHeader from '../../components/CustomHeader';
+import CustomHeader from '../../../../components/CustomHeader';
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
-import OfferRow from '../../components/OfferRow';
+import OfferRow from '../../../../components/OfferRow';
 import { connect } from 'react-redux';
-import { clearLog } from '../../utils';
+import { clearLog } from '../../../../utils';
 import { Card, Icon, Text, ListItem, Button, ButtonGroup } from 'react-native-elements'
-import TextField from '../../components/TextField';
-import { resetSellerInfo } from '../../store/actions/seller';
+import TextField from '../../../../components/TextField';
+import { resetSellerInfo } from '../../../../store/actions/seller';
 import { bindActionCreators } from 'redux';
-import { ADD_SELLER_TO_FRIENDS } from '../../graphql/mutations/ADD_SELLER_TO_FRIENDS';
+import { ADD_SELLER_TO_FRIENDS } from '../../../../graphql/mutations/ADD_SELLER_TO_FRIENDS';
 
 const defaultState = {
   values: {

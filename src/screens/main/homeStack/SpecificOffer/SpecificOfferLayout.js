@@ -1,12 +1,12 @@
 import React from 'react';
 import { Image, View, FlatList, StyleSheet } from 'react-native';
-import CustomHeader from '../../components/CustomHeader'
+import CustomHeader from '../../../../components/CustomHeader'
 import gql from 'graphql-tag';
 import { graphql, compose } from 'react-apollo';
-import { OFFERS_QUERY } from '../../graphql/queries/OFFERS_QUERY';
-import { DELETE_OFFER } from '../../graphql/mutations/DELETE_OFFER';
-import { EDIT_OFFER } from '../../graphql/mutations/EDIT_OFFER';
-import OfferRow from '../../components/OfferRow'
+import { OFFERS_QUERY } from '../../../../graphql/queries/OFFERS_QUERY';
+import { DELETE_OFFER } from '../../../../graphql/mutations/DELETE_OFFER';
+import { EDIT_OFFER } from '../../../../graphql/mutations/EDIT_OFFER';
+import OfferRow from '../../../../components/OfferRow'
 import { connect } from 'react-redux'
 import { Text, Button } from "react-native-elements";
 

@@ -12,7 +12,7 @@ import { Provider } from 'react-redux';
 import { createStore } from 'redux';
 import rootReducer from './store/reducers';
 //locals
-import Routes from "./platform/routes";
+import Routes from "./routes";
 //utils
 import {clearLog} from './utils';
 //For Apollo

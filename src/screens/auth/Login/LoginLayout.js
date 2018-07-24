@@ -6,11 +6,11 @@ import {
 } from 'react-native';
 import { graphql } from 'react-apollo';
 import gql from 'graphql-tag';
-import wallpaper from  '../../../assets/images/Wallpaper_StormSeeker.jpg';
+import wallpaper from  '../../../../assets/images/Wallpaper_StormSeeker.jpg';
 import {Button} from 'react-native-elements'
-import { clearLog } from '../../utils';
+import { clearLog } from '../../../utils';
 
-import TextField from '../../components/TextField';
+import TextField from '../../../components/TextField';
 
 const defaultState = {
   values: {
@@ -22,8 +22,21 @@ const defaultState = {
 };
 
 class Login extends React.Component {
-  static navigationOptions = {
-    title: "Login Layout",
+  static navigationOptions = ({navigation}) => {
+    const {routeName} = navigation.state
+    return {
+      title: `${routeName}`,
+      headerStyle: {
+        backgroundColor: 'black',
+        height: 50,
+        width: '100%'
+      },
+      headerTintColor: 'white',
+      headerTitleStyle: {
+        fontWeight: 'bold',
+        fontSize: 16
+      }
+    };
   };
 
   state = defaultState;
@@ -57,8 +70,8 @@ class Login extends React.Component {
     const { payload, error } = response.data.login;
     if (payload) {
       console.log('Login Token', payload.token)
-      const numFriends = payload.user.inbox.length.toString()
-      const numInbox = payload.user.friends.length.toString()
+      const numFriends = payload.user.friends.length.toString()
+      const numInbox = payload.user.inbox.length.toString()
       await AsyncStorage.multiSet([
         ['userToken', payload.token],
         ['userName', payload.user.name],
@@ -68,9 +81,6 @@ class Login extends React.Component {
       ]);
       // await AsyncStorage.setItem('userName', payload.user.name);
       // await AsyncStorage.setItem('userAbout', payload.user.about);
-      // clearLog('payload', payload.user.friends.length)
-      // await AsyncStorage.setItem('userInboxCount', payload.user.inbox.length.toString());
-      // await AsyncStorage.setItem('userFriendCount', payload.user.friends.length.toString());
       this.props.navigation.navigate('Main');
       alert('Welcome Back ' + payload.user.name)
     } else {
@@ -98,7 +108,7 @@ class Login extends React.Component {
         <KeyboardAvoidingView
           style={styles.container}
         >
-          <View style={{ width: 200 }}>
+          <View style={{ width: 250 }}>
             {errors.email && <Text style={{ color: 'red' }}>{errors.email}</Text>}
             <TextField value={email} name="email" onChangeText={this.onChangeText} />
             {errors.password && <Text style={{ color: 'red' }}>{errors.password}</Text>}
