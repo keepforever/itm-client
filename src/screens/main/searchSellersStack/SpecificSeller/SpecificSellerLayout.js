@@ -12,7 +12,7 @@ import OfferRow from '../../../../components/OfferRow';
 import { connect } from 'react-redux';
 import { clearLog } from '../../../../utils';
 import { Card, Text, ListItem, Button } from 'react-native-elements'
-import cardHeaderImage from './sellerCardHeader.jpg'
+import cardHeaderImage from '../../../../../assets/images/sellerCardHeader.jpg'
 import TextField from '../../../../components/TextField';
 import CustomHeaderBack from '../../../../components/CustomHeaderBack'
 
