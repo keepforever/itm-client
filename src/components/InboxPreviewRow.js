@@ -6,14 +6,7 @@ import {
 import {Text, Icon} from 'react-native-elements';
 import { clearLog } from '../utils'
 import tileBackgroundImage from '../../assets/images/offerListItemTileImage.jpg'
-// <Tile
-//   imageSrc={tileBackgroundImage}
-//   title={`${title}`}
-//   featured
-//   containerStyle={{height: 100}}
-//   caption={`${authorName}`}
-// />
-//
+
 const InboxPreviewRow = ( props ) => {
   const {
     item: {title, text, id, author: { name }},
@@ -22,16 +15,10 @@ const InboxPreviewRow = ( props ) => {
 
   const authorName = name
 
-  // clearLog('OFFER_ROW id', id)
-  // clearLog('OFFER_ROW userId', userId)
   navToSpecificOffer = (offer) => {
-    //console.log("offer in navToSpecificOffer: ", offer)
     this.props.selectOfferAction(offer)
     this.props.navigation.navigate('SpecificOffer');
   };
-
-  // clearLog('hellow from InboxPreviewRow', props)
-  // clearLog('authorName', authorName)
 
   return (
     <TouchableHighlight onPress={() => props.viewThisOffer({text, title, id, name})}>
@@ -49,9 +36,7 @@ const InboxPreviewRow = ( props ) => {
             <Text h4 style={styles.title}> {title}</Text>
             <Text h4 style={styles.text}> {text}</Text>
         </View>
-
       </View>
-
     </TouchableHighlight>
   );
 };
